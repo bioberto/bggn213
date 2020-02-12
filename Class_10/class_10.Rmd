@@ -1,9 +1,6 @@
 ---
 title: "Class_10_markdown"
 output: github_document
-  word_document: default
-  pdf_document: default
-  html_document: default
 ---
 
 ```{r setup, include=FALSE}
