@@ -8,3 +8,158 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## R Markdown
+
+
+Download a CSV file from the PDB site (accessible from “Analyze” > “PDB Statistics” > “by Experimental Method and Molecular Type”. Move this CSV file into your RStudio project and use it to answer the following questions:
+
+>Q: What percentage of structures in the PDB are solved by X-Ray and Electron Microscopy.
+xray = 8.95 and EM = 2.72
+
+```{r}
+stats <-  read.csv("Data Export Summary.csv", row.names = 1)
+stats
+```
+
+```{r}
+total_sum <- sum(stats$Total)
+```
+```{r}
+ans <- round(stats$Total / total_sum * 100,2)
+names(ans) <- rownames(stats)
+ans
+```
+>Q: What proportion of structures in the PDB are protein?
+
+```{r}
+round(sum(stats$Proteins)/total_sum *100,2)
+```
+
+
+>Q: Type HIV in the PDB website search box on the home page and determine how many HIV-1 protease structures are in the current PDB?
+
+there are 1289 hiv protease structures
+## Section 2. Using bio3d to analyse protein structure data
+
+Use the Bio3d package from CRAN
+
+
+```{r}
+library(bio3d)
+
+pdb <- read.pdb("1hsg")
+pdb
+
+```
+
+```{r}
+pdb <- read.pdb("1AKE")
+pdb
+```
+```{r}
+aa <- get.seq("1ake_A")
+```
+```{r}
+aa
+```
+
+#BLAST or hmmr search
+```{r}
+b <- blast.pdb(aa)
+```
+```{r}
+hits <- plot(b)
+```
+
+
+```{r}
+head(hits$pdb.id)
+```
+
+```{r}
+hits <- NULL
+hits$pdb.id <- c('1AKE_A','4X8M_A','6S36_A','6RZE_A','4X8H_A','3HPR_A','1E4V_A','5EJE_A','1E4Y_A','3X2S_A','6HAP_A','6HAM_A','4K46_A','4NP6_A','3GMT_A','4PZL_A')
+```
+
+
+```{r}
+files <- get.pdb(hits$pdb.id, path = "pdbs" , split = TRUE , gzip = TRUE)
+```
+
+
+```{r}
+# Align releated PDBs
+pdbs <- pdbaln(files, fit = TRUE, exefile="msa")
+```
+
+```{r}
+# Vector containing PDB codes for figure axis
+ids <- basename.pdb(pdbs$id)
+
+# Draw schematic alignment
+plot(pdbs, labels=ids)
+```
+
+
+
+```{r}
+library(bio3d.view)
+library(rgl)
+
+view(pdbs)
+```
+
+```{r}
+anno <- pdb.annotate(ids)
+unique(anno$source)
+```
+
+```{r}
+#anno11
+```
+
+## Principal Component Analysis
+
+```{r}
+# Perform PCA
+pc.xray <- pca(pdbs)
+plot(pc.xray)
+```
+
+
+```{r}
+# Calculate RMSD
+rd <- rmsd(pdbs)
+
+# Structure-based clustering
+hc.rd <- hclust(dist(rd))
+grps.rd <- cutree(hc.rd, k=3)
+
+plot(pc.xray, 1:2, col="grey50", bg=grps.rd, pch=21, cex=1)
+```
+
+```{r}
+# Visualize first principal component
+pc1 <- mktrj(pc.xray, pc=1, file="pc_1.pdb")
+```
+
+
+
+##GGPLOT TIME
+
+```{r}
+#Plotting results with ggplot2
+library(ggplot2)
+library(ggrepel)
+
+df <- data.frame(x=pc.xray$z[,1], y=pc.xray$z[,2])
+col <- as.factor(grps.rd)
+
+p <- ggplot(df, aes(x, y)) +
+ geom_point(aes(col=col), size=2) +
+ xlab("PC1") +
+ ylab("PC2") +
+ scale_color_discrete(name="Clusters") +
+ geom_text_repel(aes(label=ids))
+p
+```
+
