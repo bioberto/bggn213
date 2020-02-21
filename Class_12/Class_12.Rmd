@@ -163,3 +163,12 @@ p <- ggplot(df, aes(x, y)) +
 p
 ```
 
+```{r}
+# NMA of all structures
+modes <- nma(pdbs)
+
+```
+```{r}
+plot(modes, pdbs, col=grps.rd)
+
+```
