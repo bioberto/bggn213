@@ -136,8 +136,17 @@ round(combined_death_cases/combined_total_cases,4)
 
 
 
+```{r}
+library(dplyr)
+```
 
 
+```{r}
+cases_by_country <- virus %>% group_by(Country.Region) %>% 
+  summarize(tot = sum(cases)) %>% 
+  arrange(desc(tot))
+head(cases_by_country)
+```
 
 
 
