@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Class16"
 output: github_document
 ---
 
@@ -171,7 +171,7 @@ attributes(keggres)
 ```
 
 ```{r}
-pathview(gene.data=foldchanges, pathway.id="hsa04110")
+#pathview(gene.data=foldchanges, pathway.id="hsa04110")
 
 ```
 ```{r}
@@ -181,7 +181,7 @@ knitr::include_graphics("hsa04110.pathview.png")
 
 ```{r}
 # A different PDF based output of the same data
-pathview(gene.data=foldchanges, pathway.id="hsa04110", kegg.native=FALSE)
+#pathview(gene.data=foldchanges, pathway.id="hsa04110", kegg.native=FALSE)
 ```
 
 ```{r}
@@ -194,7 +194,7 @@ keggresids
 ```
 
 ```{r}
-pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+#pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
 ```
 
 ```{r}
@@ -206,7 +206,7 @@ keggresids = substr(keggrespathways, start=1, stop=8)
 keggresids
 ```
 ```{r}
-pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
+#pathview(gene.data=foldchanges, pathway.id=keggresids, species="hsa")
 
 ```
 ## SECTION 3. GENE ONTOLOGY
