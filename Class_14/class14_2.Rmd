@@ -97,9 +97,7 @@ unique(which(x == 0, arr.ind = TRUE)[,"row"])
 #which(x == 0)
 ```
 
-```{r}
-which()
-```
+
 ok find zero rows in our mycounts obect
 
 ```{r}
