@@ -1,0 +1,96 @@
+---
+title: "class15"
+author: "Alberto Carreno"
+date: "2/26/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#read sample genotype data from ENSEMBLE
+
+we downloaded genotype data from ENSEMBLE on the MXL mexican ancestry in los angeles,california dataset
+
+what proportion of this data areG/G etc
+
+```{r}
+mxl <- read.csv("373531-SampleGenotypes-Homo_sapiens_Variation_Sample_rs12936231.csv")
+```
+
+
+We want to look at the second column that contains the genotype information
+
+
+
+```{r}
+table(mxl$Genotype..forward.strand.)
+```
+
+##RNA-seq result analysis for different genotypes of this SNP
+
+
+```{r}
+temp <- read.table("rs8067378_ENSG00000172057.6.txt")
+head(temp)
+```
+```{r}
+x <- 1:10
+x[x>5]
+```
+
+
+```{r}
+summary(temp[temp$geno == "G/G",]$exp)
+```
+```{r}
+mean(temp[temp$geno == "G/G",]$exp)
+```
+
+
+
+```{r}
+hist(temp[temp$geno == "G/G",]$exp)
+```
+
+
+```{r}
+summary("rs8067378_ENSG00000172057.6.txt")
+```
+
+
+
+```{r}
+summary(temp[temp$geno == "G/G",]$exp)
+```
+```{r}
+summary(temp[temp$geno == "A/G",]$exp)
+```
+
+```{r}
+summary(temp[temp$geno == "A/A",]$exp)
+```
+
+```{r}
+mean(temp[temp$geno == "G/G",]$exp)
+```
+
+
+```{r}
+mean(temp[temp$geno == "A/G",]$exp)
+```
+```{r}
+mean(temp[temp$geno == "A/A",]$exp)
+```
+
+
+
+```{r}
+boxplot(exp ~ geno, data = temp,notch = T)
+```
+
+```{r}
+nrow(temp)
+```
+
