@@ -1,0 +1,145 @@
+---
+title: "Class17"
+author: "Alberto Carreno"
+date: "3/4/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Here we analyze infection data for the 2019 novel Coronavirus COVID-19 (2019-nCoV) epidemic. The raw data is pulled from the Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE) Coronavirus repository.
+
+A CSV file is available here https://github.com/RamiKrispin/coronavirus-csv
+
+```{r}
+url <- "https://tinyurl.com/COVID-2019"
+virus <- read.csv(url)
+
+tail(virus)
+```
+
+>Q1. How many total infected cases are there around the world?
+
+```{r}
+total_cases <- sum(virus$cases)
+total_cases
+
+```
+
+```{r}
+table(virus$type)
+```
+```{r}
+sum(virus$type == "death")
+```
+
+```{r}
+inds <-  virus$type == 'death'
+death_cases <- sum(virus[inds,"cases"])
+death_cases
+```
+
+
+>Q2. how many deaths linked to infected cases have there been?
+
+```{r}
+inds <-  virus$type == 'death'
+death_cases <- sum(virus[inds,"cases"])
+death_cases
+```
+
+```{r}
+round(death_cases/total_cases*100,2)
+```
+
+>Q3. What is the overall death rate?
+
+```{r}
+round(death_cases/total_cases*100,2)
+```
+
+
+```{r}
+virus[,]
+```
+##Time for some HW!
+```{r}
+mainland <- virus[grep("Mainland China",virus$Country.Region),]
+mainland
+
+```
+```{r}
+mainland_2 <-  virus[virus$Country.Region == "Mainland China",]
+mainland_2
+```
+
+
+> Q4. What is the death rate in "Mainland China"?
+
+```{r}
+mainland_total_cases <- sum(mainland$cases)
+mainland_total_cases
+```
+
+
+
+```{r}
+mainland_inds <-  mainland$type == 'death'
+mainland_death_cases <- sum(mainland[mainland_inds,"cases"])
+mainland_death_cases
+```
+```{r}
+round(mainland_death_cases/mainland_total_cases,4)
+```
+
+
+
+> Q5. What is the death rate in Italy, Iran and the US?
+
+```{r}
+italy <-  virus[virus$Country.Region == "Italy",]
+italy 
+```
+```{r}
+Iran <-  virus[virus$Country.Region == "Iran",]
+Iran 
+```
+
+```{r}
+US <-  virus[virus$Country.Region == "US",]
+US
+```
+
+
+
+```{r}
+combined_total_cases <- sum(italy$cases,US$cases,Iran$cases)
+combined_total_cases
+
+```
+
+```{r}
+italy_inds <-  italy$type == 'death'
+US_inds <-  US$type == 'death'
+Iran_inds <-  Iran$type == 'death'
+combined_death_cases <- sum(italy[italy_inds,"cases"],US[US_inds,"cases"],Iran[Iran_inds,"cases"])
+combined_death_cases
+```
+
+```{r}
+round(combined_death_cases/combined_total_cases,4)
+```
+
+
+
+
+
+
+
+
+

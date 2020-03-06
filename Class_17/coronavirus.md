@@ -1,0 +1,9830 @@
+Class17
+================
+Alberto Carreno
+3/4/2020
+
+Here we analyze infection data for the 2019 novel Coronavirus COVID-19
+(2019-nCoV) epidemic. The raw data is pulled from the Johns Hopkins
+University Center for Systems Science and Engineering (JHU CCSE)
+Coronavirus repository.
+
+A CSV file is available here
+<https://github.com/RamiKrispin/coronavirus-csv>
+
+``` r
+url <- "https://tinyurl.com/COVID-2019"
+virus <- read.csv(url)
+
+tail(virus)
+```
+
+    ##      Province.State Country.Region     Lat     Long       date cases      type
+    ## 2772        Shaanxi Mainland China 35.1917 108.8701 2020-03-04     7 recovered
+    ## 2773       Shandong Mainland China 36.3427 118.1498 2020-03-04     5 recovered
+    ## 2774       Shanghai Mainland China 31.2020 121.4491 2020-03-04     4 recovered
+    ## 2775        Sichuan Mainland China 30.6171 102.7103 2020-03-04    12 recovered
+    ## 2776       Xinjiang Mainland China 41.1129  85.2401 2020-03-04     1 recovered
+    ## 2777       Zhejiang Mainland China 29.1832 120.0934 2020-03-04    21 recovered
+
+> Q1. How many total infected cases are there around the world?
+
+``` r
+total_cases <- sum(virus$cases)
+total_cases
+```
+
+    ## [1] 149549
+
+``` r
+table(virus$type)
+```
+
+    ## 
+    ## confirmed     death recovered 
+    ##      1520       203      1054
+
+``` r
+sum(virus$type == "death")
+```
+
+    ## [1] 203
+
+``` r
+inds <-  virus$type == 'death'
+death_cases <- sum(virus[inds,"cases"])
+death_cases
+```
+
+    ## [1] 3254
+
+> Q2. how many deaths linked to infected cases have there been?
+
+``` r
+inds <-  virus$type == 'death'
+death_cases <- sum(virus[inds,"cases"])
+death_cases
+```
+
+    ## [1] 3254
+
+``` r
+round(death_cases/total_cases*100,2)
+```
+
+    ## [1] 2.18
+
+> Q3. What is the overall death rate?
+
+``` r
+round(death_cases/total_cases*100,2)
+```
+
+    ## [1] 2.18
+
+``` r
+virus[,]
+```
+
+    ##                                   Province.State       Country.Region       Lat
+    ## 1                                                               Japan  36.00000
+    ## 2                                                         South Korea  36.00000
+    ## 3                                                            Thailand  15.00000
+    ## 4                                          Anhui       Mainland China  31.82570
+    ## 5                                        Beijing       Mainland China  40.18240
+    ## 6                                      Chongqing       Mainland China  30.05720
+    ## 7                                         Fujian       Mainland China  26.07890
+    ## 8                                      Guangdong       Mainland China  23.34170
+    ## 9                                        Guangxi       Mainland China  23.82980
+    ## 10                                       Guizhou       Mainland China  26.81540
+    ## 11                                        Hainan       Mainland China  19.19590
+    ## 12                                         Hebei       Mainland China  38.04280
+    ## 13                                         Henan       Mainland China  33.88202
+    ## 14                                         Hubei       Mainland China  30.97560
+    ## 15                                         Hunan       Mainland China  27.61040
+    ## 16                                       Jiangsu       Mainland China  32.97110
+    ## 17                                       Jiangxi       Mainland China  27.61400
+    ## 18                               King County, WA                   US  47.60620
+    ## 19                                      Liaoning       Mainland China  41.29560
+    ## 20                                         Macau                Macau  22.16670
+    ## 21                                       Ningxia       Mainland China  37.26920
+    ## 22                                      Shandong       Mainland China  36.34270
+    ## 23                                      Shanghai       Mainland China  31.20200
+    ## 24                                        Shanxi       Mainland China  37.57770
+    ## 25                                       Sichuan       Mainland China  30.61710
+    ## 26                                        Taiwan               Taiwan  23.70000
+    ## 27                                       Tianjin       Mainland China  39.30540
+    ## 28                                        Yunnan       Mainland China  24.97400
+    ## 29                                      Zhejiang       Mainland China  29.18320
+    ## 30                                         Hubei       Mainland China  30.97560
+    ## 31                                         Hubei       Mainland China  30.97560
+    ## 32                                                              Japan  36.00000
+    ## 33                                                          Singapore   1.28330
+    ## 34                                                           Thailand  15.00000
+    ## 35                                                            Vietnam  16.00000
+    ## 36                                         Anhui       Mainland China  31.82570
+    ## 37                                       Beijing       Mainland China  40.18240
+    ## 38                                     Chongqing       Mainland China  30.05720
+    ## 39                                        Fujian       Mainland China  26.07890
+    ## 40                                         Gansu       Mainland China  36.06110
+    ## 41                                     Guangdong       Mainland China  23.34170
+    ## 42                                       Guangxi       Mainland China  23.82980
+    ## 43                                       Guizhou       Mainland China  26.81540
+    ## 44                                        Hainan       Mainland China  19.19590
+    ## 45                                  Heilongjiang       Mainland China  47.86200
+    ## 46                                     Hong Kong            Hong Kong  22.30000
+    ## 47                                         Hunan       Mainland China  27.61040
+    ## 48                                       Jiangsu       Mainland China  32.97110
+    ## 49                                       Jiangxi       Mainland China  27.61400
+    ## 50                                         Jilin       Mainland China  43.66610
+    ## 51                                      Liaoning       Mainland China  41.29560
+    ## 52                                         Macau                Macau  22.16670
+    ## 53                                       Shaanxi       Mainland China  35.19170
+    ## 54                                      Shandong       Mainland China  36.34270
+    ## 55                                      Shanghai       Mainland China  31.20200
+    ## 56                                       Sichuan       Mainland China  30.61710
+    ## 57                                      Xinjiang       Mainland China  41.11290
+    ## 58                                        Yunnan       Mainland China  24.97400
+    ## 59                                      Zhejiang       Mainland China  29.18320
+    ## 60                                         Hebei       Mainland China  38.04280
+    ## 61                                     Guangdong       Mainland China  23.34170
+    ## 62                                                             France  47.00000
+    ## 63                                                              Japan  36.00000
+    ## 64                                                          Singapore   1.28330
+    ## 65                                                        South Korea  36.00000
+    ## 66                                                           Thailand  15.00000
+    ## 67                                         Anhui       Mainland China  31.82570
+    ## 68                                       Beijing       Mainland China  40.18240
+    ## 69                                     Chongqing       Mainland China  30.05720
+    ## 70                               Cook County, IL                   US  41.73770
+    ## 71                                        Fujian       Mainland China  26.07890
+    ## 72                                     Guangdong       Mainland China  23.34170
+    ## 73                                       Guangxi       Mainland China  23.82980
+    ## 74                                        Hainan       Mainland China  19.19590
+    ## 75                                         Hebei       Mainland China  38.04280
+    ## 76                                  Heilongjiang       Mainland China  47.86200
+    ## 77                                         Henan       Mainland China  33.88202
+    ## 78                                         Hubei       Mainland China  30.97560
+    ## 79                                         Hunan       Mainland China  27.61040
+    ## 80                                Inner Mongolia       Mainland China  44.09350
+    ## 81                                       Jiangsu       Mainland China  32.97110
+    ## 82                                       Jiangxi       Mainland China  27.61400
+    ## 83                                         Jilin       Mainland China  43.66610
+    ## 84                                      Liaoning       Mainland China  41.29560
+    ## 85                                       Ningxia       Mainland China  37.26920
+    ## 86                                       Shaanxi       Mainland China  35.19170
+    ## 87                                      Shandong       Mainland China  36.34270
+    ## 88                                      Shanghai       Mainland China  31.20200
+    ## 89                                       Sichuan       Mainland China  30.61710
+    ## 90                                        Taiwan               Taiwan  23.70000
+    ## 91                                       Tianjin       Mainland China  39.30540
+    ## 92                                        Yunnan       Mainland China  24.97400
+    ## 93                                      Zhejiang       Mainland China  29.18320
+    ## 94                                  Heilongjiang       Mainland China  47.86200
+    ## 95                                         Hubei       Mainland China  30.97560
+    ## 96                                       Beijing       Mainland China  40.18240
+    ## 97                                         Hubei       Mainland China  30.97560
+    ## 98                                      Shanghai       Mainland China  31.20200
+    ## 99                                      Zhejiang       Mainland China  29.18320
+    ## 100                                                            France  47.00000
+    ## 101                                                          Malaysia   2.50000
+    ## 102                                                             Nepal  28.16670
+    ## 103                                                          Thailand  15.00000
+    ## 104                                        Anhui       Mainland China  31.82570
+    ## 105                                      Beijing       Mainland China  40.18240
+    ## 106                                    Chongqing       Mainland China  30.05720
+    ## 107                                       Fujian       Mainland China  26.07890
+    ## 108                                        Gansu       Mainland China  36.06110
+    ## 109                                    Guangdong       Mainland China  23.34170
+    ## 110                                      Guizhou       Mainland China  26.81540
+    ## 111                                       Hainan       Mainland China  19.19590
+    ## 112                                        Hebei       Mainland China  38.04280
+    ## 113                                 Heilongjiang       Mainland China  47.86200
+    ## 114                                        Henan       Mainland China  33.88202
+    ## 115                                    Hong Kong            Hong Kong  22.30000
+    ## 116                                        Hubei       Mainland China  30.97560
+    ## 117                                        Hunan       Mainland China  27.61040
+    ## 118                               Inner Mongolia       Mainland China  44.09350
+    ## 119                                      Jiangsu       Mainland China  32.97110
+    ## 120                                        Jilin       Mainland China  43.66610
+    ## 121                                     Liaoning       Mainland China  41.29560
+    ## 122                                      Ningxia       Mainland China  37.26920
+    ## 123                                      Qinghai       Mainland China  35.74520
+    ## 124                                      Shaanxi       Mainland China  35.19170
+    ## 125                                     Shandong       Mainland China  36.34270
+    ## 126                                     Shanghai       Mainland China  31.20200
+    ## 127                                       Shanxi       Mainland China  37.57770
+    ## 128                                      Sichuan       Mainland China  30.61710
+    ## 129                                      Tianjin       Mainland China  39.30540
+    ## 130                                     Xinjiang       Mainland China  41.11290
+    ## 131                                       Yunnan       Mainland China  24.97400
+    ## 132                                     Zhejiang       Mainland China  29.18320
+    ## 133                                        Hubei       Mainland China  30.97560
+    ## 134                                      Beijing       Mainland China  40.18240
+    ## 135                                        Hubei       Mainland China  30.97560
+    ## 136                                      Jiangsu       Mainland China  32.97110
+    ## 137                                                             Japan  36.00000
+    ## 138                                                          Malaysia   2.50000
+    ## 139                                                         Singapore   1.28330
+    ## 140                                                       South Korea  36.00000
+    ## 141                                                          Thailand  15.00000
+    ## 142                                        Anhui       Mainland China  31.82570
+    ## 143                                      Beijing       Mainland China  40.18240
+    ## 144                                    Chongqing       Mainland China  30.05720
+    ## 145                                       Fujian       Mainland China  26.07890
+    ## 146                                        Gansu       Mainland China  36.06110
+    ## 147                                    Guangdong       Mainland China  23.34170
+    ## 148                                      Guangxi       Mainland China  23.82980
+    ## 149                                      Guizhou       Mainland China  26.81540
+    ## 150                                       Hainan       Mainland China  19.19590
+    ## 151                                        Hebei       Mainland China  38.04280
+    ## 152                                 Heilongjiang       Mainland China  47.86200
+    ## 153                                        Henan       Mainland China  33.88202
+    ## 154                                    Hong Kong            Hong Kong  22.30000
+    ## 155                                        Hubei       Mainland China  30.97560
+    ## 156                                        Hunan       Mainland China  27.61040
+    ## 157                                      Jiangsu       Mainland China  32.97110
+    ## 158                                      Jiangxi       Mainland China  27.61400
+    ## 159                                     Liaoning       Mainland China  41.29560
+    ## 160                              Los Angeles, CA                   US  34.05220
+    ## 161                                        Macau                Macau  22.16670
+    ## 162                              New South Wales            Australia -33.86880
+    ## 163                                      Ningxia       Mainland China  37.26920
+    ## 164                            Orange County, CA                   US  33.78790
+    ## 165                                      Shaanxi       Mainland China  35.19170
+    ## 166                                     Shandong       Mainland China  36.34270
+    ## 167                                     Shanghai       Mainland China  31.20200
+    ## 168                                       Shanxi       Mainland China  37.57770
+    ## 169                                      Sichuan       Mainland China  30.61710
+    ## 170                                       Taiwan               Taiwan  23.70000
+    ## 171                                    Tempe, AZ                   US  33.42550
+    ## 172                                      Tianjin       Mainland China  39.30540
+    ## 173                                  Toronto, ON               Canada  43.65320
+    ## 174                                     Victoria            Australia -37.81360
+    ## 175                                     Xinjiang       Mainland China  41.11290
+    ## 176                                       Yunnan       Mainland China  24.97400
+    ## 177                                     Zhejiang       Mainland China  29.18320
+    ## 178                                        Henan       Mainland China  33.88202
+    ## 179                                        Hubei       Mainland China  30.97560
+    ## 180                                     Shanghai       Mainland China  31.20200
+    ## 181                                                             Japan  36.00000
+    ## 182                                                          Thailand  15.00000
+    ## 183                                        Hubei       Mainland China  30.97560
+    ## 184                                                          Cambodia  11.55000
+    ## 185                                                           Germany  51.00000
+    ## 186                                                         Singapore   1.28330
+    ## 187                                                       South Korea  36.00000
+    ## 188                                                         Sri Lanka   7.00000
+    ## 189                                        Anhui       Mainland China  31.82570
+    ## 190                                      Beijing       Mainland China  40.18240
+    ## 191                                    Chongqing       Mainland China  30.05720
+    ## 192                                       Fujian       Mainland China  26.07890
+    ## 193                                        Gansu       Mainland China  36.06110
+    ## 194                                    Guangdong       Mainland China  23.34170
+    ## 195                                      Guangxi       Mainland China  23.82980
+    ## 196                                      Guizhou       Mainland China  26.81540
+    ## 197                                       Hainan       Mainland China  19.19590
+    ## 198                                        Hebei       Mainland China  38.04280
+    ## 199                                 Heilongjiang       Mainland China  47.86200
+    ## 200                                        Henan       Mainland China  33.88202
+    ## 201                                        Hubei       Mainland China  30.97560
+    ## 202                                        Hunan       Mainland China  27.61040
+    ## 203                               Inner Mongolia       Mainland China  44.09350
+    ## 204                                      Jiangsu       Mainland China  32.97110
+    ## 205                                      Jiangxi       Mainland China  27.61400
+    ## 206                                        Jilin       Mainland China  43.66610
+    ## 207                                     Liaoning       Mainland China  41.29560
+    ## 208                                        Macau                Macau  22.16670
+    ## 209                              New South Wales            Australia -33.86880
+    ## 210                                      Ningxia       Mainland China  37.26920
+    ## 211                                      Qinghai       Mainland China  35.74520
+    ## 212                                      Shaanxi       Mainland China  35.19170
+    ## 213                                     Shandong       Mainland China  36.34270
+    ## 214                                     Shanghai       Mainland China  31.20200
+    ## 215                                       Shanxi       Mainland China  37.57770
+    ## 216                                      Sichuan       Mainland China  30.61710
+    ## 217                                       Taiwan               Taiwan  23.70000
+    ## 218                                      Tianjin       Mainland China  39.30540
+    ## 219                                     Xinjiang       Mainland China  41.11290
+    ## 220                                       Yunnan       Mainland China  24.97400
+    ## 221                                     Zhejiang       Mainland China  29.18320
+    ## 222                                      Beijing       Mainland China  40.18240
+    ## 223                                       Hainan       Mainland China  19.19590
+    ## 224                                        Hubei       Mainland China  30.97560
+    ## 225                                    Guangdong       Mainland China  23.34170
+    ## 226                                        Hubei       Mainland China  30.97560
+    ## 227                                      Jiangxi       Mainland China  27.61400
+    ## 228                                     Shanghai       Mainland China  31.20200
+    ## 229                                                            France  47.00000
+    ## 230                                                           Germany  51.00000
+    ## 231                                                             Japan  36.00000
+    ## 232                                                         Singapore   1.28330
+    ## 233                                                          Thailand  15.00000
+    ## 234                                        Anhui       Mainland China  31.82570
+    ## 235                                      Beijing       Mainland China  40.18240
+    ## 236                             British Columbia               Canada  49.28270
+    ## 237                                    Chongqing       Mainland China  30.05720
+    ## 238                                       Fujian       Mainland China  26.07890
+    ## 239                                        Gansu       Mainland China  36.06110
+    ## 240                                    Guangdong       Mainland China  23.34170
+    ## 241                                      Guangxi       Mainland China  23.82980
+    ## 242                                      Guizhou       Mainland China  26.81540
+    ## 243                                       Hainan       Mainland China  19.19590
+    ## 244                                        Hebei       Mainland China  38.04280
+    ## 245                                 Heilongjiang       Mainland China  47.86200
+    ## 246                                        Henan       Mainland China  33.88202
+    ## 247                                        Hubei       Mainland China  30.97560
+    ## 248                                        Hunan       Mainland China  27.61040
+    ## 249                               Inner Mongolia       Mainland China  44.09350
+    ## 250                                      Jiangsu       Mainland China  32.97110
+    ## 251                                      Jiangxi       Mainland China  27.61400
+    ## 252                                        Jilin       Mainland China  43.66610
+    ## 253                                     Liaoning       Mainland China  41.29560
+    ## 254                                        Macau                Macau  22.16670
+    ## 255                                      Ningxia       Mainland China  37.26920
+    ## 256                                      Shaanxi       Mainland China  35.19170
+    ## 257                                     Shandong       Mainland China  36.34270
+    ## 258                                     Shanghai       Mainland China  31.20200
+    ## 259                                       Shanxi       Mainland China  37.57770
+    ## 260                                      Sichuan       Mainland China  30.61710
+    ## 261                                       Taiwan               Taiwan  23.70000
+    ## 262                                      Tianjin       Mainland China  39.30540
+    ## 263                                     Xinjiang       Mainland China  41.11290
+    ## 264                                       Yunnan       Mainland China  24.97400
+    ## 265                                     Zhejiang       Mainland China  29.18320
+    ## 266                                        Hubei       Mainland China  30.97560
+    ## 267                                                          Thailand  15.00000
+    ## 268                                      Beijing       Mainland China  40.18240
+    ## 269                                      Guangxi       Mainland China  23.82980
+    ## 270                                        Hubei       Mainland China  30.97560
+    ## 271                                      Jiangxi       Mainland China  27.61400
+    ## 272                                     Shanghai       Mainland China  31.20200
+    ## 273                                     Zhejiang       Mainland China  29.18320
+    ## 274                                                           Finland  64.00000
+    ## 275                                                            France  47.00000
+    ## 276                                                          Malaysia   2.50000
+    ## 277                                              United Arab Emirates  24.00000
+    ## 278                                        Anhui       Mainland China  31.82570
+    ## 279                                      Beijing       Mainland China  40.18240
+    ## 280                                    Chongqing       Mainland China  30.05720
+    ## 281                                       Fujian       Mainland China  26.07890
+    ## 282                                        Gansu       Mainland China  36.06110
+    ## 283                                    Guangdong       Mainland China  23.34170
+    ## 284                                      Guangxi       Mainland China  23.82980
+    ## 285                                       Hainan       Mainland China  19.19590
+    ## 286                                        Hebei       Mainland China  38.04280
+    ## 287                                 Heilongjiang       Mainland China  47.86200
+    ## 288                                        Henan       Mainland China  33.88202
+    ## 289                                    Hong Kong            Hong Kong  22.30000
+    ## 290                                        Hunan       Mainland China  27.61040
+    ## 291                               Inner Mongolia       Mainland China  44.09350
+    ## 292                                      Jiangsu       Mainland China  32.97110
+    ## 293                                        Jilin       Mainland China  43.66610
+    ## 294                                     Liaoning       Mainland China  41.29560
+    ## 295                                      Ningxia       Mainland China  37.26920
+    ## 296                                   Queensland            Australia -28.01670
+    ## 297                                      Shaanxi       Mainland China  35.19170
+    ## 298                                     Shandong       Mainland China  36.34270
+    ## 299                                     Shanghai       Mainland China  31.20200
+    ## 300                                      Sichuan       Mainland China  30.61710
+    ## 301                                      Tianjin       Mainland China  39.30540
+    ## 302                                     Xinjiang       Mainland China  41.11290
+    ## 303                                       Yunnan       Mainland China  24.97400
+    ## 304                                     Zhejiang       Mainland China  29.18320
+    ## 305                                        Henan       Mainland China  33.88202
+    ## 306                                      Sichuan       Mainland China  30.61710
+    ## 307                                        Anhui       Mainland China  31.82570
+    ## 308                                    Chongqing       Mainland China  30.05720
+    ## 309                                    Guangdong       Mainland China  23.34170
+    ## 310                                      Guizhou       Mainland China  26.81540
+    ## 311                                        Henan       Mainland China  33.88202
+    ## 312                                        Hubei       Mainland China  30.97560
+    ## 313                                     Liaoning       Mainland China  41.29560
+    ## 314                                     Shandong       Mainland China  36.34270
+    ## 315                                     Shanghai       Mainland China  31.20200
+    ## 316                                       Shanxi       Mainland China  37.57770
+    ## 317                                      Sichuan       Mainland China  30.61710
+    ## 318                                                             India  21.00000
+    ## 319                                                             Japan  36.00000
+    ## 320                                                          Malaysia   2.50000
+    ## 321                                                       Philippines  13.00000
+    ## 322                                                         Singapore   1.28330
+    ## 323                                        Anhui       Mainland China  31.82570
+    ## 324                                      Beijing       Mainland China  40.18240
+    ## 325                                    Chongqing       Mainland China  30.05720
+    ## 326                                       Fujian       Mainland China  26.07890
+    ## 327                                        Gansu       Mainland China  36.06110
+    ## 328                                    Guangdong       Mainland China  23.34170
+    ## 329                                      Guangxi       Mainland China  23.82980
+    ## 330                                      Guizhou       Mainland China  26.81540
+    ## 331                                       Hainan       Mainland China  19.19590
+    ## 332                                        Hebei       Mainland China  38.04280
+    ## 333                                 Heilongjiang       Mainland China  47.86200
+    ## 334                                        Henan       Mainland China  33.88202
+    ## 335                                        Hubei       Mainland China  30.97560
+    ## 336                                        Hunan       Mainland China  27.61040
+    ## 337                               Inner Mongolia       Mainland China  44.09350
+    ## 338                                      Jiangsu       Mainland China  32.97110
+    ## 339                                      Jiangxi       Mainland China  27.61400
+    ## 340                                        Jilin       Mainland China  43.66610
+    ## 341                                     Liaoning       Mainland China  41.29560
+    ## 342                                      Ningxia       Mainland China  37.26920
+    ## 343                                      Qinghai       Mainland China  35.74520
+    ## 344                                   Queensland            Australia -28.01670
+    ## 345                                      Shaanxi       Mainland China  35.19170
+    ## 346                                     Shandong       Mainland China  36.34270
+    ## 347                                     Shanghai       Mainland China  31.20200
+    ## 348                                       Shanxi       Mainland China  37.57770
+    ## 349                                      Sichuan       Mainland China  30.61710
+    ## 350                                       Taiwan               Taiwan  23.70000
+    ## 351                                      Tianjin       Mainland China  39.30540
+    ## 352                                        Tibet       Mainland China  31.69270
+    ## 353                                     Victoria            Australia -37.81360
+    ## 354                                     Xinjiang       Mainland China  41.11290
+    ## 355                                       Yunnan       Mainland China  24.97400
+    ## 356                                     Zhejiang       Mainland China  29.18320
+    ## 357                                 Heilongjiang       Mainland China  47.86200
+    ## 358                                        Hubei       Mainland China  30.97560
+    ## 359                                    Guangdong       Mainland China  23.34170
+    ## 360                                       Hainan       Mainland China  19.19590
+    ## 361                                        Henan       Mainland China  33.88202
+    ## 362                                        Hubei       Mainland China  30.97560
+    ## 363                                        Hunan       Mainland China  27.61040
+    ## 364                                      Jiangxi       Mainland China  27.61400
+    ## 365                                        Jilin       Mainland China  43.66610
+    ## 366                              New South Wales            Australia -33.86880
+    ## 367                                     Zhejiang       Mainland China  29.18320
+    ## 368                                                           Germany  51.00000
+    ## 369                                                             Italy  43.00000
+    ## 370                                                             Japan  36.00000
+    ## 371                                                            Russia  60.00000
+    ## 372                                                         Singapore   1.28330
+    ## 373                                                       South Korea  36.00000
+    ## 374                                                            Sweden  63.00000
+    ## 375                                                          Thailand  15.00000
+    ## 376                                                                UK  55.00000
+    ## 377                                        Anhui       Mainland China  31.82570
+    ## 378                                      Beijing       Mainland China  40.18240
+    ## 379                                    Chongqing       Mainland China  30.05720
+    ## 380                              Cook County, IL                   US  41.73770
+    ## 381                                       Fujian       Mainland China  26.07890
+    ## 382                                        Gansu       Mainland China  36.06110
+    ## 383                                    Guangdong       Mainland China  23.34170
+    ## 384                                      Guangxi       Mainland China  23.82980
+    ## 385                                      Guizhou       Mainland China  26.81540
+    ## 386                                       Hainan       Mainland China  19.19590
+    ## 387                                        Hebei       Mainland China  38.04280
+    ## 388                                 Heilongjiang       Mainland China  47.86200
+    ## 389                                        Henan       Mainland China  33.88202
+    ## 390                                    Hong Kong            Hong Kong  22.30000
+    ## 391                                        Hubei       Mainland China  30.97560
+    ## 392                                        Hunan       Mainland China  27.61040
+    ## 393                               Inner Mongolia       Mainland China  44.09350
+    ## 394                                      Jiangsu       Mainland China  32.97110
+    ## 395                                      Jiangxi       Mainland China  27.61400
+    ## 396                                     Liaoning       Mainland China  41.29560
+    ## 397                                   London, ON               Canada  42.98490
+    ## 398                                      Ningxia       Mainland China  37.26920
+    ## 399                                   Queensland            Australia -28.01670
+    ## 400                              Santa Clara, CA                   US  37.35410
+    ## 401                                      Shaanxi       Mainland China  35.19170
+    ## 402                                     Shandong       Mainland China  36.34270
+    ## 403                                     Shanghai       Mainland China  31.20200
+    ## 404                                       Shanxi       Mainland China  37.57770
+    ## 405                                      Sichuan       Mainland China  30.61710
+    ## 406                                       Taiwan               Taiwan  23.70000
+    ## 407                                      Tianjin       Mainland China  39.30540
+    ## 408                                  Toronto, ON               Canada  43.65320
+    ## 409                                     Victoria            Australia -37.81360
+    ## 410                                     Xinjiang       Mainland China  41.11290
+    ## 411                                       Yunnan       Mainland China  24.97400
+    ## 412                                     Zhejiang       Mainland China  29.18320
+    ## 413                                        Hubei       Mainland China  30.97560
+    ## 414                                        Anhui       Mainland China  31.82570
+    ## 415                                      Beijing       Mainland China  40.18240
+    ## 416                                    Guangdong       Mainland China  23.34170
+    ## 417                                      Guizhou       Mainland China  26.81540
+    ## 418                                        Henan       Mainland China  33.88202
+    ## 419                                        Hubei       Mainland China  30.97560
+    ## 420                               Inner Mongolia       Mainland China  44.09350
+    ## 421                                      Jiangsu       Mainland China  32.97110
+    ## 422                                      Jiangxi       Mainland China  27.61400
+    ## 423                                     Shandong       Mainland China  36.34270
+    ## 424                                     Shanghai       Mainland China  31.20200
+    ## 425                                       Yunnan       Mainland China  24.97400
+    ## 426                                     Zhejiang       Mainland China  29.18320
+    ## 427                                                            France  47.00000
+    ## 428                                                           Germany  51.00000
+    ## 429                                                             Japan  36.00000
+    ## 430                                                         Singapore   1.28330
+    ## 431                                                       South Korea  36.00000
+    ## 432                                                             Spain  40.00000
+    ## 433                                                           Vietnam  16.00000
+    ## 434                                        Anhui       Mainland China  31.82570
+    ## 435                                      Beijing       Mainland China  40.18240
+    ## 436                                   Boston, MA                   US  42.36010
+    ## 437                                    Chongqing       Mainland China  30.05720
+    ## 438                                       Fujian       Mainland China  26.07890
+    ## 439                                        Gansu       Mainland China  36.06110
+    ## 440                                    Guangdong       Mainland China  23.34170
+    ## 441                                      Guangxi       Mainland China  23.82980
+    ## 442                                       Hainan       Mainland China  19.19590
+    ## 443                                        Hebei       Mainland China  38.04280
+    ## 444                                 Heilongjiang       Mainland China  47.86200
+    ## 445                                        Henan       Mainland China  33.88202
+    ## 446                                    Hong Kong            Hong Kong  22.30000
+    ## 447                                        Hubei       Mainland China  30.97560
+    ## 448                                        Hunan       Mainland China  27.61040
+    ## 449                               Inner Mongolia       Mainland China  44.09350
+    ## 450                                      Jiangsu       Mainland China  32.97110
+    ## 451                                      Jiangxi       Mainland China  27.61400
+    ## 452                                        Jilin       Mainland China  43.66610
+    ## 453                                     Liaoning       Mainland China  41.29560
+    ## 454                                      Ningxia       Mainland China  37.26920
+    ## 455                                      Qinghai       Mainland China  35.74520
+    ## 456                                   Queensland            Australia -28.01670
+    ## 457                                      Shaanxi       Mainland China  35.19170
+    ## 458                                     Shandong       Mainland China  36.34270
+    ## 459                                     Shanghai       Mainland China  31.20200
+    ## 460                                       Shanxi       Mainland China  37.57770
+    ## 461                                      Sichuan       Mainland China  30.61710
+    ## 462                              South Australia            Australia -34.92850
+    ## 463                                      Tianjin       Mainland China  39.30540
+    ## 464                                     Victoria            Australia -37.81360
+    ## 465                                     Xinjiang       Mainland China  41.11290
+    ## 466                                       Yunnan       Mainland China  24.97400
+    ## 467                                     Zhejiang       Mainland China  29.18320
+    ## 468                                    Chongqing       Mainland China  30.05720
+    ## 469                                        Hubei       Mainland China  30.97560
+    ## 470                                                           Vietnam  16.00000
+    ## 471                                        Anhui       Mainland China  31.82570
+    ## 472                                      Beijing       Mainland China  40.18240
+    ## 473                                    Chongqing       Mainland China  30.05720
+    ## 474                                    Guangdong       Mainland China  23.34170
+    ## 475                                 Heilongjiang       Mainland China  47.86200
+    ## 476                                        Hubei       Mainland China  30.97560
+    ## 477                                        Hunan       Mainland China  27.61040
+    ## 478                                      Jiangsu       Mainland China  32.97110
+    ## 479                                      Jiangxi       Mainland China  27.61400
+    ## 480                                     Shandong       Mainland China  36.34270
+    ## 481                                     Shanghai       Mainland China  31.20200
+    ## 482                                      Sichuan       Mainland China  30.61710
+    ## 483                                       Yunnan       Mainland China  24.97400
+    ## 484                                     Zhejiang       Mainland China  29.18320
+    ## 485                                                           Germany  51.00000
+    ## 486                                                             India  21.00000
+    ## 487                                                       Philippines  13.00000
+    ## 488                                                         Singapore   1.28330
+    ## 489                                                       South Korea  36.00000
+    ## 490                                              United Arab Emirates  24.00000
+    ## 491                                        Anhui       Mainland China  31.82570
+    ## 492                                      Beijing       Mainland China  40.18240
+    ## 493                                    Chongqing       Mainland China  30.05720
+    ## 494                                       Fujian       Mainland China  26.07890
+    ## 495                                        Gansu       Mainland China  36.06110
+    ## 496                                    Guangdong       Mainland China  23.34170
+    ## 497                                      Guangxi       Mainland China  23.82980
+    ## 498                                      Guizhou       Mainland China  26.81540
+    ## 499                                       Hainan       Mainland China  19.19590
+    ## 500                                        Hebei       Mainland China  38.04280
+    ## 501                                 Heilongjiang       Mainland China  47.86200
+    ## 502                                        Henan       Mainland China  33.88202
+    ## 503                                    Hong Kong            Hong Kong  22.30000
+    ## 504                                        Hubei       Mainland China  30.97560
+    ## 505                                        Hunan       Mainland China  27.61040
+    ## 506                               Inner Mongolia       Mainland China  44.09350
+    ## 507                                      Jiangsu       Mainland China  32.97110
+    ## 508                                      Jiangxi       Mainland China  27.61400
+    ## 509                                        Jilin       Mainland China  43.66610
+    ## 510                                     Liaoning       Mainland China  41.29560
+    ## 511                                        Macau                Macau  22.16670
+    ## 512                                      Ningxia       Mainland China  37.26920
+    ## 513                                      Qinghai       Mainland China  35.74520
+    ## 514                                   Queensland            Australia -28.01670
+    ## 515                                      Shaanxi       Mainland China  35.19170
+    ## 516                                     Shandong       Mainland China  36.34270
+    ## 517                                     Shanghai       Mainland China  31.20200
+    ## 518                                       Shanxi       Mainland China  37.57770
+    ## 519                                      Sichuan       Mainland China  30.61710
+    ## 520                              South Australia            Australia -34.92850
+    ## 521                                      Tianjin       Mainland China  39.30540
+    ## 522                                     Xinjiang       Mainland China  41.11290
+    ## 523                                       Yunnan       Mainland China  24.97400
+    ## 524                                     Zhejiang       Mainland China  29.18320
+    ## 525                                                       Philippines  13.00000
+    ## 526                                    Chongqing       Mainland China  30.05720
+    ## 527                                        Hubei       Mainland China  30.97560
+    ## 528                                        Anhui       Mainland China  31.82570
+    ## 529                                    Chongqing       Mainland China  30.05720
+    ## 530                                        Gansu       Mainland China  36.06110
+    ## 531                                    Guangdong       Mainland China  23.34170
+    ## 532                                       Hainan       Mainland China  19.19590
+    ## 533                                        Hebei       Mainland China  38.04280
+    ## 534                                        Henan       Mainland China  33.88202
+    ## 535                                        Hubei       Mainland China  30.97560
+    ## 536                                        Hunan       Mainland China  27.61040
+    ## 537                                      Jiangsu       Mainland China  32.97110
+    ## 538                                      Jiangxi       Mainland China  27.61400
+    ## 539                                     Shandong       Mainland China  36.34270
+    ## 540                                       Shanxi       Mainland China  37.57770
+    ## 541                                      Sichuan       Mainland China  30.61710
+    ## 542                                      Tianjin       Mainland China  39.30540
+    ## 543                                       Yunnan       Mainland China  24.97400
+    ## 544                                     Zhejiang       Mainland China  29.18320
+    ## 545                                                           Germany  51.00000
+    ## 546                                                             India  21.00000
+    ## 547                                                           Vietnam  16.00000
+    ## 548                                        Anhui       Mainland China  31.82570
+    ## 549                                      Beijing       Mainland China  40.18240
+    ## 550                                    Chongqing       Mainland China  30.05720
+    ## 551                                       Fujian       Mainland China  26.07890
+    ## 552                                        Gansu       Mainland China  36.06110
+    ## 553                                    Guangdong       Mainland China  23.34170
+    ## 554                                      Guangxi       Mainland China  23.82980
+    ## 555                                      Guizhou       Mainland China  26.81540
+    ## 556                                       Hainan       Mainland China  19.19590
+    ## 557                                        Hebei       Mainland China  38.04280
+    ## 558                                 Heilongjiang       Mainland China  47.86200
+    ## 559                                        Henan       Mainland China  33.88202
+    ## 560                                        Hubei       Mainland China  30.97560
+    ## 561                                        Hunan       Mainland China  27.61040
+    ## 562                               Inner Mongolia       Mainland China  44.09350
+    ## 563                                      Jiangsu       Mainland China  32.97110
+    ## 564                                      Jiangxi       Mainland China  27.61400
+    ## 565                                        Jilin       Mainland China  43.66610
+    ## 566                                     Liaoning       Mainland China  41.29560
+    ## 567                                      Ningxia       Mainland China  37.26920
+    ## 568                                      Qinghai       Mainland China  35.74520
+    ## 569                               San Benito, CA                   US  36.57610
+    ## 570                              Santa Clara, CA                   US  37.35410
+    ## 571                                      Shaanxi       Mainland China  35.19170
+    ## 572                                     Shandong       Mainland China  36.34270
+    ## 573                                     Shanghai       Mainland China  31.20200
+    ## 574                                       Shanxi       Mainland China  37.57770
+    ## 575                                      Sichuan       Mainland China  30.61710
+    ## 576                                      Tianjin       Mainland China  39.30540
+    ## 577                                     Xinjiang       Mainland China  41.11290
+    ## 578                                       Yunnan       Mainland China  24.97400
+    ## 579                                     Zhejiang       Mainland China  29.18320
+    ## 580                                        Hubei       Mainland China  30.97560
+    ## 581                                        Anhui       Mainland China  31.82570
+    ## 582                                      Beijing       Mainland China  40.18240
+    ## 583                                    Chongqing       Mainland China  30.05720
+    ## 584                                       Fujian       Mainland China  26.07890
+    ## 585                                    Guangdong       Mainland China  23.34170
+    ## 586                                      Guangxi       Mainland China  23.82980
+    ## 587                                        Henan       Mainland China  33.88202
+    ## 588                                        Hubei       Mainland China  30.97560
+    ## 589                                        Hunan       Mainland China  27.61040
+    ## 590                                      Jiangsu       Mainland China  32.97110
+    ## 591                                      Jiangxi       Mainland China  27.61400
+    ## 592                                      Ningxia       Mainland China  37.26920
+    ## 593                                     Shandong       Mainland China  36.34270
+    ## 594                                       Shanxi       Mainland China  37.57770
+    ## 595                                      Sichuan       Mainland China  30.61710
+    ## 596                                       Yunnan       Mainland China  24.97400
+    ## 597                                     Zhejiang       Mainland China  29.18320
+    ## 598                                                           Belgium  50.83330
+    ## 599                                                             Japan  36.00000
+    ## 600                                                          Malaysia   2.50000
+    ## 601                                                         Singapore   1.28330
+    ## 602                                                       South Korea  36.00000
+    ## 603                                                          Thailand  15.00000
+    ## 604                                        Anhui       Mainland China  31.82570
+    ## 605                                      Beijing       Mainland China  40.18240
+    ## 606                                    Chongqing       Mainland China  30.05720
+    ## 607                                       Fujian       Mainland China  26.07890
+    ## 608                                        Gansu       Mainland China  36.06110
+    ## 609                                    Guangdong       Mainland China  23.34170
+    ## 610                                      Guangxi       Mainland China  23.82980
+    ## 611                                      Guizhou       Mainland China  26.81540
+    ## 612                                       Hainan       Mainland China  19.19590
+    ## 613                                        Hebei       Mainland China  38.04280
+    ## 614                                 Heilongjiang       Mainland China  47.86200
+    ## 615                                        Henan       Mainland China  33.88202
+    ## 616                                    Hong Kong            Hong Kong  22.30000
+    ## 617                                        Hubei       Mainland China  30.97560
+    ## 618                                        Hunan       Mainland China  27.61040
+    ## 619                               Inner Mongolia       Mainland China  44.09350
+    ## 620                                      Jiangsu       Mainland China  32.97110
+    ## 621                                      Jiangxi       Mainland China  27.61400
+    ## 622                                        Jilin       Mainland China  43.66610
+    ## 623                                     Liaoning       Mainland China  41.29560
+    ## 624                                        Macau                Macau  22.16670
+    ## 625                                      Ningxia       Mainland China  37.26920
+    ## 626                                      Qinghai       Mainland China  35.74520
+    ## 627                                   Queensland            Australia -28.01670
+    ## 628                                      Shaanxi       Mainland China  35.19170
+    ## 629                                     Shandong       Mainland China  36.34270
+    ## 630                                     Shanghai       Mainland China  31.20200
+    ## 631                                       Shanxi       Mainland China  37.57770
+    ## 632                                      Sichuan       Mainland China  30.61710
+    ## 633                                       Taiwan               Taiwan  23.70000
+    ## 634                                      Tianjin       Mainland China  39.30540
+    ## 635                                     Xinjiang       Mainland China  41.11290
+    ## 636                                       Yunnan       Mainland China  24.97400
+    ## 637                                     Zhejiang       Mainland China  29.18320
+    ## 638                                    Hong Kong            Hong Kong  22.30000
+    ## 639                                        Hubei       Mainland China  30.97560
+    ## 640                                        Anhui       Mainland China  31.82570
+    ## 641                                      Beijing       Mainland China  40.18240
+    ## 642                                       Fujian       Mainland China  26.07890
+    ## 643                                        Gansu       Mainland China  36.06110
+    ## 644                                    Guangdong       Mainland China  23.34170
+    ## 645                                      Guangxi       Mainland China  23.82980
+    ## 646                                       Hainan       Mainland China  19.19590
+    ## 647                                        Hebei       Mainland China  38.04280
+    ## 648                                 Heilongjiang       Mainland China  47.86200
+    ## 649                                        Henan       Mainland China  33.88202
+    ## 650                                        Hubei       Mainland China  30.97560
+    ## 651                                        Hunan       Mainland China  27.61040
+    ## 652                                      Jiangsu       Mainland China  32.97110
+    ## 653                                      Jiangxi       Mainland China  27.61400
+    ## 654                                     Liaoning       Mainland China  41.29560
+    ## 655                                      Shaanxi       Mainland China  35.19170
+    ## 656                                     Shandong       Mainland China  36.34270
+    ## 657                                     Shanghai       Mainland China  31.20200
+    ## 658                                       Shanxi       Mainland China  37.57770
+    ## 659                                      Tianjin       Mainland China  39.30540
+    ## 660                                     Zhejiang       Mainland China  29.18320
+    ## 661                                                          Malaysia   2.50000
+    ## 662                                                         Singapore   1.28330
+    ## 663                                                       South Korea  36.00000
+    ## 664                                        Anhui       Mainland China  31.82570
+    ## 665                                      Beijing       Mainland China  40.18240
+    ## 666                             British Columbia               Canada  49.28270
+    ## 667                                    Chongqing       Mainland China  30.05720
+    ## 668                                       Fujian       Mainland China  26.07890
+    ## 669                                        Gansu       Mainland China  36.06110
+    ## 670                                    Guangdong       Mainland China  23.34170
+    ## 671                                      Guangxi       Mainland China  23.82980
+    ## 672                                      Guizhou       Mainland China  26.81540
+    ## 673                                       Hainan       Mainland China  19.19590
+    ## 674                                        Hebei       Mainland China  38.04280
+    ## 675                                 Heilongjiang       Mainland China  47.86200
+    ## 676                                        Henan       Mainland China  33.88202
+    ## 677                                    Hong Kong            Hong Kong  22.30000
+    ## 678                                        Hubei       Mainland China  30.97560
+    ## 679                                        Hunan       Mainland China  27.61040
+    ## 680                               Inner Mongolia       Mainland China  44.09350
+    ## 681                                      Jiangsu       Mainland China  32.97110
+    ## 682                                      Jiangxi       Mainland China  27.61400
+    ## 683                                        Jilin       Mainland China  43.66610
+    ## 684                                     Liaoning       Mainland China  41.29560
+    ## 685                                  Madison, WI                   US  43.07310
+    ## 686                                      Qinghai       Mainland China  35.74520
+    ## 687                                      Shaanxi       Mainland China  35.19170
+    ## 688                                     Shandong       Mainland China  36.34270
+    ## 689                                     Shanghai       Mainland China  31.20200
+    ## 690                                      Sichuan       Mainland China  30.61710
+    ## 691                                      Tianjin       Mainland China  39.30540
+    ## 692                                     Xinjiang       Mainland China  41.11290
+    ## 693                                       Yunnan       Mainland China  24.97400
+    ## 694                                     Zhejiang       Mainland China  29.18320
+    ## 695                                      Guizhou       Mainland China  26.81540
+    ## 696                                        Hubei       Mainland China  30.97560
+    ## 697                                      Tianjin       Mainland China  39.30540
+    ## 698                                        Anhui       Mainland China  31.82570
+    ## 699                                      Beijing       Mainland China  40.18240
+    ## 700                                    Chongqing       Mainland China  30.05720
+    ## 701                                       Fujian       Mainland China  26.07890
+    ## 702                                        Gansu       Mainland China  36.06110
+    ## 703                                    Guangdong       Mainland China  23.34170
+    ## 704                                      Guangxi       Mainland China  23.82980
+    ## 705                                      Guizhou       Mainland China  26.81540
+    ## 706                                        Hebei       Mainland China  38.04280
+    ## 707                                 Heilongjiang       Mainland China  47.86200
+    ## 708                                        Henan       Mainland China  33.88202
+    ## 709                                        Hubei       Mainland China  30.97560
+    ## 710                                        Hunan       Mainland China  27.61040
+    ## 711                               Inner Mongolia       Mainland China  44.09350
+    ## 712                                      Jiangsu       Mainland China  32.97110
+    ## 713                                      Jiangxi       Mainland China  27.61400
+    ## 714                                        Jilin       Mainland China  43.66610
+    ## 715                                     Liaoning       Mainland China  41.29560
+    ## 716                                      Qinghai       Mainland China  35.74520
+    ## 717                                      Shaanxi       Mainland China  35.19170
+    ## 718                                     Shandong       Mainland China  36.34270
+    ## 719                                     Shanghai       Mainland China  31.20200
+    ## 720                                       Shanxi       Mainland China  37.57770
+    ## 721                                      Sichuan       Mainland China  30.61710
+    ## 722                                     Zhejiang       Mainland China  29.18320
+    ## 723                                                             Japan  36.00000
+    ## 724                                                       South Korea  36.00000
+    ## 725                                                           Vietnam  16.00000
+    ## 726                                        Anhui       Mainland China  31.82570
+    ## 727                                      Beijing       Mainland China  40.18240
+    ## 728                                    Chongqing       Mainland China  30.05720
+    ## 729                                       Fujian       Mainland China  26.07890
+    ## 730                                    Guangdong       Mainland China  23.34170
+    ## 731                                      Guangxi       Mainland China  23.82980
+    ## 732                                      Guizhou       Mainland China  26.81540
+    ## 733                                       Hainan       Mainland China  19.19590
+    ## 734                                        Hebei       Mainland China  38.04280
+    ## 735                                 Heilongjiang       Mainland China  47.86200
+    ## 736                                        Henan       Mainland China  33.88202
+    ## 737                                    Hong Kong            Hong Kong  22.30000
+    ## 738                                        Hubei       Mainland China  30.97560
+    ## 739                                        Hunan       Mainland China  27.61040
+    ## 740                               Inner Mongolia       Mainland China  44.09350
+    ## 741                                      Jiangsu       Mainland China  32.97110
+    ## 742                                      Jiangxi       Mainland China  27.61400
+    ## 743                                        Jilin       Mainland China  43.66610
+    ## 744                                     Liaoning       Mainland China  41.29560
+    ## 745                                      Ningxia       Mainland China  37.26920
+    ## 746                                      Qinghai       Mainland China  35.74520
+    ## 747                                   Queensland            Australia -28.01670
+    ## 748                                      Shaanxi       Mainland China  35.19170
+    ## 749                                     Shandong       Mainland China  36.34270
+    ## 750                                     Shanghai       Mainland China  31.20200
+    ## 751                                       Shanxi       Mainland China  37.57770
+    ## 752                                      Sichuan       Mainland China  30.61710
+    ## 753                                       Taiwan               Taiwan  23.70000
+    ## 754                                      Tianjin       Mainland China  39.30540
+    ## 755                                     Xinjiang       Mainland China  41.11290
+    ## 756                                       Yunnan       Mainland China  24.97400
+    ## 757                                     Zhejiang       Mainland China  29.18320
+    ## 758                                 Heilongjiang       Mainland China  47.86200
+    ## 759                                        Hubei       Mainland China  30.97560
+    ## 760                                        Anhui       Mainland China  31.82570
+    ## 761                                      Beijing       Mainland China  40.18240
+    ## 762                                    Chongqing       Mainland China  30.05720
+    ## 763                                       Fujian       Mainland China  26.07890
+    ## 764                                    Guangdong       Mainland China  23.34170
+    ## 765                                      Guangxi       Mainland China  23.82980
+    ## 766                                      Guizhou       Mainland China  26.81540
+    ## 767                                       Hainan       Mainland China  19.19590
+    ## 768                                        Hebei       Mainland China  38.04280
+    ## 769                                 Heilongjiang       Mainland China  47.86200
+    ## 770                                        Henan       Mainland China  33.88202
+    ## 771                                        Hubei       Mainland China  30.97560
+    ## 772                                        Hunan       Mainland China  27.61040
+    ## 773                               Inner Mongolia       Mainland China  44.09350
+    ## 774                                      Jiangsu       Mainland China  32.97110
+    ## 775                                      Jiangxi       Mainland China  27.61400
+    ## 776                                        Jilin       Mainland China  43.66610
+    ## 777                                     Liaoning       Mainland China  41.29560
+    ## 778                                        Macau                Macau  22.16670
+    ## 779                                      Shaanxi       Mainland China  35.19170
+    ## 780                                     Shandong       Mainland China  36.34270
+    ## 781                                     Shanghai       Mainland China  31.20200
+    ## 782                                       Shanxi       Mainland China  37.57770
+    ## 783                                      Sichuan       Mainland China  30.61710
+    ## 784                                       Taiwan               Taiwan  23.70000
+    ## 785                                       Yunnan       Mainland China  24.97400
+    ## 786                                     Zhejiang       Mainland China  29.18320
+    ## 787                                                           Germany  51.00000
+    ## 788                                                             Italy  43.00000
+    ## 789                                                             Japan  36.00000
+    ## 790                                                       Philippines  13.00000
+    ## 791                                                         Singapore   1.28330
+    ## 792                                                       South Korea  36.00000
+    ## 793                                                                UK  55.00000
+    ## 794                                        Anhui       Mainland China  31.82570
+    ## 795                                      Beijing       Mainland China  40.18240
+    ## 796                             British Columbia               Canada  49.28270
+    ## 797                                    Chongqing       Mainland China  30.05720
+    ## 798                 Diamond Princess cruise ship               Others  35.44370
+    ## 799                                       Fujian       Mainland China  26.07890
+    ## 800                                        Gansu       Mainland China  36.06110
+    ## 801                                    Guangdong       Mainland China  23.34170
+    ## 802                                      Guangxi       Mainland China  23.82980
+    ## 803                                      Guizhou       Mainland China  26.81540
+    ## 804                                       Hainan       Mainland China  19.19590
+    ## 805                                        Hebei       Mainland China  38.04280
+    ## 806                                 Heilongjiang       Mainland China  47.86200
+    ## 807                                        Henan       Mainland China  33.88202
+    ## 808                                    Hong Kong            Hong Kong  22.30000
+    ## 809                                        Hubei       Mainland China  30.97560
+    ## 810                                        Hunan       Mainland China  27.61040
+    ## 811                               Inner Mongolia       Mainland China  44.09350
+    ## 812                                      Jiangsu       Mainland China  32.97110
+    ## 813                                      Jiangxi       Mainland China  27.61400
+    ## 814                                        Jilin       Mainland China  43.66610
+    ## 815                                     Liaoning       Mainland China  41.29560
+    ## 816                                      Ningxia       Mainland China  37.26920
+    ## 817                                   Queensland            Australia -28.01670
+    ## 818                                      Shaanxi       Mainland China  35.19170
+    ## 819                                     Shandong       Mainland China  36.34270
+    ## 820                                     Shanghai       Mainland China  31.20200
+    ## 821                                       Shanxi       Mainland China  37.57770
+    ## 822                                      Sichuan       Mainland China  30.61710
+    ## 823                                      Tianjin       Mainland China  39.30540
+    ## 824                                     Xinjiang       Mainland China  41.11290
+    ## 825                                       Yunnan       Mainland China  24.97400
+    ## 826                                     Zhejiang       Mainland China  29.18320
+    ## 827                                    Guangdong       Mainland China  23.34170
+    ## 828                                       Hainan       Mainland China  19.19590
+    ## 829                                        Henan       Mainland China  33.88202
+    ## 830                                        Hubei       Mainland China  30.97560
+    ## 831                                        Jilin       Mainland China  43.66610
+    ## 832                                                          Malaysia   2.50000
+    ## 833                                                       South Korea  36.00000
+    ## 834                                        Anhui       Mainland China  31.82570
+    ## 835                                      Beijing       Mainland China  40.18240
+    ## 836                                    Chongqing       Mainland China  30.05720
+    ## 837                                       Fujian       Mainland China  26.07890
+    ## 838                                        Gansu       Mainland China  36.06110
+    ## 839                                    Guangdong       Mainland China  23.34170
+    ## 840                                      Guangxi       Mainland China  23.82980
+    ## 841                                       Hainan       Mainland China  19.19590
+    ## 842                                        Hebei       Mainland China  38.04280
+    ## 843                                 Heilongjiang       Mainland China  47.86200
+    ## 844                                        Henan       Mainland China  33.88202
+    ## 845                                        Hubei       Mainland China  30.97560
+    ## 846                                        Hunan       Mainland China  27.61040
+    ## 847                               Inner Mongolia       Mainland China  44.09350
+    ## 848                                      Jiangsu       Mainland China  32.97110
+    ## 849                                      Jiangxi       Mainland China  27.61400
+    ## 850                                     Liaoning       Mainland China  41.29560
+    ## 851                                      Ningxia       Mainland China  37.26920
+    ## 852                                      Shaanxi       Mainland China  35.19170
+    ## 853                                     Shandong       Mainland China  36.34270
+    ## 854                                     Shanghai       Mainland China  31.20200
+    ## 855                                       Shanxi       Mainland China  37.57770
+    ## 856                                      Sichuan       Mainland China  30.61710
+    ## 857                                       Yunnan       Mainland China  24.97400
+    ## 858                                     Zhejiang       Mainland China  29.18320
+    ## 859                                                            France  47.00000
+    ## 860                                                          Malaysia   2.50000
+    ## 861                                                         Singapore   1.28330
+    ## 862                                                          Thailand  15.00000
+    ## 863                                              United Arab Emirates  24.00000
+    ## 864                                                           Vietnam  16.00000
+    ## 865                                        Anhui       Mainland China  31.82570
+    ## 866                                      Beijing       Mainland China  40.18240
+    ## 867                                    Chongqing       Mainland China  30.05720
+    ## 868                                       Fujian       Mainland China  26.07890
+    ## 869                                        Gansu       Mainland China  36.06110
+    ## 870                                    Guangdong       Mainland China  23.34170
+    ## 871                                      Guangxi       Mainland China  23.82980
+    ## 872                                      Guizhou       Mainland China  26.81540
+    ## 873                                       Hainan       Mainland China  19.19590
+    ## 874                                        Hebei       Mainland China  38.04280
+    ## 875                                 Heilongjiang       Mainland China  47.86200
+    ## 876                                        Henan       Mainland China  33.88202
+    ## 877                                    Hong Kong            Hong Kong  22.30000
+    ## 878                                        Hubei       Mainland China  30.97560
+    ## 879                                        Hunan       Mainland China  27.61040
+    ## 880                               Inner Mongolia       Mainland China  44.09350
+    ## 881                                      Jiangsu       Mainland China  32.97110
+    ## 882                                      Jiangxi       Mainland China  27.61400
+    ## 883                                        Jilin       Mainland China  43.66610
+    ## 884                                     Liaoning       Mainland China  41.29560
+    ## 885                                      Ningxia       Mainland China  37.26920
+    ## 886                                      Shaanxi       Mainland China  35.19170
+    ## 887                                     Shandong       Mainland China  36.34270
+    ## 888                                     Shanghai       Mainland China  31.20200
+    ## 889                                       Shanxi       Mainland China  37.57770
+    ## 890                                      Sichuan       Mainland China  30.61710
+    ## 891                                       Taiwan               Taiwan  23.70000
+    ## 892                                      Tianjin       Mainland China  39.30540
+    ## 893                                     Xinjiang       Mainland China  41.11290
+    ## 894                                     Zhejiang       Mainland China  29.18320
+    ## 895                                      Beijing       Mainland China  40.18240
+    ## 896                                        Gansu       Mainland China  36.06110
+    ## 897                                 Heilongjiang       Mainland China  47.86200
+    ## 898                                        Henan       Mainland China  33.88202
+    ## 899                                        Hubei       Mainland China  30.97560
+    ## 900                                        Hunan       Mainland China  27.61040
+    ## 901                                                         Singapore   1.28330
+    ## 902                                                         Sri Lanka   7.00000
+    ## 903                                                          Thailand  15.00000
+    ## 904                                        Anhui       Mainland China  31.82570
+    ## 905                                      Beijing       Mainland China  40.18240
+    ## 906                                    Chongqing       Mainland China  30.05720
+    ## 907                                       Fujian       Mainland China  26.07890
+    ## 908                                        Gansu       Mainland China  36.06110
+    ## 909                                    Guangdong       Mainland China  23.34170
+    ## 910                                      Guizhou       Mainland China  26.81540
+    ## 911                                       Hainan       Mainland China  19.19590
+    ## 912                                        Hebei       Mainland China  38.04280
+    ## 913                                 Heilongjiang       Mainland China  47.86200
+    ## 914                                        Henan       Mainland China  33.88202
+    ## 915                                        Hubei       Mainland China  30.97560
+    ## 916                                        Hunan       Mainland China  27.61040
+    ## 917                                      Jiangsu       Mainland China  32.97110
+    ## 918                                      Jiangxi       Mainland China  27.61400
+    ## 919                                     Liaoning       Mainland China  41.29560
+    ## 920                                      Ningxia       Mainland China  37.26920
+    ## 921                                      Shaanxi       Mainland China  35.19170
+    ## 922                                     Shandong       Mainland China  36.34270
+    ## 923                                     Shanghai       Mainland China  31.20200
+    ## 924                                       Shanxi       Mainland China  37.57770
+    ## 925                                      Sichuan       Mainland China  30.61710
+    ## 926                                      Tianjin       Mainland China  39.30540
+    ## 927                                       Yunnan       Mainland China  24.97400
+    ## 928                                     Zhejiang       Mainland China  29.18320
+    ## 929                                                           Germany  51.00000
+    ## 930                                                             Japan  36.00000
+    ## 931                                                         Singapore   1.28330
+    ## 932                                                       South Korea  36.00000
+    ## 933                                                             Spain  40.00000
+    ## 934                                        Anhui       Mainland China  31.82570
+    ## 935                                      Beijing       Mainland China  40.18240
+    ## 936                                    Chongqing       Mainland China  30.05720
+    ## 937                 Diamond Princess cruise ship               Others  35.44370
+    ## 938                                       Fujian       Mainland China  26.07890
+    ## 939                                        Gansu       Mainland China  36.06110
+    ## 940                                    Guangdong       Mainland China  23.34170
+    ## 941                                      Guangxi       Mainland China  23.82980
+    ## 942                                      Guizhou       Mainland China  26.81540
+    ## 943                                       Hainan       Mainland China  19.19590
+    ## 944                                        Hebei       Mainland China  38.04280
+    ## 945                                 Heilongjiang       Mainland China  47.86200
+    ## 946                                        Henan       Mainland China  33.88202
+    ## 947                                    Hong Kong            Hong Kong  22.30000
+    ## 948                                        Hubei       Mainland China  30.97560
+    ## 949                                        Hunan       Mainland China  27.61040
+    ## 950                               Inner Mongolia       Mainland China  44.09350
+    ## 951                                      Jiangsu       Mainland China  32.97110
+    ## 952                                      Jiangxi       Mainland China  27.61400
+    ## 953                                        Jilin       Mainland China  43.66610
+    ## 954                                     Liaoning       Mainland China  41.29560
+    ## 955                                      Shaanxi       Mainland China  35.19170
+    ## 956                                     Shandong       Mainland China  36.34270
+    ## 957                                     Shanghai       Mainland China  31.20200
+    ## 958                                       Shanxi       Mainland China  37.57770
+    ## 959                                      Sichuan       Mainland China  30.61710
+    ## 960                                       Taiwan               Taiwan  23.70000
+    ## 961                                      Tianjin       Mainland China  39.30540
+    ## 962                                     Xinjiang       Mainland China  41.11290
+    ## 963                                       Yunnan       Mainland China  24.97400
+    ## 964                                     Zhejiang       Mainland China  29.18320
+    ## 965                                        Anhui       Mainland China  31.82570
+    ## 966                                        Gansu       Mainland China  36.06110
+    ## 967                                      Guangxi       Mainland China  23.82980
+    ## 968                                       Hainan       Mainland China  19.19590
+    ## 969                                        Hebei       Mainland China  38.04280
+    ## 970                                 Heilongjiang       Mainland China  47.86200
+    ## 971                                        Henan       Mainland China  33.88202
+    ## 972                                        Hubei       Mainland China  30.97560
+    ## 973                                     Shandong       Mainland China  36.34270
+    ## 974                                                       South Korea  36.00000
+    ## 975                                        Anhui       Mainland China  31.82570
+    ## 976                                      Beijing       Mainland China  40.18240
+    ## 977                                    Chongqing       Mainland China  30.05720
+    ## 978                              Cook County, IL                   US  41.73770
+    ## 979                                       Fujian       Mainland China  26.07890
+    ## 980                                        Gansu       Mainland China  36.06110
+    ## 981                                    Guangdong       Mainland China  23.34170
+    ## 982                                      Guangxi       Mainland China  23.82980
+    ## 983                                       Hainan       Mainland China  19.19590
+    ## 984                                        Hebei       Mainland China  38.04280
+    ## 985                                 Heilongjiang       Mainland China  47.86200
+    ## 986                                        Henan       Mainland China  33.88202
+    ## 987                                        Hubei       Mainland China  30.97560
+    ## 988                                        Hunan       Mainland China  27.61040
+    ## 989                                      Jiangsu       Mainland China  32.97110
+    ## 990                                      Jiangxi       Mainland China  27.61400
+    ## 991                                        Jilin       Mainland China  43.66610
+    ## 992                              King County, WA                   US  47.60620
+    ## 993                                     Liaoning       Mainland China  41.29560
+    ## 994                                      Ningxia       Mainland China  37.26920
+    ## 995                                      Shaanxi       Mainland China  35.19170
+    ## 996                                     Shandong       Mainland China  36.34270
+    ## 997                                     Shanghai       Mainland China  31.20200
+    ## 998                                       Shanxi       Mainland China  37.57770
+    ## 999                                      Sichuan       Mainland China  30.61710
+    ## 1000                                      Yunnan       Mainland China  24.97400
+    ## 1001                                    Zhejiang       Mainland China  29.18320
+    ## 1002                                                         Malaysia   2.50000
+    ## 1003                                                        Singapore   1.28330
+    ## 1004                                                      South Korea  36.00000
+    ## 1005                                                               UK  55.00000
+    ## 1006                                             United Arab Emirates  24.00000
+    ## 1007                                                          Vietnam  16.00000
+    ## 1008                                       Anhui       Mainland China  31.82570
+    ## 1009                                     Beijing       Mainland China  40.18240
+    ## 1010                                   Chongqing       Mainland China  30.05720
+    ## 1011                Diamond Princess cruise ship               Others  35.44370
+    ## 1012                                      Fujian       Mainland China  26.07890
+    ## 1013                                   Guangdong       Mainland China  23.34170
+    ## 1014                                     Guangxi       Mainland China  23.82980
+    ## 1015                                     Guizhou       Mainland China  26.81540
+    ## 1016                                      Hainan       Mainland China  19.19590
+    ## 1017                                       Hebei       Mainland China  38.04280
+    ## 1018                                Heilongjiang       Mainland China  47.86200
+    ## 1019                                       Henan       Mainland China  33.88202
+    ## 1020                                   Hong Kong            Hong Kong  22.30000
+    ## 1021                                       Hubei       Mainland China  30.97560
+    ## 1022                                       Hunan       Mainland China  27.61040
+    ## 1023                              Inner Mongolia       Mainland China  44.09350
+    ## 1024                                     Jiangsu       Mainland China  32.97110
+    ## 1025                                     Jiangxi       Mainland China  27.61400
+    ## 1026                                       Jilin       Mainland China  43.66610
+    ## 1027                                    Liaoning       Mainland China  41.29560
+    ## 1028                                     Ningxia       Mainland China  37.26920
+    ## 1029                                     Shaanxi       Mainland China  35.19170
+    ## 1030                                    Shandong       Mainland China  36.34270
+    ## 1031                                    Shanghai       Mainland China  31.20200
+    ## 1032                                     Sichuan       Mainland China  30.61710
+    ## 1033                                     Tianjin       Mainland China  39.30540
+    ## 1034                                    Xinjiang       Mainland China  41.11290
+    ## 1035                                      Yunnan       Mainland China  24.97400
+    ## 1036                                    Zhejiang       Mainland China  29.18320
+    ## 1037                                       Anhui       Mainland China  31.82570
+    ## 1038                                Heilongjiang       Mainland China  47.86200
+    ## 1039                                       Hubei       Mainland China  30.97560
+    ## 1040                                     Jiangxi       Mainland China  27.61400
+    ## 1041                                                            Japan  36.00000
+    ## 1042                                       Anhui       Mainland China  31.82570
+    ## 1043                                     Beijing       Mainland China  40.18240
+    ## 1044                                   Chongqing       Mainland China  30.05720
+    ## 1045                                      Fujian       Mainland China  26.07890
+    ## 1046                                       Gansu       Mainland China  36.06110
+    ## 1047                                   Guangdong       Mainland China  23.34170
+    ## 1048                                     Guangxi       Mainland China  23.82980
+    ## 1049                                     Guizhou       Mainland China  26.81540
+    ## 1050                                       Hebei       Mainland China  38.04280
+    ## 1051                                Heilongjiang       Mainland China  47.86200
+    ## 1052                                       Henan       Mainland China  33.88202
+    ## 1053                                       Hubei       Mainland China  30.97560
+    ## 1054                                       Hunan       Mainland China  27.61040
+    ## 1055                                     Jiangsu       Mainland China  32.97110
+    ## 1056                                     Jiangxi       Mainland China  27.61400
+    ## 1057                                       Jilin       Mainland China  43.66610
+    ## 1058                                    Liaoning       Mainland China  41.29560
+    ## 1059                                     Shaanxi       Mainland China  35.19170
+    ## 1060                                    Shandong       Mainland China  36.34270
+    ## 1061                                    Shanghai       Mainland China  31.20200
+    ## 1062                                     Sichuan       Mainland China  30.61710
+    ## 1063                                     Tianjin       Mainland China  39.30540
+    ## 1064                                      Yunnan       Mainland China  24.97400
+    ## 1065                                    Zhejiang       Mainland China  29.18320
+    ## 1066                                                          Germany  51.00000
+    ## 1067                                                        Singapore   1.28330
+    ## 1068                                                      South Korea  36.00000
+    ## 1069                                                         Thailand  15.00000
+    ## 1070                                                          Vietnam  16.00000
+    ## 1071                                       Anhui       Mainland China  31.82570
+    ## 1072                                     Beijing       Mainland China  40.18240
+    ## 1073                                   Chongqing       Mainland China  30.05720
+    ## 1074                                      Fujian       Mainland China  26.07890
+    ## 1075                                       Gansu       Mainland China  36.06110
+    ## 1076                                   Guangdong       Mainland China  23.34170
+    ## 1077                                     Guangxi       Mainland China  23.82980
+    ## 1078                                     Guizhou       Mainland China  26.81540
+    ## 1079                                      Hainan       Mainland China  19.19590
+    ## 1080                                       Hebei       Mainland China  38.04280
+    ## 1081                                Heilongjiang       Mainland China  47.86200
+    ## 1082                                       Henan       Mainland China  33.88202
+    ## 1083                                   Hong Kong            Hong Kong  22.30000
+    ## 1084                                       Hubei       Mainland China  30.97560
+    ## 1085                                       Hunan       Mainland China  27.61040
+    ## 1086                                     Jiangsu       Mainland China  32.97110
+    ## 1087                                     Jiangxi       Mainland China  27.61400
+    ## 1088                                       Jilin       Mainland China  43.66610
+    ## 1089                                    Liaoning       Mainland China  41.29560
+    ## 1090                                     Ningxia       Mainland China  37.26920
+    ## 1091                        San Diego County, CA                   US  32.71570
+    ## 1092                                     Shaanxi       Mainland China  35.19170
+    ## 1093                                    Shandong       Mainland China  36.34270
+    ## 1094                                    Shanghai       Mainland China  31.20200
+    ## 1095                                      Shanxi       Mainland China  37.57770
+    ## 1096                                     Sichuan       Mainland China  30.61710
+    ## 1097                                     Tianjin       Mainland China  39.30540
+    ## 1098                                    Xinjiang       Mainland China  41.11290
+    ## 1099                                      Yunnan       Mainland China  24.97400
+    ## 1100                                    Zhejiang       Mainland China  29.18320
+    ## 1101                                       Anhui       Mainland China  31.82570
+    ## 1102                                     Beijing       Mainland China  40.18240
+    ## 1103                                   Chongqing       Mainland China  30.05720
+    ## 1104                                Heilongjiang       Mainland China  47.86200
+    ## 1105                                       Henan       Mainland China  33.88202
+    ## 1106                                       Hubei       Mainland China  30.97560
+    ## 1107                                     Tianjin       Mainland China  39.30540
+    ## 1108                                                            Japan  36.00000
+    ## 1109                                                         Malaysia   2.50000
+    ## 1110                                                        Singapore   1.28330
+    ## 1111                                                          Vietnam  16.00000
+    ## 1112                                       Anhui       Mainland China  31.82570
+    ## 1113                                     Beijing       Mainland China  40.18240
+    ## 1114                                   Chongqing       Mainland China  30.05720
+    ## 1115                                      Fujian       Mainland China  26.07890
+    ## 1116                                       Gansu       Mainland China  36.06110
+    ## 1117                                   Guangdong       Mainland China  23.34170
+    ## 1118                                     Guangxi       Mainland China  23.82980
+    ## 1119                                     Guizhou       Mainland China  26.81540
+    ## 1120                                      Hainan       Mainland China  19.19590
+    ## 1121                                       Hebei       Mainland China  38.04280
+    ## 1122                                Heilongjiang       Mainland China  47.86200
+    ## 1123                                       Henan       Mainland China  33.88202
+    ## 1124                                       Hubei       Mainland China  30.97560
+    ## 1125                                       Hunan       Mainland China  27.61040
+    ## 1126                                     Jiangsu       Mainland China  32.97110
+    ## 1127                                     Jiangxi       Mainland China  27.61400
+    ## 1128                                       Jilin       Mainland China  43.66610
+    ## 1129                                    Liaoning       Mainland China  41.29560
+    ## 1130                                     Ningxia       Mainland China  37.26920
+    ## 1131                                     Qinghai       Mainland China  35.74520
+    ## 1132                                     Shaanxi       Mainland China  35.19170
+    ## 1133                                    Shandong       Mainland China  36.34270
+    ## 1134                                    Shanghai       Mainland China  31.20200
+    ## 1135                                      Shanxi       Mainland China  37.57770
+    ## 1136                                     Sichuan       Mainland China  30.61710
+    ## 1137                                     Tianjin       Mainland China  39.30540
+    ## 1138                                    Xinjiang       Mainland China  41.11290
+    ## 1139                                      Yunnan       Mainland China  24.97400
+    ## 1140                                    Zhejiang       Mainland China  29.18320
+    ## 1141                                                            Japan  36.00000
+    ## 1142                                                        Singapore   1.28330
+    ## 1143                                                               UK  55.00000
+    ## 1144                                       Anhui       Mainland China  31.82570
+    ## 1145                                     Beijing       Mainland China  40.18240
+    ## 1146                                   Chongqing       Mainland China  30.05720
+    ## 1147                Diamond Princess cruise ship               Others  35.44370
+    ## 1148                                      Fujian       Mainland China  26.07890
+    ## 1149                                       Gansu       Mainland China  36.06110
+    ## 1150                                   Guangdong       Mainland China  23.34170
+    ## 1151                                     Guangxi       Mainland China  23.82980
+    ## 1152                                     Guizhou       Mainland China  26.81540
+    ## 1153                                      Hainan       Mainland China  19.19590
+    ## 1154                                       Hebei       Mainland China  38.04280
+    ## 1155                                Heilongjiang       Mainland China  47.86200
+    ## 1156                                       Henan       Mainland China  33.88202
+    ## 1157                                   Hong Kong            Hong Kong  22.30000
+    ## 1158                                       Hunan       Mainland China  27.61040
+    ## 1159                              Inner Mongolia       Mainland China  44.09350
+    ## 1160                                     Jiangsu       Mainland China  32.97110
+    ## 1161                                     Jiangxi       Mainland China  27.61400
+    ## 1162                                       Jilin       Mainland China  43.66610
+    ## 1163                                    Liaoning       Mainland China  41.29560
+    ## 1164                                     Ningxia       Mainland China  37.26920
+    ## 1165                                     Shaanxi       Mainland China  35.19170
+    ## 1166                                    Shandong       Mainland China  36.34270
+    ## 1167                                    Shanghai       Mainland China  31.20200
+    ## 1168                                      Shanxi       Mainland China  37.57770
+    ## 1169                                     Sichuan       Mainland China  30.61710
+    ## 1170                                     Tianjin       Mainland China  39.30540
+    ## 1171                                    Xinjiang       Mainland China  41.11290
+    ## 1172                                      Yunnan       Mainland China  24.97400
+    ## 1173                                    Zhejiang       Mainland China  29.18320
+    ## 1174                                      Hainan       Mainland China  19.19590
+    ## 1175                                       Henan       Mainland China  33.88202
+    ## 1176                                       Hunan       Mainland China  27.61040
+    ## 1177                                    Liaoning       Mainland China  41.29560
+    ## 1178                                    Shandong       Mainland China  36.34270
+    ## 1179                                                         Cambodia  11.55000
+    ## 1180                                                          Finland  64.00000
+    ## 1181                                                           France  47.00000
+    ## 1182                                                            Nepal  28.16670
+    ## 1183                                                      Philippines  13.00000
+    ## 1184                                                           Russia  60.00000
+    ## 1185                                                        Singapore   1.28330
+    ## 1186                                                      South Korea  36.00000
+    ## 1187                                                               UK  55.00000
+    ## 1188                                             United Arab Emirates  24.00000
+    ## 1189                                       Anhui       Mainland China  31.82570
+    ## 1190                                     Beijing       Mainland China  40.18240
+    ## 1191                                   Chongqing       Mainland China  30.05720
+    ## 1192                                      Fujian       Mainland China  26.07890
+    ## 1193                                       Gansu       Mainland China  36.06110
+    ## 1194                                   Guangdong       Mainland China  23.34170
+    ## 1195                                     Guangxi       Mainland China  23.82980
+    ## 1196                                     Guizhou       Mainland China  26.81540
+    ## 1197                                      Hainan       Mainland China  19.19590
+    ## 1198                                       Hebei       Mainland China  38.04280
+    ## 1199                                Heilongjiang       Mainland China  47.86200
+    ## 1200                                       Henan       Mainland China  33.88202
+    ## 1201                                   Hong Kong            Hong Kong  22.30000
+    ## 1202                                       Hubei       Mainland China  30.97560
+    ## 1203                                       Hunan       Mainland China  27.61040
+    ## 1204                              Inner Mongolia       Mainland China  44.09350
+    ## 1205                                     Jiangsu       Mainland China  32.97110
+    ## 1206                                     Jiangxi       Mainland China  27.61400
+    ## 1207                                       Jilin       Mainland China  43.66610
+    ## 1208                                    Liaoning       Mainland China  41.29560
+    ## 1209                                  London, ON               Canada  42.98490
+    ## 1210                                       Macau                Macau  22.16670
+    ## 1211                                     Ningxia       Mainland China  37.26920
+    ## 1212                                     Qinghai       Mainland China  35.74520
+    ## 1213                                     Shaanxi       Mainland China  35.19170
+    ## 1214                                    Shandong       Mainland China  36.34270
+    ## 1215                                    Shanghai       Mainland China  31.20200
+    ## 1216                                      Shanxi       Mainland China  37.57770
+    ## 1217                                     Sichuan       Mainland China  30.61710
+    ## 1218                                     Tianjin       Mainland China  39.30540
+    ## 1219                                       Tibet       Mainland China  31.69270
+    ## 1220                                      Yunnan       Mainland China  24.97400
+    ## 1221                                    Zhejiang       Mainland China  29.18320
+    ## 1222                                                         Malaysia   2.50000
+    ## 1223                                                        Singapore   1.28330
+    ## 1224                                                          Vietnam  16.00000
+    ## 1225                                       Anhui       Mainland China  31.82570
+    ## 1226                                     Beijing       Mainland China  40.18240
+    ## 1227                                   Chongqing       Mainland China  30.05720
+    ## 1228                                      Fujian       Mainland China  26.07890
+    ## 1229                                       Gansu       Mainland China  36.06110
+    ## 1230                                   Guangdong       Mainland China  23.34170
+    ## 1231                                     Guizhou       Mainland China  26.81540
+    ## 1232                                       Hebei       Mainland China  38.04280
+    ## 1233                                Heilongjiang       Mainland China  47.86200
+    ## 1234                                       Henan       Mainland China  33.88202
+    ## 1235                                   Hong Kong            Hong Kong  22.30000
+    ## 1236                                       Hubei       Mainland China  30.97560
+    ## 1237                                       Hunan       Mainland China  27.61040
+    ## 1238                              Inner Mongolia       Mainland China  44.09350
+    ## 1239                                     Jiangsu       Mainland China  32.97110
+    ## 1240                                     Jiangxi       Mainland China  27.61400
+    ## 1241                                       Jilin       Mainland China  43.66610
+    ## 1242                                    Liaoning       Mainland China  41.29560
+    ## 1243                                     Ningxia       Mainland China  37.26920
+    ## 1244                             San Antonio, TX                   US  29.42410
+    ## 1245                        San Diego County, CA                   US  32.71570
+    ## 1246                                     Shaanxi       Mainland China  35.19170
+    ## 1247                                    Shandong       Mainland China  36.34270
+    ## 1248                                    Shanghai       Mainland China  31.20200
+    ## 1249                                     Sichuan       Mainland China  30.61710
+    ## 1250                                     Tianjin       Mainland China  39.30540
+    ## 1251                                    Xinjiang       Mainland China  41.11290
+    ## 1252                                      Yunnan       Mainland China  24.97400
+    ## 1253                                    Zhejiang       Mainland China  29.18320
+    ## 1254                                                            Japan  36.00000
+    ## 1255                                       Anhui       Mainland China  31.82570
+    ## 1256                                   Chongqing       Mainland China  30.05720
+    ## 1257                                   Guangdong       Mainland China  23.34170
+    ## 1258                                     Guangxi       Mainland China  23.82980
+    ## 1259                                       Hebei       Mainland China  38.04280
+    ## 1260                                Heilongjiang       Mainland China  47.86200
+    ## 1261                                       Henan       Mainland China  33.88202
+    ## 1262                                       Hubei       Mainland China  30.97560
+    ## 1263                                     Tianjin       Mainland China  39.30540
+    ## 1264                                    Xinjiang       Mainland China  41.11290
+    ## 1265                                                          Germany  51.00000
+    ## 1266                                                         Thailand  15.00000
+    ## 1267                                                          Vietnam  16.00000
+    ## 1268                                       Anhui       Mainland China  31.82570
+    ## 1269                                     Beijing       Mainland China  40.18240
+    ## 1270                                   Chongqing       Mainland China  30.05720
+    ## 1271                                      Fujian       Mainland China  26.07890
+    ## 1272                                       Gansu       Mainland China  36.06110
+    ## 1273                                   Guangdong       Mainland China  23.34170
+    ## 1274                                     Guangxi       Mainland China  23.82980
+    ## 1275                                     Guizhou       Mainland China  26.81540
+    ## 1276                                      Hainan       Mainland China  19.19590
+    ## 1277                                       Hebei       Mainland China  38.04280
+    ## 1278                                Heilongjiang       Mainland China  47.86200
+    ## 1279                                       Henan       Mainland China  33.88202
+    ## 1280                                       Hubei       Mainland China  30.97560
+    ## 1281                                       Hunan       Mainland China  27.61040
+    ## 1282                                     Jiangsu       Mainland China  32.97110
+    ## 1283                                     Jiangxi       Mainland China  27.61400
+    ## 1284                                       Jilin       Mainland China  43.66610
+    ## 1285                                    Liaoning       Mainland China  41.29560
+    ## 1286                                       Macau                Macau  22.16670
+    ## 1287                             New South Wales            Australia -33.86880
+    ## 1288                                     Qinghai       Mainland China  35.74520
+    ## 1289                                     Shaanxi       Mainland China  35.19170
+    ## 1290                                    Shandong       Mainland China  36.34270
+    ## 1291                                    Shanghai       Mainland China  31.20200
+    ## 1292                                      Shanxi       Mainland China  37.57770
+    ## 1293                                     Sichuan       Mainland China  30.61710
+    ## 1294                                     Tianjin       Mainland China  39.30540
+    ## 1295                                    Victoria            Australia -37.81360
+    ## 1296                                    Xinjiang       Mainland China  41.11290
+    ## 1297                                      Yunnan       Mainland China  24.97400
+    ## 1298                                    Zhejiang       Mainland China  29.18320
+    ## 1299                                                            Egypt  26.00000
+    ## 1300                                                            Japan  36.00000
+    ## 1301                                                        Singapore   1.28330
+    ## 1302                                       Anhui       Mainland China  31.82570
+    ## 1303                                     Beijing       Mainland China  40.18240
+    ## 1304                                   Chongqing       Mainland China  30.05720
+    ## 1305                Diamond Princess cruise ship               Others  35.44370
+    ## 1306                                      Fujian       Mainland China  26.07890
+    ## 1307                                   Guangdong       Mainland China  23.34170
+    ## 1308                                     Guangxi       Mainland China  23.82980
+    ## 1309                                     Guizhou       Mainland China  26.81540
+    ## 1310                                      Hainan       Mainland China  19.19590
+    ## 1311                                       Hebei       Mainland China  38.04280
+    ## 1312                                Heilongjiang       Mainland China  47.86200
+    ## 1313                                       Henan       Mainland China  33.88202
+    ## 1314                                   Hong Kong            Hong Kong  22.30000
+    ## 1315                                       Hubei       Mainland China  30.97560
+    ## 1316                                       Hunan       Mainland China  27.61040
+    ## 1317                              Inner Mongolia       Mainland China  44.09350
+    ## 1318                                     Jiangsu       Mainland China  32.97110
+    ## 1319                                     Jiangxi       Mainland China  27.61400
+    ## 1320                                       Jilin       Mainland China  43.66610
+    ## 1321                                    Liaoning       Mainland China  41.29560
+    ## 1322                                     Ningxia       Mainland China  37.26920
+    ## 1323                                     Shaanxi       Mainland China  35.19170
+    ## 1324                                    Shandong       Mainland China  36.34270
+    ## 1325                                    Shanghai       Mainland China  31.20200
+    ## 1326                                      Shanxi       Mainland China  37.57770
+    ## 1327                                     Sichuan       Mainland China  30.61710
+    ## 1328                                     Tianjin       Mainland China  39.30540
+    ## 1329                                    Xinjiang       Mainland China  41.11290
+    ## 1330                                      Yunnan       Mainland China  24.97400
+    ## 1331                                    Zhejiang       Mainland China  29.18320
+    ## 1332                                       Anhui       Mainland China  31.82570
+    ## 1333                                   Chongqing       Mainland China  30.05720
+    ## 1334                                Heilongjiang       Mainland China  47.86200
+    ## 1335                                       Henan       Mainland China  33.88202
+    ## 1336                                       Hubei       Mainland China  30.97560
+    ## 1337                                                        Singapore   1.28330
+    ## 1338                                       Anhui       Mainland China  31.82570
+    ## 1339                                     Beijing       Mainland China  40.18240
+    ## 1340                                   Chongqing       Mainland China  30.05720
+    ## 1341                                      Fujian       Mainland China  26.07890
+    ## 1342                                   Guangdong       Mainland China  23.34170
+    ## 1343                                     Guangxi       Mainland China  23.82980
+    ## 1344                                     Guizhou       Mainland China  26.81540
+    ## 1345                                      Hainan       Mainland China  19.19590
+    ## 1346                                       Hebei       Mainland China  38.04280
+    ## 1347                                Heilongjiang       Mainland China  47.86200
+    ## 1348                                       Henan       Mainland China  33.88202
+    ## 1349                                       Hubei       Mainland China  30.97560
+    ## 1350                                       Hunan       Mainland China  27.61040
+    ## 1351                                     Jiangsu       Mainland China  32.97110
+    ## 1352                                     Jiangxi       Mainland China  27.61400
+    ## 1353                                       Jilin       Mainland China  43.66610
+    ## 1354                                    Liaoning       Mainland China  41.29560
+    ## 1355                                     Shaanxi       Mainland China  35.19170
+    ## 1356                                    Shandong       Mainland China  36.34270
+    ## 1357                                    Shanghai       Mainland China  31.20200
+    ## 1358                                      Shanxi       Mainland China  37.57770
+    ## 1359                                     Sichuan       Mainland China  30.61710
+    ## 1360                                      Taiwan               Taiwan  23.70000
+    ## 1361                                     Tianjin       Mainland China  39.30540
+    ## 1362                                      Yunnan       Mainland China  24.97400
+    ## 1363                                    Zhejiang       Mainland China  29.18320
+    ## 1364                                                           France  47.00000
+    ## 1365                                                            Japan  36.00000
+    ## 1366                                                         Malaysia   2.50000
+    ## 1367                                                        Singapore   1.28330
+    ## 1368                                       Anhui       Mainland China  31.82570
+    ## 1369                                     Beijing       Mainland China  40.18240
+    ## 1370                                   Chongqing       Mainland China  30.05720
+    ## 1371                Diamond Princess cruise ship               Others  35.44370
+    ## 1372                                      Fujian       Mainland China  26.07890
+    ## 1373                                   Guangdong       Mainland China  23.34170
+    ## 1374                                     Guangxi       Mainland China  23.82980
+    ## 1375                                     Guizhou       Mainland China  26.81540
+    ## 1376                                      Hainan       Mainland China  19.19590
+    ## 1377                                       Hebei       Mainland China  38.04280
+    ## 1378                                Heilongjiang       Mainland China  47.86200
+    ## 1379                                       Henan       Mainland China  33.88202
+    ## 1380                                       Hubei       Mainland China  30.97560
+    ## 1381                                       Hunan       Mainland China  27.61040
+    ## 1382                              Inner Mongolia       Mainland China  44.09350
+    ## 1383                                     Jiangsu       Mainland China  32.97110
+    ## 1384                                     Jiangxi       Mainland China  27.61400
+    ## 1385                                       Jilin       Mainland China  43.66610
+    ## 1386                                     Ningxia       Mainland China  37.26920
+    ## 1387                                     Shaanxi       Mainland China  35.19170
+    ## 1388                                    Shandong       Mainland China  36.34270
+    ## 1389                                    Shanghai       Mainland China  31.20200
+    ## 1390                                      Shanxi       Mainland China  37.57770
+    ## 1391                                     Sichuan       Mainland China  30.61710
+    ## 1392                                     Tianjin       Mainland China  39.30540
+    ## 1393                                    Xinjiang       Mainland China  41.11290
+    ## 1394                                      Yunnan       Mainland China  24.97400
+    ## 1395                                    Zhejiang       Mainland China  29.18320
+    ## 1396                                                           France  47.00000
+    ## 1397                                     Beijing       Mainland China  40.18240
+    ## 1398                                       Henan       Mainland China  33.88202
+    ## 1399                                       Hubei       Mainland China  30.97560
+    ## 1400                                                           France  47.00000
+    ## 1401                                                            Japan  36.00000
+    ## 1402                                                         Malaysia   2.50000
+    ## 1403                                                        Singapore   1.28330
+    ## 1404                                                      South Korea  36.00000
+    ## 1405                                                            Spain  40.00000
+    ## 1406                                             United Arab Emirates  24.00000
+    ## 1407                                       Anhui       Mainland China  31.82570
+    ## 1408                                     Beijing       Mainland China  40.18240
+    ## 1409                                   Chongqing       Mainland China  30.05720
+    ## 1410                                      Fujian       Mainland China  26.07890
+    ## 1411                                       Gansu       Mainland China  36.06110
+    ## 1412                                   Guangdong       Mainland China  23.34170
+    ## 1413                                     Guangxi       Mainland China  23.82980
+    ## 1414                                     Guizhou       Mainland China  26.81540
+    ## 1415                                      Hainan       Mainland China  19.19590
+    ## 1416                                       Hebei       Mainland China  38.04280
+    ## 1417                                Heilongjiang       Mainland China  47.86200
+    ## 1418                                       Henan       Mainland China  33.88202
+    ## 1419                                       Hubei       Mainland China  30.97560
+    ## 1420                                       Hunan       Mainland China  27.61040
+    ## 1421                              Inner Mongolia       Mainland China  44.09350
+    ## 1422                                     Jiangsu       Mainland China  32.97110
+    ## 1423                                     Jiangxi       Mainland China  27.61400
+    ## 1424                                       Jilin       Mainland China  43.66610
+    ## 1425                                    Liaoning       Mainland China  41.29560
+    ## 1426                                     Ningxia       Mainland China  37.26920
+    ## 1427                                     Qinghai       Mainland China  35.74520
+    ## 1428                                     Shaanxi       Mainland China  35.19170
+    ## 1429                                    Shandong       Mainland China  36.34270
+    ## 1430                                    Shanghai       Mainland China  31.20200
+    ## 1431                                      Shanxi       Mainland China  37.57770
+    ## 1432                                     Sichuan       Mainland China  30.61710
+    ## 1433                                     Tianjin       Mainland China  39.30540
+    ## 1434                                    Xinjiang       Mainland China  41.11290
+    ## 1435                                      Yunnan       Mainland China  24.97400
+    ## 1436                                    Zhejiang       Mainland China  29.18320
+    ## 1437                                                            Japan  36.00000
+    ## 1438                                                        Singapore   1.28330
+    ## 1439                                                      South Korea  36.00000
+    ## 1440                                                         Thailand  15.00000
+    ## 1441                                             United Arab Emirates  24.00000
+    ## 1442                                       Anhui       Mainland China  31.82570
+    ## 1443                                     Beijing       Mainland China  40.18240
+    ## 1444                                   Chongqing       Mainland China  30.05720
+    ## 1445                Diamond Princess cruise ship               Others  35.44370
+    ## 1446                                      Fujian       Mainland China  26.07890
+    ## 1447                                   Guangdong       Mainland China  23.34170
+    ## 1448                                     Guangxi       Mainland China  23.82980
+    ## 1449                                     Guizhou       Mainland China  26.81540
+    ## 1450                                       Hebei       Mainland China  38.04280
+    ## 1451                                Heilongjiang       Mainland China  47.86200
+    ## 1452                                       Henan       Mainland China  33.88202
+    ## 1453                                   Hong Kong            Hong Kong  22.30000
+    ## 1454                                       Hubei       Mainland China  30.97560
+    ## 1455                                       Hunan       Mainland China  27.61040
+    ## 1456                              Inner Mongolia       Mainland China  44.09350
+    ## 1457                                     Jiangsu       Mainland China  32.97110
+    ## 1458                                     Jiangxi       Mainland China  27.61400
+    ## 1459                                       Jilin       Mainland China  43.66610
+    ## 1460                                    Liaoning       Mainland China  41.29560
+    ## 1461                                     Shaanxi       Mainland China  35.19170
+    ## 1462                                    Shandong       Mainland China  36.34270
+    ## 1463                                    Shanghai       Mainland China  31.20200
+    ## 1464                                      Shanxi       Mainland China  37.57770
+    ## 1465                                     Sichuan       Mainland China  30.61710
+    ## 1466                                      Taiwan               Taiwan  23.70000
+    ## 1467                                     Tianjin       Mainland China  39.30540
+    ## 1468                                    Xinjiang       Mainland China  41.11290
+    ## 1469                                      Yunnan       Mainland China  24.97400
+    ## 1470                                    Zhejiang       Mainland China  29.18320
+    ## 1471                                       Hubei       Mainland China  30.97560
+    ## 1472                                       Hunan       Mainland China  27.61040
+    ## 1473                                     Sichuan       Mainland China  30.61710
+    ## 1474                                      Taiwan               Taiwan  23.70000
+    ## 1475                                                            India  21.00000
+    ## 1476                                                         Thailand  15.00000
+    ## 1477                                                               UK  55.00000
+    ## 1478                                             United Arab Emirates  24.00000
+    ## 1479                                       Anhui       Mainland China  31.82570
+    ## 1480                                     Beijing       Mainland China  40.18240
+    ## 1481                                   Chongqing       Mainland China  30.05720
+    ## 1482                                      Fujian       Mainland China  26.07890
+    ## 1483                                       Gansu       Mainland China  36.06110
+    ## 1484                                   Guangdong       Mainland China  23.34170
+    ## 1485                                     Guangxi       Mainland China  23.82980
+    ## 1486                                     Guizhou       Mainland China  26.81540
+    ## 1487                                      Hainan       Mainland China  19.19590
+    ## 1488                                       Hebei       Mainland China  38.04280
+    ## 1489                                Heilongjiang       Mainland China  47.86200
+    ## 1490                                       Henan       Mainland China  33.88202
+    ## 1491                                   Hong Kong            Hong Kong  22.30000
+    ## 1492                                       Hubei       Mainland China  30.97560
+    ## 1493                                       Hunan       Mainland China  27.61040
+    ## 1494                              Inner Mongolia       Mainland China  44.09350
+    ## 1495                                     Jiangsu       Mainland China  32.97110
+    ## 1496                                     Jiangxi       Mainland China  27.61400
+    ## 1497                                       Jilin       Mainland China  43.66610
+    ## 1498                                    Liaoning       Mainland China  41.29560
+    ## 1499                                       Macau                Macau  22.16670
+    ## 1500                                     Shaanxi       Mainland China  35.19170
+    ## 1501                                    Shandong       Mainland China  36.34270
+    ## 1502                                    Shanghai       Mainland China  31.20200
+    ## 1503                                      Shanxi       Mainland China  37.57770
+    ## 1504                                     Sichuan       Mainland China  30.61710
+    ## 1505                                     Tianjin       Mainland China  39.30540
+    ## 1506                                    Xinjiang       Mainland China  41.11290
+    ## 1507                                    Zhejiang       Mainland China  29.18320
+    ## 1508                                                            Japan  36.00000
+    ## 1509                                                        Singapore   1.28330
+    ## 1510                                                      South Korea  36.00000
+    ## 1511                                                         Thailand  15.00000
+    ## 1512                                       Anhui       Mainland China  31.82570
+    ## 1513                                     Beijing       Mainland China  40.18240
+    ## 1514                            British Columbia               Canada  49.28270
+    ## 1515                                   Chongqing       Mainland China  30.05720
+    ## 1516                Diamond Princess cruise ship               Others  35.44370
+    ## 1517                                      Fujian       Mainland China  26.07890
+    ## 1518                                       Gansu       Mainland China  36.06110
+    ## 1519                                   Guangdong       Mainland China  23.34170
+    ## 1520                                     Guangxi       Mainland China  23.82980
+    ## 1521                                     Guizhou       Mainland China  26.81540
+    ## 1522                                      Hainan       Mainland China  19.19590
+    ## 1523                                       Hebei       Mainland China  38.04280
+    ## 1524                                Heilongjiang       Mainland China  47.86200
+    ## 1525                                       Henan       Mainland China  33.88202
+    ## 1526                                   Hong Kong            Hong Kong  22.30000
+    ## 1527                                       Hubei       Mainland China  30.97560
+    ## 1528                                       Hunan       Mainland China  27.61040
+    ## 1529                              Inner Mongolia       Mainland China  44.09350
+    ## 1530                                     Jiangsu       Mainland China  32.97110
+    ## 1531                                     Jiangxi       Mainland China  27.61400
+    ## 1532                                     Shaanxi       Mainland China  35.19170
+    ## 1533                                    Shandong       Mainland China  36.34270
+    ## 1534                                    Shanghai       Mainland China  31.20200
+    ## 1535                                      Shanxi       Mainland China  37.57770
+    ## 1536                                     Sichuan       Mainland China  30.61710
+    ## 1537                                      Taiwan               Taiwan  23.70000
+    ## 1538                                     Tianjin       Mainland China  39.30540
+    ## 1539                                    Xinjiang       Mainland China  41.11290
+    ## 1540                                    Zhejiang       Mainland China  29.18320
+    ## 1541                                   Guangdong       Mainland China  23.34170
+    ## 1542                                       Henan       Mainland China  33.88202
+    ## 1543                                       Hubei       Mainland China  30.97560
+    ## 1544                                                          Belgium  50.83330
+    ## 1545                                                        Singapore   1.28330
+    ## 1546                                                      South Korea  36.00000
+    ## 1547                                                         Thailand  15.00000
+    ## 1548                                       Anhui       Mainland China  31.82570
+    ## 1549                                     Beijing       Mainland China  40.18240
+    ## 1550                                   Chongqing       Mainland China  30.05720
+    ## 1551                                      Fujian       Mainland China  26.07890
+    ## 1552                                       Gansu       Mainland China  36.06110
+    ## 1553                                   Guangdong       Mainland China  23.34170
+    ## 1554                                     Guangxi       Mainland China  23.82980
+    ## 1555                                     Guizhou       Mainland China  26.81540
+    ## 1556                                      Hainan       Mainland China  19.19590
+    ## 1557                                       Hebei       Mainland China  38.04280
+    ## 1558                                Heilongjiang       Mainland China  47.86200
+    ## 1559                                       Henan       Mainland China  33.88202
+    ## 1560                                       Hubei       Mainland China  30.97560
+    ## 1561                                       Hunan       Mainland China  27.61040
+    ## 1562                                     Jiangsu       Mainland China  32.97110
+    ## 1563                                     Jiangxi       Mainland China  27.61400
+    ## 1564                                       Jilin       Mainland China  43.66610
+    ## 1565                                    Liaoning       Mainland China  41.29560
+    ## 1566                                     Ningxia       Mainland China  37.26920
+    ## 1567                                     Shaanxi       Mainland China  35.19170
+    ## 1568                                    Shandong       Mainland China  36.34270
+    ## 1569                                    Shanghai       Mainland China  31.20200
+    ## 1570                                      Shanxi       Mainland China  37.57770
+    ## 1571                                     Sichuan       Mainland China  30.61710
+    ## 1572                             South Australia            Australia -34.92850
+    ## 1573                                     Tianjin       Mainland China  39.30540
+    ## 1574                                      Yunnan       Mainland China  24.97400
+    ## 1575                                    Zhejiang       Mainland China  29.18320
+    ## 1576                                                            Japan  36.00000
+    ## 1577                                                        Singapore   1.28330
+    ## 1578                                                      South Korea  36.00000
+    ## 1579                                       Anhui       Mainland China  31.82570
+    ## 1580                                     Beijing       Mainland China  40.18240
+    ## 1581                                   Chongqing       Mainland China  30.05720
+    ## 1582                Diamond Princess cruise ship               Others  35.44370
+    ## 1583                                      Fujian       Mainland China  26.07890
+    ## 1584                                   Guangdong       Mainland China  23.34170
+    ## 1585                                     Guangxi       Mainland China  23.82980
+    ## 1586                                       Hebei       Mainland China  38.04280
+    ## 1587                                Heilongjiang       Mainland China  47.86200
+    ## 1588                                       Henan       Mainland China  33.88202
+    ## 1589                                   Hong Kong            Hong Kong  22.30000
+    ## 1590                                       Hubei       Mainland China  30.97560
+    ## 1591                                       Hunan       Mainland China  27.61040
+    ## 1592                              Inner Mongolia       Mainland China  44.09350
+    ## 1593                                     Jiangsu       Mainland China  32.97110
+    ## 1594                                     Jiangxi       Mainland China  27.61400
+    ## 1595                                    Shandong       Mainland China  36.34270
+    ## 1596                                      Shanxi       Mainland China  37.57770
+    ## 1597                                     Sichuan       Mainland China  30.61710
+    ## 1598                                     Tianjin       Mainland China  39.30540
+    ## 1599                                    Xinjiang       Mainland China  41.11290
+    ## 1600                                      Yunnan       Mainland China  24.97400
+    ## 1601                                    Zhejiang       Mainland China  29.18320
+    ## 1602                                     Guizhou       Mainland China  26.81540
+    ## 1603                                       Hebei       Mainland China  38.04280
+    ## 1604                                       Henan       Mainland China  33.88202
+    ## 1605                                       Hubei       Mainland China  30.97560
+    ## 1606                                       Hunan       Mainland China  27.61040
+    ## 1607                                    Shandong       Mainland China  36.34270
+    ## 1608                                                          Germany  51.00000
+    ## 1609                                                            Japan  36.00000
+    ## 1610                                                         Malaysia   2.50000
+    ## 1611                                                        Singapore   1.28330
+    ## 1612                                                      South Korea  36.00000
+    ## 1613                                       Anhui       Mainland China  31.82570
+    ## 1614                                     Beijing       Mainland China  40.18240
+    ## 1615                                   Chongqing       Mainland China  30.05720
+    ## 1616                                      Fujian       Mainland China  26.07890
+    ## 1617                                       Gansu       Mainland China  36.06110
+    ## 1618                                   Guangdong       Mainland China  23.34170
+    ## 1619                                     Guangxi       Mainland China  23.82980
+    ## 1620                                     Guizhou       Mainland China  26.81540
+    ## 1621                                      Hainan       Mainland China  19.19590
+    ## 1622                                       Hebei       Mainland China  38.04280
+    ## 1623                                Heilongjiang       Mainland China  47.86200
+    ## 1624                                       Henan       Mainland China  33.88202
+    ## 1625                                       Hubei       Mainland China  30.97560
+    ## 1626                                       Hunan       Mainland China  27.61040
+    ## 1627                                     Jiangsu       Mainland China  32.97110
+    ## 1628                                     Jiangxi       Mainland China  27.61400
+    ## 1629                                       Jilin       Mainland China  43.66610
+    ## 1630                                    Liaoning       Mainland China  41.29560
+    ## 1631                                     Ningxia       Mainland China  37.26920
+    ## 1632                                     Qinghai       Mainland China  35.74520
+    ## 1633                                     Shaanxi       Mainland China  35.19170
+    ## 1634                                    Shandong       Mainland China  36.34270
+    ## 1635                                    Shanghai       Mainland China  31.20200
+    ## 1636                                      Shanxi       Mainland China  37.57770
+    ## 1637                                     Sichuan       Mainland China  30.61710
+    ## 1638                                     Tianjin       Mainland China  39.30540
+    ## 1639                                      Yunnan       Mainland China  24.97400
+    ## 1640                                    Zhejiang       Mainland China  29.18320
+    ## 1641                                                             Iran  32.00000
+    ## 1642                                                            Japan  36.00000
+    ## 1643                                                        Singapore   1.28330
+    ## 1644                                       Anhui       Mainland China  31.82570
+    ## 1645                                     Beijing       Mainland China  40.18240
+    ## 1646                                   Chongqing       Mainland China  30.05720
+    ## 1647                Diamond Princess cruise ship               Others  35.44370
+    ## 1648                                      Fujian       Mainland China  26.07890
+    ## 1649                                   Guangdong       Mainland China  23.34170
+    ## 1650                                     Guangxi       Mainland China  23.82980
+    ## 1651                                      Hainan       Mainland China  19.19590
+    ## 1652                                Heilongjiang       Mainland China  47.86200
+    ## 1653                                       Henan       Mainland China  33.88202
+    ## 1654                                   Hong Kong            Hong Kong  22.30000
+    ## 1655                                       Hubei       Mainland China  30.97560
+    ## 1656                                       Hunan       Mainland China  27.61040
+    ## 1657                              Inner Mongolia       Mainland China  44.09350
+    ## 1658                                     Jiangsu       Mainland China  32.97110
+    ## 1659                                     Jiangxi       Mainland China  27.61400
+    ## 1660                                       Jilin       Mainland China  43.66610
+    ## 1661                                     Ningxia       Mainland China  37.26920
+    ## 1662                                     Shaanxi       Mainland China  35.19170
+    ## 1663                                    Shandong       Mainland China  36.34270
+    ## 1664                                     Sichuan       Mainland China  30.61710
+    ## 1665                                      Taiwan               Taiwan  23.70000
+    ## 1666                                     Tianjin       Mainland China  39.30540
+    ## 1667                                    Zhejiang       Mainland China  29.18320
+    ## 1668                                                             Iran  32.00000
+    ## 1669                                   Guangdong       Mainland China  23.34170
+    ## 1670                                Heilongjiang       Mainland China  47.86200
+    ## 1671                                   Hong Kong            Hong Kong  22.30000
+    ## 1672                                       Hubei       Mainland China  30.97560
+    ## 1673                                    Shanghai       Mainland China  31.20200
+    ## 1674                                      Yunnan       Mainland China  24.97400
+    ## 1675                                                            Japan  36.00000
+    ## 1676                                                         Malaysia   2.50000
+    ## 1677                                                        Singapore   1.28330
+    ## 1678                                       Anhui       Mainland China  31.82570
+    ## 1679                                     Beijing       Mainland China  40.18240
+    ## 1680                                   Chongqing       Mainland China  30.05720
+    ## 1681                Diamond Princess cruise ship               Others  35.44370
+    ## 1682                                      Fujian       Mainland China  26.07890
+    ## 1683                                       Gansu       Mainland China  36.06110
+    ## 1684                                   Guangdong       Mainland China  23.34170
+    ## 1685                                     Guangxi       Mainland China  23.82980
+    ## 1686                                     Guizhou       Mainland China  26.81540
+    ## 1687                                      Hainan       Mainland China  19.19590
+    ## 1688                                       Hebei       Mainland China  38.04280
+    ## 1689                                Heilongjiang       Mainland China  47.86200
+    ## 1690                                       Henan       Mainland China  33.88202
+    ## 1691                                   Hong Kong            Hong Kong  22.30000
+    ## 1692                                       Hubei       Mainland China  30.97560
+    ## 1693                                       Hunan       Mainland China  27.61040
+    ## 1694                              Inner Mongolia       Mainland China  44.09350
+    ## 1695                                     Jiangsu       Mainland China  32.97110
+    ## 1696                                     Jiangxi       Mainland China  27.61400
+    ## 1697                                       Jilin       Mainland China  43.66610
+    ## 1698                                    Liaoning       Mainland China  41.29560
+    ## 1699                                     Qinghai       Mainland China  35.74520
+    ## 1700                                     Shaanxi       Mainland China  35.19170
+    ## 1701                                    Shandong       Mainland China  36.34270
+    ## 1702                                    Shanghai       Mainland China  31.20200
+    ## 1703                                      Shanxi       Mainland China  37.57770
+    ## 1704                                     Sichuan       Mainland China  30.61710
+    ## 1705                                     Tianjin       Mainland China  39.30540
+    ## 1706                                    Xinjiang       Mainland China  41.11290
+    ## 1707                                      Yunnan       Mainland China  24.97400
+    ## 1708                                    Zhejiang       Mainland China  29.18320
+    ## 1709                                                             Iran  32.00000
+    ## 1710                                                            Japan  36.00000
+    ## 1711                                                      South Korea  36.00000
+    ## 1712                                       Anhui       Mainland China  31.82570
+    ## 1713                                     Beijing       Mainland China  40.18240
+    ## 1714                                   Chongqing       Mainland China  30.05720
+    ## 1715                Diamond Princess cruise ship               Others  35.44370
+    ## 1716                                   Guangdong       Mainland China  23.34170
+    ## 1717                                     Guangxi       Mainland China  23.82980
+    ## 1718                                       Hebei       Mainland China  38.04280
+    ## 1719                                Heilongjiang       Mainland China  47.86200
+    ## 1720                                       Henan       Mainland China  33.88202
+    ## 1721                                   Hong Kong            Hong Kong  22.30000
+    ## 1722                                       Hubei       Mainland China  30.97560
+    ## 1723                                       Hunan       Mainland China  27.61040
+    ## 1724                                       Jilin       Mainland China  43.66610
+    ## 1725                                     Shaanxi       Mainland China  35.19170
+    ## 1726                                    Shandong       Mainland China  36.34270
+    ## 1727                                    Shanghai       Mainland China  31.20200
+    ## 1728                                      Shanxi       Mainland China  37.57770
+    ## 1729                                     Sichuan       Mainland China  30.61710
+    ## 1730                                      Taiwan               Taiwan  23.70000
+    ## 1731                                     Tianjin       Mainland China  39.30540
+    ## 1732                                      Yunnan       Mainland China  24.97400
+    ## 1733                                    Zhejiang       Mainland China  29.18320
+    ## 1734                                                      South Korea  36.00000
+    ## 1735                                   Chongqing       Mainland China  30.05720
+    ## 1736                Diamond Princess cruise ship               Others  35.44370
+    ## 1737                                      Fujian       Mainland China  26.07890
+    ## 1738                                       Hebei       Mainland China  38.04280
+    ## 1739                                       Hubei       Mainland China  30.97560
+    ## 1740                                     Shaanxi       Mainland China  35.19170
+    ## 1741                                    Shandong       Mainland China  36.34270
+    ## 1742                                      Yunnan       Mainland China  24.97400
+    ## 1743                                    Zhejiang       Mainland China  29.18320
+    ## 1744                                                      South Korea  36.00000
+    ## 1745                                       Anhui       Mainland China  31.82570
+    ## 1746                                     Beijing       Mainland China  40.18240
+    ## 1747                                   Chongqing       Mainland China  30.05720
+    ## 1748                                      Fujian       Mainland China  26.07890
+    ## 1749                                       Gansu       Mainland China  36.06110
+    ## 1750                                   Guangdong       Mainland China  23.34170
+    ## 1751                                     Guangxi       Mainland China  23.82980
+    ## 1752                                     Guizhou       Mainland China  26.81540
+    ## 1753                                      Hainan       Mainland China  19.19590
+    ## 1754                                       Hebei       Mainland China  38.04280
+    ## 1755                                Heilongjiang       Mainland China  47.86200
+    ## 1756                                       Henan       Mainland China  33.88202
+    ## 1757                                   Hong Kong            Hong Kong  22.30000
+    ## 1758                                       Hubei       Mainland China  30.97560
+    ## 1759                                       Hunan       Mainland China  27.61040
+    ## 1760                              Inner Mongolia       Mainland China  44.09350
+    ## 1761                                     Jiangsu       Mainland China  32.97110
+    ## 1762                                     Jiangxi       Mainland China  27.61400
+    ## 1763                                       Jilin       Mainland China  43.66610
+    ## 1764                                    Liaoning       Mainland China  41.29560
+    ## 1765                                       Macau                Macau  22.16670
+    ## 1766                                     Ningxia       Mainland China  37.26920
+    ## 1767                                     Shaanxi       Mainland China  35.19170
+    ## 1768                                    Shandong       Mainland China  36.34270
+    ## 1769                                    Shanghai       Mainland China  31.20200
+    ## 1770                                      Shanxi       Mainland China  37.57770
+    ## 1771                                     Sichuan       Mainland China  30.61710
+    ## 1772                                     Tianjin       Mainland China  39.30540
+    ## 1773                                    Xinjiang       Mainland China  41.11290
+    ## 1774                                      Yunnan       Mainland China  24.97400
+    ## 1775                                    Zhejiang       Mainland China  29.18320
+    ## 1776                                                             Iran  32.00000
+    ## 1777                                                           Israel  31.00000
+    ## 1778                                                            Italy  43.00000
+    ## 1779                                                            Japan  36.00000
+    ## 1780                                                          Lebanon  33.85470
+    ## 1781                                                        Singapore   1.28330
+    ## 1782                                                      South Korea  36.00000
+    ## 1783                                       Anhui       Mainland China  31.82570
+    ## 1784                                     Beijing       Mainland China  40.18240
+    ## 1785                            British Columbia               Canada  49.28270
+    ## 1786                                   Chongqing       Mainland China  30.05720
+    ## 1787                       From Diamond Princess            Australia  35.44370
+    ## 1788                                   Guangdong       Mainland China  23.34170
+    ## 1789                                     Guangxi       Mainland China  23.82980
+    ## 1790                                       Hebei       Mainland China  38.04280
+    ## 1791                                Heilongjiang       Mainland China  47.86200
+    ## 1792                                       Henan       Mainland China  33.88202
+    ## 1793                                       Hubei       Mainland China  30.97560
+    ## 1794                         Humboldt County, CA                   US  40.74500
+    ## 1795                                       Hunan       Mainland China  27.61040
+    ## 1796        Lackland, TX (From Diamond Princess)                   US  29.38290
+    ## 1797           Omaha, NE (From Diamond Princess)                   US  41.25450
+    ## 1798                       Sacramento County, CA                   US  38.47470
+    ## 1799                                    Shandong       Mainland China  36.34270
+    ## 1800                                     Sichuan       Mainland China  30.61710
+    ## 1801                                      Taiwan               Taiwan  23.70000
+    ## 1802                                     Tianjin       Mainland China  39.30540
+    ## 1803          Travis, CA (From Diamond Princess)                   US  38.27210
+    ## 1804                                    Zhejiang       Mainland China  29.18320
+    ## 1805                                                             Iran  32.00000
+    ## 1806                                                            Italy  43.00000
+    ## 1807                                                      South Korea  36.00000
+    ## 1808                                                          Germany  51.00000
+    ## 1809                                                            Japan  36.00000
+    ## 1810                                                        Singapore   1.28330
+    ## 1811                                                         Thailand  15.00000
+    ## 1812                                                          Vietnam  16.00000
+    ## 1813                                       Anhui       Mainland China  31.82570
+    ## 1814                                     Beijing       Mainland China  40.18240
+    ## 1815                                   Chongqing       Mainland China  30.05720
+    ## 1816                                      Fujian       Mainland China  26.07890
+    ## 1817                                       Gansu       Mainland China  36.06110
+    ## 1818                                   Guangdong       Mainland China  23.34170
+    ## 1819                                     Guangxi       Mainland China  23.82980
+    ## 1820                                     Guizhou       Mainland China  26.81540
+    ## 1821                                      Hainan       Mainland China  19.19590
+    ## 1822                                       Hebei       Mainland China  38.04280
+    ## 1823                                Heilongjiang       Mainland China  47.86200
+    ## 1824                                       Henan       Mainland China  33.88202
+    ## 1825                                   Hong Kong            Hong Kong  22.30000
+    ## 1826                                       Hubei       Mainland China  30.97560
+    ## 1827                                       Hunan       Mainland China  27.61040
+    ## 1828                              Inner Mongolia       Mainland China  44.09350
+    ## 1829                                     Jiangsu       Mainland China  32.97110
+    ## 1830                                     Jiangxi       Mainland China  27.61400
+    ## 1831                                       Jilin       Mainland China  43.66610
+    ## 1832                                    Liaoning       Mainland China  41.29560
+    ## 1833                                     Ningxia       Mainland China  37.26920
+    ## 1834                                     Qinghai       Mainland China  35.74520
+    ## 1835                                  Queensland            Australia -28.01670
+    ## 1836                        San Diego County, CA                   US  32.71570
+    ## 1837                             Santa Clara, CA                   US  37.35410
+    ## 1838                                     Shaanxi       Mainland China  35.19170
+    ## 1839                                    Shandong       Mainland China  36.34270
+    ## 1840                                    Shanghai       Mainland China  31.20200
+    ## 1841                                      Shanxi       Mainland China  37.57770
+    ## 1842                                     Sichuan       Mainland China  30.61710
+    ## 1843                                     Tianjin       Mainland China  39.30540
+    ## 1844                                 Toronto, ON               Canada  43.65320
+    ## 1845                                    Xinjiang       Mainland China  41.11290
+    ## 1846                                      Yunnan       Mainland China  24.97400
+    ## 1847                                    Zhejiang       Mainland China  29.18320
+    ## 1848                                                             Iran  32.00000
+    ## 1849                                                            Italy  43.00000
+    ## 1850                                                            Japan  36.00000
+    ## 1851                                                      South Korea  36.00000
+    ## 1852                                             United Arab Emirates  24.00000
+    ## 1853                                       Anhui       Mainland China  31.82570
+    ## 1854                                     Beijing       Mainland China  40.18240
+    ## 1855                                   Chongqing       Mainland China  30.05720
+    ## 1856                       From Diamond Princess            Australia  35.44370
+    ## 1857                                   Guangdong       Mainland China  23.34170
+    ## 1858                                     Guangxi       Mainland China  23.82980
+    ## 1859                                       Hebei       Mainland China  38.04280
+    ## 1860                                       Henan       Mainland China  33.88202
+    ## 1861                                   Hong Kong            Hong Kong  22.30000
+    ## 1862                                       Hubei       Mainland China  30.97560
+    ## 1863                                       Hunan       Mainland China  27.61040
+    ## 1864                                    Shandong       Mainland China  36.34270
+    ## 1865                                    Shanghai       Mainland China  31.20200
+    ## 1866                                     Sichuan       Mainland China  30.61710
+    ## 1867                                     Tianjin       Mainland China  39.30540
+    ## 1868                                    Zhejiang       Mainland China  29.18320
+    ## 1869                                                             Iran  32.00000
+    ## 1870                                                            Italy  43.00000
+    ## 1871                                       Hebei       Mainland China  38.04280
+    ## 1872                                       Hubei       Mainland China  30.97560
+    ## 1873                                    Shanghai       Mainland China  31.20200
+    ## 1874                                    Xinjiang       Mainland China  41.11290
+    ## 1875                                                            Italy  43.00000
+    ## 1876                                       Anhui       Mainland China  31.82570
+    ## 1877                                     Beijing       Mainland China  40.18240
+    ## 1878                                   Chongqing       Mainland China  30.05720
+    ## 1879                                      Fujian       Mainland China  26.07890
+    ## 1880                                   Guangdong       Mainland China  23.34170
+    ## 1881                                     Guangxi       Mainland China  23.82980
+    ## 1882                                     Guizhou       Mainland China  26.81540
+    ## 1883                                      Hainan       Mainland China  19.19590
+    ## 1884                                       Hebei       Mainland China  38.04280
+    ## 1885                                Heilongjiang       Mainland China  47.86200
+    ## 1886                                       Henan       Mainland China  33.88202
+    ## 1887                                   Hong Kong            Hong Kong  22.30000
+    ## 1888                                       Hubei       Mainland China  30.97560
+    ## 1889                                       Hunan       Mainland China  27.61040
+    ## 1890                              Inner Mongolia       Mainland China  44.09350
+    ## 1891                                     Jiangsu       Mainland China  32.97110
+    ## 1892                                     Jiangxi       Mainland China  27.61400
+    ## 1893                                       Jilin       Mainland China  43.66610
+    ## 1894                                    Liaoning       Mainland China  41.29560
+    ## 1895                                     Shaanxi       Mainland China  35.19170
+    ## 1896                                    Shandong       Mainland China  36.34270
+    ## 1897                                    Shanghai       Mainland China  31.20200
+    ## 1898                                      Shanxi       Mainland China  37.57770
+    ## 1899                                     Sichuan       Mainland China  30.61710
+    ## 1900                                     Tianjin       Mainland China  39.30540
+    ## 1901                                    Xinjiang       Mainland China  41.11290
+    ## 1902                                      Yunnan       Mainland China  24.97400
+    ## 1903                                    Zhejiang       Mainland China  29.18320
+    ## 1904                                                             Iran  32.00000
+    ## 1905                                                            Italy  43.00000
+    ## 1906                                                            Japan  36.00000
+    ## 1907                                                        Singapore   1.28330
+    ## 1908                                                      South Korea  36.00000
+    ## 1909                                   Chongqing       Mainland China  30.05720
+    ## 1910                Diamond Princess cruise ship               Others  35.44370
+    ## 1911                                   Guangdong       Mainland China  23.34170
+    ## 1912                                       Hebei       Mainland China  38.04280
+    ## 1913                                Heilongjiang       Mainland China  47.86200
+    ## 1914                                       Henan       Mainland China  33.88202
+    ## 1915                                   Hong Kong            Hong Kong  22.30000
+    ## 1916                                       Hunan       Mainland China  27.61040
+    ## 1917                                    Shandong       Mainland China  36.34270
+    ## 1918                                      Taiwan               Taiwan  23.70000
+    ## 1919                                                             Iran  32.00000
+    ## 1920                                                            Italy  43.00000
+    ## 1921                                                      South Korea  36.00000
+    ## 1922                Diamond Princess cruise ship               Others  35.44370
+    ## 1923                                   Guangdong       Mainland China  23.34170
+    ## 1924                                      Hainan       Mainland China  19.19590
+    ## 1925                                                            Italy  43.00000
+    ## 1926                                                        Singapore   1.28330
+    ## 1927                                                      South Korea  36.00000
+    ## 1928                                                         Thailand  15.00000
+    ## 1929                                       Anhui       Mainland China  31.82570
+    ## 1930                                     Beijing       Mainland China  40.18240
+    ## 1931                                   Chongqing       Mainland China  30.05720
+    ## 1932                Diamond Princess cruise ship               Others  35.44370
+    ## 1933                                      Fujian       Mainland China  26.07890
+    ## 1934                                       Gansu       Mainland China  36.06110
+    ## 1935                                   Guangdong       Mainland China  23.34170
+    ## 1936                                     Guangxi       Mainland China  23.82980
+    ## 1937                                     Guizhou       Mainland China  26.81540
+    ## 1938                                      Hainan       Mainland China  19.19590
+    ## 1939                                       Hebei       Mainland China  38.04280
+    ## 1940                                Heilongjiang       Mainland China  47.86200
+    ## 1941                                       Henan       Mainland China  33.88202
+    ## 1942                                   Hong Kong            Hong Kong  22.30000
+    ## 1943                                       Hubei       Mainland China  30.97560
+    ## 1944                                       Hunan       Mainland China  27.61040
+    ## 1945                              Inner Mongolia       Mainland China  44.09350
+    ## 1946                                     Jiangsu       Mainland China  32.97110
+    ## 1947                                     Jiangxi       Mainland China  27.61400
+    ## 1948                                       Jilin       Mainland China  43.66610
+    ## 1949                                    Liaoning       Mainland China  41.29560
+    ## 1950                                     Ningxia       Mainland China  37.26920
+    ## 1951                                     Shaanxi       Mainland China  35.19170
+    ## 1952                                    Shandong       Mainland China  36.34270
+    ## 1953                                    Shanghai       Mainland China  31.20200
+    ## 1954                                      Shanxi       Mainland China  37.57770
+    ## 1955                                     Sichuan       Mainland China  30.61710
+    ## 1956                                     Tianjin       Mainland China  39.30540
+    ## 1957                                    Xinjiang       Mainland China  41.11290
+    ## 1958                                      Yunnan       Mainland China  24.97400
+    ## 1959                                    Zhejiang       Mainland China  29.18320
+    ## 1960                                                      Afghanistan  33.00000
+    ## 1961                                                          Bahrain  26.02750
+    ## 1962                                                             Iran  32.00000
+    ## 1963                                                             Iraq  33.00000
+    ## 1964                                                            Italy  43.00000
+    ## 1965                                                            Japan  36.00000
+    ## 1966                                                           Kuwait  29.50000
+    ## 1967                                                             Oman  21.00000
+    ## 1968                                                      South Korea  36.00000
+    ## 1969                                                               UK  55.00000
+    ## 1970                                   Chongqing       Mainland China  30.05720
+    ## 1971                                   Guangdong       Mainland China  23.34170
+    ## 1972                                     Guangxi       Mainland China  23.82980
+    ## 1973                                   Hong Kong            Hong Kong  22.30000
+    ## 1974                                       Hubei       Mainland China  30.97560
+    ## 1975                                       Jilin       Mainland China  43.66610
+    ## 1976        Lackland, TX (From Diamond Princess)                   US  29.38290
+    ## 1977           Omaha, NE (From Diamond Princess)                   US  41.25450
+    ## 1978                                    Shandong       Mainland China  36.34270
+    ## 1979                                      Shanxi       Mainland China  37.57770
+    ## 1980                                     Sichuan       Mainland China  30.61710
+    ## 1981                                      Taiwan               Taiwan  23.70000
+    ## 1982                                 Toronto, ON               Canada  43.65320
+    ## 1983          Travis, CA (From Diamond Princess)                   US  38.27210
+    ## 1984 Unassigned Location (From Diamond Princess)                   US  35.44370
+    ## 1985                                                             Iran  32.00000
+    ## 1986                                                            Italy  43.00000
+    ## 1987                                                      South Korea  36.00000
+    ## 1988                                       Hubei       Mainland China  30.97560
+    ## 1989                                    Shandong       Mainland China  36.34270
+    ## 1990                                                            Italy  43.00000
+    ## 1991                                                         Malaysia   2.50000
+    ## 1992                                       Anhui       Mainland China  31.82570
+    ## 1993                                     Beijing       Mainland China  40.18240
+    ## 1994                                   Chongqing       Mainland China  30.05720
+    ## 1995                                      Fujian       Mainland China  26.07890
+    ## 1996                                       Gansu       Mainland China  36.06110
+    ## 1997                                   Guangdong       Mainland China  23.34170
+    ## 1998                                     Guangxi       Mainland China  23.82980
+    ## 1999                                      Hainan       Mainland China  19.19590
+    ## 2000                                       Hebei       Mainland China  38.04280
+    ## 2001                                Heilongjiang       Mainland China  47.86200
+    ## 2002                                       Henan       Mainland China  33.88202
+    ## 2003                                   Hong Kong            Hong Kong  22.30000
+    ## 2004                                       Hubei       Mainland China  30.97560
+    ## 2005                                       Hunan       Mainland China  27.61040
+    ## 2006                              Inner Mongolia       Mainland China  44.09350
+    ## 2007                                     Jiangsu       Mainland China  32.97110
+    ## 2008                                     Jiangxi       Mainland China  27.61400
+    ## 2009                                       Jilin       Mainland China  43.66610
+    ## 2010                                    Liaoning       Mainland China  41.29560
+    ## 2011                                     Ningxia       Mainland China  37.26920
+    ## 2012                                     Shaanxi       Mainland China  35.19170
+    ## 2013                                    Shandong       Mainland China  36.34270
+    ## 2014                                    Shanghai       Mainland China  31.20200
+    ## 2015                                      Shanxi       Mainland China  37.57770
+    ## 2016                                     Sichuan       Mainland China  30.61710
+    ## 2017                                      Taiwan               Taiwan  23.70000
+    ## 2018                                     Tianjin       Mainland China  39.30540
+    ## 2019                                    Xinjiang       Mainland China  41.11290
+    ## 2020                                      Yunnan       Mainland China  24.97400
+    ## 2021                                    Zhejiang       Mainland China  29.18320
+    ## 2022                                                          Algeria  28.03390
+    ## 2023                                                          Austria  47.51620
+    ## 2024                                                          Bahrain  26.02750
+    ## 2025                                                          Croatia  45.10000
+    ## 2026                                                           France  47.00000
+    ## 2027                                                          Germany  51.00000
+    ## 2028                                                             Iran  32.00000
+    ## 2029                                                            Italy  43.00000
+    ## 2030                                                            Japan  36.00000
+    ## 2031                                                           Kuwait  29.50000
+    ## 2032                                                        Singapore   1.28330
+    ## 2033                                                      South Korea  36.00000
+    ## 2034                                                            Spain  40.00000
+    ## 2035                                                      Switzerland  46.81820
+    ## 2036                                                         Thailand  15.00000
+    ## 2037                                     Beijing       Mainland China  40.18240
+    ## 2038                            British Columbia               Canada  49.28270
+    ## 2039                                      Fujian       Mainland China  26.07890
+    ## 2040                                   Guangdong       Mainland China  23.34170
+    ## 2041                                     Guangxi       Mainland China  23.82980
+    ## 2042                                   Hong Kong            Hong Kong  22.30000
+    ## 2043                                       Hubei       Mainland China  30.97560
+    ## 2044                                    Shandong       Mainland China  36.34270
+    ## 2045                                    Shanghai       Mainland China  31.20200
+    ## 2046                                     Sichuan       Mainland China  30.61710
+    ## 2047                                      Taiwan               Taiwan  23.70000
+    ## 2048                                                             Iran  32.00000
+    ## 2049                                                            Italy  43.00000
+    ## 2050                                                      South Korea  36.00000
+    ## 2051                                   Guangdong       Mainland China  23.34170
+    ## 2052                                       Hubei       Mainland China  30.97560
+    ## 2053                                    Shandong       Mainland China  36.34270
+    ## 2054                                                           France  47.00000
+    ## 2055                                                        Singapore   1.28330
+    ## 2056                                                      South Korea  36.00000
+    ## 2057                                                         Thailand  15.00000
+    ## 2058                                                          Vietnam  16.00000
+    ## 2059                                       Anhui       Mainland China  31.82570
+    ## 2060                                     Beijing       Mainland China  40.18240
+    ## 2061                                   Chongqing       Mainland China  30.05720
+    ## 2062                                      Fujian       Mainland China  26.07890
+    ## 2063                                   Guangdong       Mainland China  23.34170
+    ## 2064                                     Guangxi       Mainland China  23.82980
+    ## 2065                                     Guizhou       Mainland China  26.81540
+    ## 2066                                      Hainan       Mainland China  19.19590
+    ## 2067                                       Hebei       Mainland China  38.04280
+    ## 2068                                Heilongjiang       Mainland China  47.86200
+    ## 2069                                       Henan       Mainland China  33.88202
+    ## 2070                                       Hubei       Mainland China  30.97560
+    ## 2071                                       Hunan       Mainland China  27.61040
+    ## 2072                              Inner Mongolia       Mainland China  44.09350
+    ## 2073                                     Jiangsu       Mainland China  32.97110
+    ## 2074                                     Jiangxi       Mainland China  27.61400
+    ## 2075                                       Jilin       Mainland China  43.66610
+    ## 2076                                    Liaoning       Mainland China  41.29560
+    ## 2077                                       Macau                Macau  22.16670
+    ## 2078                                     Ningxia       Mainland China  37.26920
+    ## 2079                                     Shaanxi       Mainland China  35.19170
+    ## 2080                                    Shandong       Mainland China  36.34270
+    ## 2081                                    Shanghai       Mainland China  31.20200
+    ## 2082                                      Shanxi       Mainland China  37.57770
+    ## 2083                                     Sichuan       Mainland China  30.61710
+    ## 2084                                   Tempe, AZ                   US  33.42550
+    ## 2085                                     Tianjin       Mainland China  39.30540
+    ## 2086                                      Yunnan       Mainland China  24.97400
+    ## 2087                                    Zhejiang       Mainland China  29.18320
+    ## 2088                                                          Bahrain  26.02750
+    ## 2089                                                           Brazil -14.23500
+    ## 2090                                                          Croatia  45.10000
+    ## 2091                                                          Finland  64.00000
+    ## 2092                                                           France  47.00000
+    ## 2093                                                          Georgia  42.31540
+    ## 2094                                                          Germany  51.00000
+    ## 2095                                                           Greece  39.07420
+    ## 2096                                                             Iran  32.00000
+    ## 2097                                                             Iraq  33.00000
+    ## 2098                                                           Israel  31.00000
+    ## 2099                                                            Italy  43.00000
+    ## 2100                                                            Japan  36.00000
+    ## 2101                                                           Kuwait  29.50000
+    ## 2102                                                          Lebanon  33.85470
+    ## 2103                                                  North Macedonia  41.60860
+    ## 2104                                                           Norway  60.47200
+    ## 2105                                                             Oman  21.00000
+    ## 2106                                                         Pakistan  30.37530
+    ## 2107                                                          Romania  45.94320
+    ## 2108                                                        Singapore   1.28330
+    ## 2109                                                      South Korea  36.00000
+    ## 2110                                                            Spain  40.00000
+    ## 2111                                                           Sweden  63.00000
+    ## 2112                                                         Thailand  15.00000
+    ## 2113                Diamond Princess cruise ship               Others  35.44370
+    ## 2114                                       Hebei       Mainland China  38.04280
+    ## 2115                                   Hong Kong            Hong Kong  22.30000
+    ## 2116                                       Hubei       Mainland China  30.97560
+    ## 2117                                    Shanghai       Mainland China  31.20200
+    ## 2118                                     Sichuan       Mainland China  30.61710
+    ## 2119                                      Taiwan               Taiwan  23.70000
+    ## 2120 Unassigned Location (From Diamond Princess)                   US  35.44370
+    ## 2121                                                           France  47.00000
+    ## 2122                                                             Iran  32.00000
+    ## 2123                                                            Italy  43.00000
+    ## 2124                                                            Japan  36.00000
+    ## 2125                                                      South Korea  36.00000
+    ## 2126                Diamond Princess cruise ship               Others  35.44370
+    ## 2127                                       Hubei       Mainland China  30.97560
+    ## 2128                                                          Germany  51.00000
+    ## 2129                                                             Iran  32.00000
+    ## 2130                                                            Italy  43.00000
+    ## 2131                                                        Singapore   1.28330
+    ## 2132                                       Anhui       Mainland China  31.82570
+    ## 2133                                     Beijing       Mainland China  40.18240
+    ## 2134                                   Chongqing       Mainland China  30.05720
+    ## 2135                Diamond Princess cruise ship               Others  35.44370
+    ## 2136                                      Fujian       Mainland China  26.07890
+    ## 2137                                       Gansu       Mainland China  36.06110
+    ## 2138                                   Guangdong       Mainland China  23.34170
+    ## 2139                                     Guangxi       Mainland China  23.82980
+    ## 2140                                      Hainan       Mainland China  19.19590
+    ## 2141                                       Hebei       Mainland China  38.04280
+    ## 2142                                Heilongjiang       Mainland China  47.86200
+    ## 2143                                       Henan       Mainland China  33.88202
+    ## 2144                                   Hong Kong            Hong Kong  22.30000
+    ## 2145                                       Hubei       Mainland China  30.97560
+    ## 2146                                       Hunan       Mainland China  27.61040
+    ## 2147                              Inner Mongolia       Mainland China  44.09350
+    ## 2148                                     Jiangsu       Mainland China  32.97110
+    ## 2149                                     Jiangxi       Mainland China  27.61400
+    ## 2150                                       Jilin       Mainland China  43.66610
+    ## 2151                                    Liaoning       Mainland China  41.29560
+    ## 2152                                     Ningxia       Mainland China  37.26920
+    ## 2153                                     Shaanxi       Mainland China  35.19170
+    ## 2154                                    Shandong       Mainland China  36.34270
+    ## 2155                                    Shanghai       Mainland China  31.20200
+    ## 2156                                      Shanxi       Mainland China  37.57770
+    ## 2157                                     Sichuan       Mainland China  30.61710
+    ## 2158                                     Tianjin       Mainland China  39.30540
+    ## 2159                                    Xinjiang       Mainland China  41.11290
+    ## 2160                                      Yunnan       Mainland China  24.97400
+    ## 2161                                    Zhejiang       Mainland China  29.18320
+    ## 2162                                                          Austria  47.51620
+    ## 2163                                                          Denmark  56.26390
+    ## 2164                                                          Estonia  58.59530
+    ## 2165                                                           France  47.00000
+    ## 2166                                                          Germany  51.00000
+    ## 2167                                                           Greece  39.07420
+    ## 2168                                                             Iran  32.00000
+    ## 2169                                                             Iraq  33.00000
+    ## 2170                                                           Israel  31.00000
+    ## 2171                                                            Italy  43.00000
+    ## 2172                                                            Japan  36.00000
+    ## 2173                                                           Kuwait  29.50000
+    ## 2174                                                         Malaysia   2.50000
+    ## 2175                                                      Netherlands  52.13260
+    ## 2176                                                       San Marino  43.94240
+    ## 2177                                                      South Korea  36.00000
+    ## 2178                                                            Spain  40.00000
+    ## 2179                                                           Sweden  63.00000
+    ## 2180                                                      Switzerland  46.81820
+    ## 2181                                                               UK  55.00000
+    ## 2182                                     Beijing       Mainland China  40.18240
+    ## 2183                       From Diamond Princess            Australia  35.44370
+    ## 2184                                      Fujian       Mainland China  26.07890
+    ## 2185                                       Hebei       Mainland China  38.04280
+    ## 2186                                       Henan       Mainland China  33.88202
+    ## 2187                                   Hong Kong            Hong Kong  22.30000
+    ## 2188                                       Hubei       Mainland China  30.97560
+    ## 2189                                       Hunan       Mainland China  27.61040
+    ## 2190                                     Ningxia       Mainland China  37.26920
+    ## 2191                       Sacramento County, CA                   US  38.47470
+    ## 2192                                     Sichuan       Mainland China  30.61710
+    ## 2193                                     Tianjin       Mainland China  39.30540
+    ## 2194                                 Toronto, ON               Canada  43.65320
+    ## 2195                                                             Iran  32.00000
+    ## 2196                                                            Italy  43.00000
+    ## 2197                                                            Japan  36.00000
+    ## 2198                                                      South Korea  36.00000
+    ## 2199                                     Beijing       Mainland China  40.18240
+    ## 2200                                Heilongjiang       Mainland China  47.86200
+    ## 2201                                       Henan       Mainland China  33.88202
+    ## 2202                                       Hubei       Mainland China  30.97560
+    ## 2203                                                          Germany  51.00000
+    ## 2204                                                           Israel  31.00000
+    ## 2205                                                            Italy  43.00000
+    ## 2206                                       Anhui       Mainland China  31.82570
+    ## 2207                                     Beijing       Mainland China  40.18240
+    ## 2208                            British Columbia               Canada  49.28270
+    ## 2209                                   Chongqing       Mainland China  30.05720
+    ## 2210                                      Fujian       Mainland China  26.07890
+    ## 2211                                   Guangdong       Mainland China  23.34170
+    ## 2212                                     Guangxi       Mainland China  23.82980
+    ## 2213                                     Guizhou       Mainland China  26.81540
+    ## 2214                                      Hainan       Mainland China  19.19590
+    ## 2215                                       Hebei       Mainland China  38.04280
+    ## 2216                                Heilongjiang       Mainland China  47.86200
+    ## 2217                                       Henan       Mainland China  33.88202
+    ## 2218                                       Hubei       Mainland China  30.97560
+    ## 2219                                       Hunan       Mainland China  27.61040
+    ## 2220                              Inner Mongolia       Mainland China  44.09350
+    ## 2221                                     Jiangsu       Mainland China  32.97110
+    ## 2222                                     Jiangxi       Mainland China  27.61400
+    ## 2223                                       Jilin       Mainland China  43.66610
+    ## 2224                                    Liaoning       Mainland China  41.29560
+    ## 2225                                       Macau                Macau  22.16670
+    ## 2226                                     Ningxia       Mainland China  37.26920
+    ## 2227                                     Shaanxi       Mainland China  35.19170
+    ## 2228                                    Shandong       Mainland China  36.34270
+    ## 2229                                    Shanghai       Mainland China  31.20200
+    ## 2230                                      Shanxi       Mainland China  37.57770
+    ## 2231                                     Sichuan       Mainland China  30.61710
+    ## 2232                                     Tianjin       Mainland China  39.30540
+    ## 2233                                    Xinjiang       Mainland China  41.11290
+    ## 2234                                      Yunnan       Mainland China  24.97400
+    ## 2235                                    Zhejiang       Mainland China  29.18320
+    ## 2236                                                          Bahrain  26.02750
+    ## 2237                                                          Belarus  53.70980
+    ## 2238                                                          Croatia  45.10000
+    ## 2239                                                           France  47.00000
+    ## 2240                                                          Germany  51.00000
+    ## 2241                                                           Greece  39.07420
+    ## 2242                                                          Iceland  64.96310
+    ## 2243                                                             Iran  32.00000
+    ## 2244                                                           Israel  31.00000
+    ## 2245                                                            Italy  43.00000
+    ## 2246                                                            Japan  36.00000
+    ## 2247                                                           Kuwait  29.50000
+    ## 2248                                                        Lithuania  55.16940
+    ## 2249                                                           Mexico  23.63450
+    ## 2250                                                      New Zealand -40.90060
+    ## 2251                                                          Nigeria   9.08200
+    ## 2252                                                           Norway  60.47200
+    ## 2253                                                          Romania  45.94320
+    ## 2254                                                      South Korea  36.00000
+    ## 2255                                                            Spain  40.00000
+    ## 2256                                                         Thailand  15.00000
+    ## 2257                                                               UK  55.00000
+    ## 2258                                             United Arab Emirates  24.00000
+    ## 2259                                Montreal, QC               Canada  45.50170
+    ## 2260                                       Anhui       Mainland China  31.82570
+    ## 2261                                   Guangdong       Mainland China  23.34170
+    ## 2262                                       Hebei       Mainland China  38.04280
+    ## 2263                                   Hong Kong            Hong Kong  22.30000
+    ## 2264                                       Hubei       Mainland China  30.97560
+    ## 2265                                     Jiangxi       Mainland China  27.61400
+    ## 2266                                     Sichuan       Mainland China  30.61710
+    ## 2267                                      Taiwan               Taiwan  23.70000
+    ## 2268 Unassigned Location (From Diamond Princess)                   US  35.44370
+    ## 2269                                                             Iran  32.00000
+    ## 2270                                                            Italy  43.00000
+    ## 2271                                     Beijing       Mainland China  40.18240
+    ## 2272                Diamond Princess cruise ship               Others  35.44370
+    ## 2273                                       Hubei       Mainland China  30.97560
+    ## 2274                                    Xinjiang       Mainland China  41.11290
+    ## 2275                                                            Egypt  26.00000
+    ## 2276                                                             Iran  32.00000
+    ## 2277                                                            Italy  43.00000
+    ## 2278                                                         Thailand  15.00000
+    ## 2279                                             United Arab Emirates  24.00000
+    ## 2280                                       Anhui       Mainland China  31.82570
+    ## 2281                                     Beijing       Mainland China  40.18240
+    ## 2282                                  Boston, MA                   US  42.36010
+    ## 2283                                   Chongqing       Mainland China  30.05720
+    ## 2284                                      Fujian       Mainland China  26.07890
+    ## 2285                                       Gansu       Mainland China  36.06110
+    ## 2286                                   Guangdong       Mainland China  23.34170
+    ## 2287                                     Guangxi       Mainland China  23.82980
+    ## 2288                                      Hainan       Mainland China  19.19590
+    ## 2289                                       Hebei       Mainland China  38.04280
+    ## 2290                                Heilongjiang       Mainland China  47.86200
+    ## 2291                                       Henan       Mainland China  33.88202
+    ## 2292                                   Hong Kong            Hong Kong  22.30000
+    ## 2293                                       Hubei       Mainland China  30.97560
+    ## 2294                                       Hunan       Mainland China  27.61040
+    ## 2295                              Inner Mongolia       Mainland China  44.09350
+    ## 2296                                     Jiangsu       Mainland China  32.97110
+    ## 2297                                     Jiangxi       Mainland China  27.61400
+    ## 2298                                       Jilin       Mainland China  43.66610
+    ## 2299                                     Shaanxi       Mainland China  35.19170
+    ## 2300                                    Shandong       Mainland China  36.34270
+    ## 2301                                    Shanghai       Mainland China  31.20200
+    ## 2302                                      Shanxi       Mainland China  37.57770
+    ## 2303                                     Sichuan       Mainland China  30.61710
+    ## 2304                                      Taiwan               Taiwan  23.70000
+    ## 2305                                    Xinjiang       Mainland China  41.11290
+    ## 2306                                      Yunnan       Mainland China  24.97400
+    ## 2307                                    Zhejiang       Mainland China  29.18320
+    ## 2308                                                          Austria  47.51620
+    ## 2309                                                          Bahrain  26.02750
+    ## 2310                                                           Brazil -14.23500
+    ## 2311                                                          Croatia  45.10000
+    ## 2312                                                          Denmark  56.26390
+    ## 2313                                                          Finland  64.00000
+    ## 2314                                                           France  47.00000
+    ## 2315                                                          Germany  51.00000
+    ## 2316                                                             Iran  32.00000
+    ## 2317                                                             Iraq  33.00000
+    ## 2318                                                          Ireland  53.14240
+    ## 2319                                                           Israel  31.00000
+    ## 2320                                                            Italy  43.00000
+    ## 2321                                                            Japan  36.00000
+    ## 2322                                                          Lebanon  33.85470
+    ## 2323                                                       Luxembourg  49.81530
+    ## 2324                                                         Malaysia   2.50000
+    ## 2325                                                           Mexico  23.63450
+    ## 2326                                                           Monaco  43.73330
+    ## 2327                                                      Netherlands  52.13260
+    ## 2328                                                           Norway  60.47200
+    ## 2329                                                             Oman  21.00000
+    ## 2330                                                         Pakistan  30.37530
+    ## 2331                                                            Qatar  25.35480
+    ## 2332                                                        Singapore   1.28330
+    ## 2333                                                      South Korea  36.00000
+    ## 2334                                                            Spain  40.00000
+    ## 2335                                                           Sweden  63.00000
+    ## 2336                                                      Switzerland  46.81820
+    ## 2337                                                         Thailand  15.00000
+    ## 2338                                                               UK  55.00000
+    ## 2339                                             United Arab Emirates  24.00000
+    ## 2340                                     Beijing       Mainland China  40.18240
+    ## 2341                            British Columbia               Canada  49.28270
+    ## 2342                       From Diamond Princess            Australia  35.44370
+    ## 2343                                   Guangdong       Mainland China  23.34170
+    ## 2344                                   Hong Kong            Hong Kong  22.30000
+    ## 2345                                       Hubei       Mainland China  30.97560
+    ## 2346                                       Hunan       Mainland China  27.61040
+    ## 2347                             King County, WA                   US  47.60620
+    ## 2348                                     Ningxia       Mainland China  37.26920
+    ## 2349                                  Queensland            Australia -28.01670
+    ## 2350                             Santa Clara, CA                   US  37.35410
+    ## 2351                        Snohomish County, WA                   US  48.03300
+    ## 2352                             South Australia            Australia -34.92850
+    ## 2353                                      Taiwan               Taiwan  23.70000
+    ## 2354                                 Toronto, ON               Canada  43.65320
+    ## 2355                                    Victoria            Australia -37.81360
+    ## 2356                       Washington County, OR                   US  45.54700
+    ## 2357                           Western Australia            Australia -31.95050
+    ## 2358                                                             Iran  32.00000
+    ## 2359                                                            Italy  43.00000
+    ## 2360                                                            Japan  36.00000
+    ## 2361                                                      South Korea  36.00000
+    ## 2362                                     Beijing       Mainland China  40.18240
+    ## 2363                                       Henan       Mainland China  33.88202
+    ## 2364                                       Hubei       Mainland China  30.97560
+    ## 2365                             King County, WA                   US  47.60620
+    ## 2366                                                           France  47.00000
+    ## 2367                                                             Iran  32.00000
+    ## 2368                                                            Japan  36.00000
+    ## 2369                                                             Oman  21.00000
+    ## 2370                                                        Singapore   1.28330
+    ## 2371                                                      South Korea  36.00000
+    ## 2372                                       Anhui       Mainland China  31.82570
+    ## 2373                                     Beijing       Mainland China  40.18240
+    ## 2374                                   Chongqing       Mainland China  30.05720
+    ## 2375                                      Fujian       Mainland China  26.07890
+    ## 2376                                   Guangdong       Mainland China  23.34170
+    ## 2377                                     Guangxi       Mainland China  23.82980
+    ## 2378                                      Hainan       Mainland China  19.19590
+    ## 2379                                       Hebei       Mainland China  38.04280
+    ## 2380                                Heilongjiang       Mainland China  47.86200
+    ## 2381                                       Henan       Mainland China  33.88202
+    ## 2382                                   Hong Kong            Hong Kong  22.30000
+    ## 2383                                       Hubei       Mainland China  30.97560
+    ## 2384                                       Hunan       Mainland China  27.61040
+    ## 2385                              Inner Mongolia       Mainland China  44.09350
+    ## 2386                                     Jiangsu       Mainland China  32.97110
+    ## 2387                                     Jiangxi       Mainland China  27.61400
+    ## 2388                                       Jilin       Mainland China  43.66610
+    ## 2389                                    Liaoning       Mainland China  41.29560
+    ## 2390                                     Ningxia       Mainland China  37.26920
+    ## 2391                                     Shaanxi       Mainland China  35.19170
+    ## 2392                                    Shandong       Mainland China  36.34270
+    ## 2393                                    Shanghai       Mainland China  31.20200
+    ## 2394                                      Shanxi       Mainland China  37.57770
+    ## 2395                                     Sichuan       Mainland China  30.61710
+    ## 2396                                      Taiwan               Taiwan  23.70000
+    ## 2397                                     Tianjin       Mainland China  39.30540
+    ## 2398                                    Xinjiang       Mainland China  41.11290
+    ## 2399                                      Yunnan       Mainland China  24.97400
+    ## 2400                                    Zhejiang       Mainland China  29.18320
+    ## 2401                                                          Armenia  40.06910
+    ## 2402                                                          Austria  47.51620
+    ## 2403                                                       Azerbaijan  40.14310
+    ## 2404                                                          Bahrain  26.02750
+    ## 2405                                                          Belgium  50.83330
+    ## 2406                                                          Croatia  45.10000
+    ## 2407                                                   Czech Republic  49.81750
+    ## 2408                                                          Denmark  56.26390
+    ## 2409                                               Dominican Republic  18.73570
+    ## 2410                                                          Ecuador  -1.83120
+    ## 2411                                                            Egypt  26.00000
+    ## 2412                                                          Finland  64.00000
+    ## 2413                                                           France  47.00000
+    ## 2414                                                          Georgia  42.31540
+    ## 2415                                                          Germany  51.00000
+    ## 2416                                                           Greece  39.07420
+    ## 2417                                                          Iceland  64.96310
+    ## 2418                                                             Iran  32.00000
+    ## 2419                                                             Iraq  33.00000
+    ## 2420                                                           Israel  31.00000
+    ## 2421                                                            Italy  43.00000
+    ## 2422                                                            Japan  36.00000
+    ## 2423                                                          Lebanon  33.85470
+    ## 2424                                                         Malaysia   2.50000
+    ## 2425                                                           Mexico  23.63450
+    ## 2426                                                      Netherlands  52.13260
+    ## 2427                                                           Norway  60.47200
+    ## 2428                                                            Qatar  25.35480
+    ## 2429                                                        Singapore   1.28330
+    ## 2430                                                      South Korea  36.00000
+    ## 2431                                                            Spain  40.00000
+    ## 2432                                                           Sweden  63.00000
+    ## 2433                                                      Switzerland  46.81820
+    ## 2434                                                               UK  55.00000
+    ## 2435                                     Beijing       Mainland China  40.18240
+    ## 2436                             Cook County, IL                   US  41.73770
+    ## 2437                                   Hong Kong            Hong Kong  22.30000
+    ## 2438                                       Hubei       Mainland China  30.97560
+    ## 2439                             King County, WA                   US  47.60620
+    ## 2440                                    Liaoning       Mainland China  41.29560
+    ## 2441                             New South Wales            Australia -33.86880
+    ## 2442                              Providence, RI                   US  41.82400
+    ## 2443                                    Shandong       Mainland China  36.34270
+    ## 2444                        Snohomish County, WA                   US  48.03300
+    ## 2445                                      Taiwan               Taiwan  23.70000
+    ## 2446                                 Toronto, ON               Canada  43.65320
+    ## 2447                                                             Iran  32.00000
+    ## 2448                                                            Italy  43.00000
+    ## 2449                                                            Japan  36.00000
+    ## 2450                                                      South Korea  36.00000
+    ## 2451                                                         Thailand  15.00000
+    ## 2452                                       Henan       Mainland China  33.88202
+    ## 2453                                       Hubei       Mainland China  30.97560
+    ## 2454                           Western Australia            Australia -31.95050
+    ## 2455                                                             Iran  32.00000
+    ## 2456                                                            Italy  43.00000
+    ## 2457                                                      South Korea  36.00000
+    ## 2458                                       Anhui       Mainland China  31.82570
+    ## 2459                                     Beijing       Mainland China  40.18240
+    ## 2460                                   Chongqing       Mainland China  30.05720
+    ## 2461                                      Fujian       Mainland China  26.07890
+    ## 2462                                       Gansu       Mainland China  36.06110
+    ## 2463                                   Guangdong       Mainland China  23.34170
+    ## 2464                                     Guangxi       Mainland China  23.82980
+    ## 2465                                      Hainan       Mainland China  19.19590
+    ## 2466                                       Hebei       Mainland China  38.04280
+    ## 2467                                Heilongjiang       Mainland China  47.86200
+    ## 2468                                       Henan       Mainland China  33.88202
+    ## 2469                                   Hong Kong            Hong Kong  22.30000
+    ## 2470                                       Hubei       Mainland China  30.97560
+    ## 2471                                       Hunan       Mainland China  27.61040
+    ## 2472                              Inner Mongolia       Mainland China  44.09350
+    ## 2473                                     Jiangsu       Mainland China  32.97110
+    ## 2474                                     Jiangxi       Mainland China  27.61400
+    ## 2475                                       Jilin       Mainland China  43.66610
+    ## 2476                                    Liaoning       Mainland China  41.29560
+    ## 2477                                     Shaanxi       Mainland China  35.19170
+    ## 2478                                    Shandong       Mainland China  36.34270
+    ## 2479                                    Shanghai       Mainland China  31.20200
+    ## 2480                                      Shanxi       Mainland China  37.57770
+    ## 2481                                     Sichuan       Mainland China  30.61710
+    ## 2482                                     Tianjin       Mainland China  39.30540
+    ## 2483                                    Xinjiang       Mainland China  41.11290
+    ## 2484                                      Yunnan       Mainland China  24.97400
+    ## 2485                                    Zhejiang       Mainland China  29.18320
+    ## 2486                                                          Algeria  28.03390
+    ## 2487                                                          Andorra  42.50630
+    ## 2488                                                          Austria  47.51620
+    ## 2489                                                          Bahrain  26.02750
+    ## 2490                                                          Belgium  50.83330
+    ## 2491                                                           France  47.00000
+    ## 2492                                                          Germany  51.00000
+    ## 2493                                                          Iceland  64.96310
+    ## 2494                                                            India  21.00000
+    ## 2495                                                        Indonesia  -0.78930
+    ## 2496                                                             Iran  32.00000
+    ## 2497                                                             Iraq  33.00000
+    ## 2498                                                            Italy  43.00000
+    ## 2499                                                            Japan  36.00000
+    ## 2500                                                           Kuwait  29.50000
+    ## 2501                                                           Latvia  56.87960
+    ## 2502                                                          Lebanon  33.85470
+    ## 2503                                                          Morocco  31.79170
+    ## 2504                                                      Netherlands  52.13260
+    ## 2505                                                           Norway  60.47200
+    ## 2506                                                         Portugal  39.39990
+    ## 2507                                                           Russia  60.00000
+    ## 2508                                                       San Marino  43.94240
+    ## 2509                                                     Saudi Arabia  24.00000
+    ## 2510                                                          Senegal  14.49740
+    ## 2511                                                        Singapore   1.28330
+    ## 2512                                                      South Korea  36.00000
+    ## 2513                                                            Spain  40.00000
+    ## 2514                                                           Sweden  63.00000
+    ## 2515                                                      Switzerland  46.81820
+    ## 2516                                                         Thailand  15.00000
+    ## 2517                                                               UK  55.00000
+    ## 2518                                     Beijing       Mainland China  40.18240
+    ## 2519                             Cook County, IL                   US  41.73770
+    ## 2520                          Grafton County, NH                   US  43.90880
+    ## 2521                                   Guangdong       Mainland China  23.34170
+    ## 2522                            Hillsborough, FL                   US  27.99040
+    ## 2523                                   Hong Kong            Hong Kong  22.30000
+    ## 2524                                       Hubei       Mainland China  30.97560
+    ## 2525                             King County, WA                   US  47.60620
+    ## 2526                           New York City, NY                   US  40.71280
+    ## 2527                                     Ningxia       Mainland China  37.26920
+    ## 2528                           Placer County, CA                   US  39.09160
+    ## 2529                              Providence, RI                   US  41.82400
+    ## 2530                               San Mateo, CA                   US  37.56300
+    ## 2531                             Santa Clara, CA                   US  37.35410
+    ## 2532                                Sarasota, FL                   US  27.33640
+    ## 2533                        Snohomish County, WA                   US  48.03300
+    ## 2534                           Sonoma County, CA                   US  38.57800
+    ## 2535                                      Taiwan               Taiwan  23.70000
+    ## 2536                                    Tasmania            Australia -41.45450
+    ## 2537                                 Toronto, ON               Canada  43.65320
+    ## 2538                                Umatilla, OR                   US  45.77500
+    ## 2539 Unassigned Location (From Diamond Princess)                   US  35.44370
+    ## 2540                                    Victoria            Australia -37.81360
+    ## 2541                       Washington County, OR                   US  45.54700
+    ## 2542                                    Zhejiang       Mainland China  29.18320
+    ## 2543                                                           France  47.00000
+    ## 2544                                                             Iran  32.00000
+    ## 2545                                                            Italy  43.00000
+    ## 2546                                                      South Korea  36.00000
+    ## 2547                                       Hubei       Mainland China  30.97560
+    ## 2548                             King County, WA                   US  47.60620
+    ## 2549                        Snohomish County, WA                   US  48.03300
+    ## 2550                                                             Iran  32.00000
+    ## 2551                                                            Italy  43.00000
+    ## 2552                                                        Singapore   1.28330
+    ## 2553                                                         Thailand  15.00000
+    ## 2554                                       Anhui       Mainland China  31.82570
+    ## 2555                                     Beijing       Mainland China  40.18240
+    ## 2556                                   Chongqing       Mainland China  30.05720
+    ## 2557                                      Fujian       Mainland China  26.07890
+    ## 2558                                       Gansu       Mainland China  36.06110
+    ## 2559                                   Guangdong       Mainland China  23.34170
+    ## 2560                                     Guangxi       Mainland China  23.82980
+    ## 2561                                     Guizhou       Mainland China  26.81540
+    ## 2562                                      Hainan       Mainland China  19.19590
+    ## 2563                                       Hebei       Mainland China  38.04280
+    ## 2564                                Heilongjiang       Mainland China  47.86200
+    ## 2565                                       Henan       Mainland China  33.88202
+    ## 2566                                       Hubei       Mainland China  30.97560
+    ## 2567                                       Hunan       Mainland China  27.61040
+    ## 2568                              Inner Mongolia       Mainland China  44.09350
+    ## 2569                                     Jiangsu       Mainland China  32.97110
+    ## 2570                                     Jiangxi       Mainland China  27.61400
+    ## 2571                                       Jilin       Mainland China  43.66610
+    ## 2572                                     Shaanxi       Mainland China  35.19170
+    ## 2573                                    Shandong       Mainland China  36.34270
+    ## 2574                                    Shanghai       Mainland China  31.20200
+    ## 2575                                      Shanxi       Mainland China  37.57770
+    ## 2576                                     Sichuan       Mainland China  30.61710
+    ## 2577                                      Taiwan               Taiwan  23.70000
+    ## 2578                                    Xinjiang       Mainland China  41.11290
+    ## 2579                                      Yunnan       Mainland China  24.97400
+    ## 2580                                    Zhejiang       Mainland China  29.18320
+    ## 2581                                                          Algeria  28.03390
+    ## 2582                                                        Argentina -38.41610
+    ## 2583                                                          Austria  47.51620
+    ## 2584                                                          Belgium  50.83330
+    ## 2585                                                            Chile -35.67510
+    ## 2586                                                          Croatia  45.10000
+    ## 2587                                                   Czech Republic  49.81750
+    ## 2588                                                          Denmark  56.26390
+    ## 2589                                                          Ecuador  -1.83120
+    ## 2590                                                          Estonia  58.59530
+    ## 2591                                                           France  47.00000
+    ## 2592                                                          Germany  51.00000
+    ## 2593                                                          Iceland  64.96310
+    ## 2594                                                             Iran  32.00000
+    ## 2595                                                             Iraq  33.00000
+    ## 2596                                                          Ireland  53.14240
+    ## 2597                                                           Israel  31.00000
+    ## 2598                                                            Italy  43.00000
+    ## 2599                                                            Japan  36.00000
+    ## 2600                                                           Jordan  31.24000
+    ## 2601                                                         Malaysia   2.50000
+    ## 2602                                                      Netherlands  52.13260
+    ## 2603                                                           Norway  60.47200
+    ## 2604                                                             Oman  21.00000
+    ## 2605                                                         Pakistan  30.37530
+    ## 2606                                                            Qatar  25.35480
+    ## 2607                                                       San Marino  43.94240
+    ## 2608                                                          Senegal  14.49740
+    ## 2609                                                        Singapore   1.28330
+    ## 2610                                                      South Korea  36.00000
+    ## 2611                                                            Spain  40.00000
+    ## 2612                                                           Sweden  63.00000
+    ## 2613                                                      Switzerland  46.81820
+    ## 2614                                                               UK  55.00000
+    ## 2615                                                          Ukraine  48.37940
+    ## 2616                                             United Arab Emirates  24.00000
+    ## 2617                          Norfolk County, MA                   US  42.17670
+    ## 2618                                Berkeley, CA                   US  37.87150
+    ## 2619                            British Columbia               Canada  49.28270
+    ## 2620                Diamond Princess cruise ship               Others  35.44370
+    ## 2621                           Fulton County, GA                   US  33.80340
+    ## 2622                          Grafton County, NH                   US  43.90880
+    ## 2623                            Hillsborough, FL                   US  27.99040
+    ## 2624                                       Hubei       Mainland China  30.97560
+    ## 2625                             King County, WA                   US  47.60620
+    ## 2626                                    Liaoning       Mainland China  41.29560
+    ## 2627                         Maricopa County, AZ                   US  33.29180
+    ## 2628                             New South Wales            Australia -33.86880
+    ## 2629                                  Queensland            Australia -28.01670
+    ## 2630                               San Mateo, CA                   US  37.56300
+    ## 2631                             Santa Clara, CA                   US  37.35410
+    ## 2632                                    Shanghai       Mainland China  31.20200
+    ## 2633                        Snohomish County, WA                   US  48.03300
+    ## 2634                                      Taiwan               Taiwan  23.70000
+    ## 2635                                 Toronto, ON               Canada  43.65320
+    ## 2636                             Wake County, NC                   US  35.80320
+    ## 2637                      Westchester County, NY                   US  41.12200
+    ## 2638                                    Zhejiang       Mainland China  29.18320
+    ## 2639                                                           France  47.00000
+    ## 2640                                                             Iran  32.00000
+    ## 2641                                                            Italy  43.00000
+    ## 2642                                                       San Marino  43.94240
+    ## 2643                                                            Spain  40.00000
+    ## 2644                                       Hubei       Mainland China  30.97560
+    ## 2645                              Inner Mongolia       Mainland China  44.09350
+    ## 2646                             King County, WA                   US  47.60620
+    ## 2647                                                            Italy  43.00000
+    ## 2648                                                            Japan  36.00000
+    ## 2649                                                         Malaysia   2.50000
+    ## 2650                                                           Mexico  23.63450
+    ## 2651                                                             Oman  21.00000
+    ## 2652                                                      Switzerland  46.81820
+    ## 2653                                       Anhui       Mainland China  31.82570
+    ## 2654                                     Beijing       Mainland China  40.18240
+    ## 2655                                   Chongqing       Mainland China  30.05720
+    ## 2656                                      Fujian       Mainland China  26.07890
+    ## 2657                                       Gansu       Mainland China  36.06110
+    ## 2658                                   Guangdong       Mainland China  23.34170
+    ## 2659                                     Guangxi       Mainland China  23.82980
+    ## 2660                                      Hainan       Mainland China  19.19590
+    ## 2661                                       Hebei       Mainland China  38.04280
+    ## 2662                                Heilongjiang       Mainland China  47.86200
+    ## 2663                                       Henan       Mainland China  33.88202
+    ## 2664                                   Hong Kong            Hong Kong  22.30000
+    ## 2665                                       Hubei       Mainland China  30.97560
+    ## 2666                                       Hunan       Mainland China  27.61040
+    ## 2667                              Inner Mongolia       Mainland China  44.09350
+    ## 2668                                     Jiangsu       Mainland China  32.97110
+    ## 2669                                     Jiangxi       Mainland China  27.61400
+    ## 2670                                    Liaoning       Mainland China  41.29560
+    ## 2671                                       Macau                Macau  22.16670
+    ## 2672                                 Madison, WI                   US  43.07310
+    ## 2673                                    Shandong       Mainland China  36.34270
+    ## 2674                                    Shanghai       Mainland China  31.20200
+    ## 2675                                      Shanxi       Mainland China  37.57770
+    ## 2676                                     Sichuan       Mainland China  30.61710
+    ## 2677                                     Tianjin       Mainland China  39.30540
+    ## 2678                                    Xinjiang       Mainland China  41.11290
+    ## 2679                                      Yunnan       Mainland China  24.97400
+    ## 2680                                    Zhejiang       Mainland China  29.18320
+    ## 2681                                                          Algeria  28.03390
+    ## 2682                                                          Austria  47.51620
+    ## 2683                                                          Bahrain  26.02750
+    ## 2684                                                          Belarus  53.70980
+    ## 2685                                                          Belgium  50.83330
+    ## 2686                                                           Brazil -14.23500
+    ## 2687                                                          Croatia  45.10000
+    ## 2688                                                   Czech Republic  49.81750
+    ## 2689                                                          Denmark  56.26390
+    ## 2690                                                          Ecuador  -1.83120
+    ## 2691                                                    Faroe Islands  61.89260
+    ## 2692                                                           France  47.00000
+    ## 2693                                                          Germany  51.00000
+    ## 2694                                                        Gibraltar  36.14080
+    ## 2695                                                           Greece  39.07420
+    ## 2696                                                          Hungary  47.16250
+    ## 2697                                                          Iceland  64.96310
+    ## 2698                                                            India  21.00000
+    ## 2699                                                             Iran  32.00000
+    ## 2700                                                             Iraq  33.00000
+    ## 2701                                                          Ireland  53.14240
+    ## 2702                                                           Israel  31.00000
+    ## 2703                                                            Italy  43.00000
+    ## 2704                                                            Japan  36.00000
+    ## 2705                                                    Liechtenstein  47.14000
+    ## 2706                                                         Malaysia   2.50000
+    ## 2707                                                      Netherlands  52.13260
+    ## 2708                                                      New Zealand -40.90060
+    ## 2709                                                           Norway  60.47200
+    ## 2710                                                             Oman  21.00000
+    ## 2711                                                           Poland  51.91940
+    ## 2712                                                         Portugal  39.39990
+    ## 2713                                                            Qatar  25.35480
+    ## 2714                                                          Romania  45.94320
+    ## 2715                                                 Saint Barthelemy  17.90000
+    ## 2716                                                       San Marino  43.94240
+    ## 2717                                                          Senegal  14.49740
+    ## 2718                                                      South Korea  36.00000
+    ## 2719                                                            Spain  40.00000
+    ## 2720                                                           Sweden  63.00000
+    ## 2721                                                      Switzerland  46.81820
+    ## 2722                                                          Tunisia  34.00000
+    ## 2723                                                               UK  55.00000
+    ## 2724                                     Beijing       Mainland China  40.18240
+    ## 2725                            British Columbia               Canada  49.28270
+    ## 2726                     Contra Costa County, CA                   US  37.85340
+    ## 2727                                   Hong Kong            Hong Kong  22.30000
+    ## 2728                                       Hubei       Mainland China  30.97560
+    ## 2729                             King County, WA                   US  47.60620
+    ## 2730                             Los Angeles, CA                   US  34.05220
+    ## 2731                             New South Wales            Australia -33.86880
+    ## 2732                                     Ningxia       Mainland China  37.26920
+    ## 2733                          Northern Territory            Australia -12.46340
+    ## 2734                           Orange County, CA                   US  33.78790
+    ## 2735                           Placer County, CA                   US  39.09160
+    ## 2736                        Snohomish County, WA                   US  48.03300
+    ## 2737                             South Australia            Australia -34.92850
+    ## 2738                                    Victoria            Australia -37.81360
+    ## 2739                      Westchester County, NY                   US  41.12200
+    ## 2740                                                             Iran  32.00000
+    ## 2741                                                             Iraq  33.00000
+    ## 2742                                                            Italy  43.00000
+    ## 2743                                                      South Korea  36.00000
+    ## 2744                                                            Spain  40.00000
+    ## 2745                                       Hubei       Mainland China  30.97560
+    ## 2746                             King County, WA                   US  47.60620
+    ## 2747                             New South Wales            Australia -33.86880
+    ## 2748                           Placer County, CA                   US  39.09160
+    ## 2749                                                             Iran  32.00000
+    ## 2750                                                            Italy  43.00000
+    ## 2751                                                          Lebanon  33.85470
+    ## 2752                                                          Romania  45.94320
+    ## 2753                                                      South Korea  36.00000
+    ## 2754                                                      Switzerland  46.81820
+    ## 2755                                       Anhui       Mainland China  31.82570
+    ## 2756                                     Beijing       Mainland China  40.18240
+    ## 2757                                   Chongqing       Mainland China  30.05720
+    ## 2758                                      Fujian       Mainland China  26.07890
+    ## 2759                                       Gansu       Mainland China  36.06110
+    ## 2760                                   Guangdong       Mainland China  23.34170
+    ## 2761                                     Guangxi       Mainland China  23.82980
+    ## 2762                                      Hainan       Mainland China  19.19590
+    ## 2763                                       Hebei       Mainland China  38.04280
+    ## 2764                                Heilongjiang       Mainland China  47.86200
+    ## 2765                                       Henan       Mainland China  33.88202
+    ## 2766                                       Hubei       Mainland China  30.97560
+    ## 2767                                       Hunan       Mainland China  27.61040
+    ## 2768                              Inner Mongolia       Mainland China  44.09350
+    ## 2769                                     Jiangsu       Mainland China  32.97110
+    ## 2770                                     Jiangxi       Mainland China  27.61400
+    ## 2771                                       Jilin       Mainland China  43.66610
+    ## 2772                                     Shaanxi       Mainland China  35.19170
+    ## 2773                                    Shandong       Mainland China  36.34270
+    ## 2774                                    Shanghai       Mainland China  31.20200
+    ## 2775                                     Sichuan       Mainland China  30.61710
+    ## 2776                                    Xinjiang       Mainland China  41.11290
+    ## 2777                                    Zhejiang       Mainland China  29.18320
+    ##           Long       date cases      type
+    ## 1     138.0000 2020-01-22     2 confirmed
+    ## 2     128.0000 2020-01-22     1 confirmed
+    ## 3     101.0000 2020-01-22     2 confirmed
+    ## 4     117.2264 2020-01-22     1 confirmed
+    ## 5     116.4142 2020-01-22    14 confirmed
+    ## 6     107.8740 2020-01-22     6 confirmed
+    ## 7     117.9874 2020-01-22     1 confirmed
+    ## 8     113.4244 2020-01-22    26 confirmed
+    ## 9     108.7881 2020-01-22     2 confirmed
+    ## 10    106.8748 2020-01-22     1 confirmed
+    ## 11    109.7453 2020-01-22     4 confirmed
+    ## 12    114.5149 2020-01-22     1 confirmed
+    ## 13    113.6140 2020-01-22     5 confirmed
+    ## 14    112.2707 2020-01-22   444 confirmed
+    ## 15    111.7088 2020-01-22     4 confirmed
+    ## 16    119.4550 2020-01-22     1 confirmed
+    ## 17    115.7221 2020-01-22     2 confirmed
+    ## 18   -122.3321 2020-01-22     1 confirmed
+    ## 19    122.6085 2020-01-22     2 confirmed
+    ## 20    113.5500 2020-01-22     1 confirmed
+    ## 21    106.1655 2020-01-22     1 confirmed
+    ## 22    118.1498 2020-01-22     2 confirmed
+    ## 23    121.4491 2020-01-22     9 confirmed
+    ## 24    112.2922 2020-01-22     1 confirmed
+    ## 25    102.7103 2020-01-22     5 confirmed
+    ## 26    121.0000 2020-01-22     1 confirmed
+    ## 27    117.3230 2020-01-22     4 confirmed
+    ## 28    101.4870 2020-01-22     1 confirmed
+    ## 29    120.0934 2020-01-22    10 confirmed
+    ## 30    112.2707 2020-01-22    17     death
+    ## 31    112.2707 2020-01-22    28 recovered
+    ## 32    138.0000 2020-01-23    -1 confirmed
+    ## 33    103.8333 2020-01-23     1 confirmed
+    ## 34    101.0000 2020-01-23     1 confirmed
+    ## 35    108.0000 2020-01-23     2 confirmed
+    ## 36    117.2264 2020-01-23     8 confirmed
+    ## 37    116.4142 2020-01-23     8 confirmed
+    ## 38    107.8740 2020-01-23     3 confirmed
+    ## 39    117.9874 2020-01-23     4 confirmed
+    ## 40    103.8343 2020-01-23     2 confirmed
+    ## 41    113.4244 2020-01-23     6 confirmed
+    ## 42    108.7881 2020-01-23     3 confirmed
+    ## 43    106.8748 2020-01-23     2 confirmed
+    ## 44    109.7453 2020-01-23     1 confirmed
+    ## 45    127.7615 2020-01-23     2 confirmed
+    ## 46    114.2000 2020-01-23     2 confirmed
+    ## 47    111.7088 2020-01-23     5 confirmed
+    ## 48    119.4550 2020-01-23     4 confirmed
+    ## 49    115.7221 2020-01-23     5 confirmed
+    ## 50    126.1923 2020-01-23     1 confirmed
+    ## 51    122.6085 2020-01-23     1 confirmed
+    ## 52    113.5500 2020-01-23     1 confirmed
+    ## 53    108.8701 2020-01-23     3 confirmed
+    ## 54    118.1498 2020-01-23     4 confirmed
+    ## 55    121.4491 2020-01-23     7 confirmed
+    ## 56    102.7103 2020-01-23     3 confirmed
+    ## 57     85.2401 2020-01-23     2 confirmed
+    ## 58    101.4870 2020-01-23     1 confirmed
+    ## 59    120.0934 2020-01-23    17 confirmed
+    ## 60    114.5149 2020-01-23     1     death
+    ## 61    113.4244 2020-01-23     2 recovered
+    ## 62      2.0000 2020-01-24     2 confirmed
+    ## 63    138.0000 2020-01-24     1 confirmed
+    ## 64    103.8333 2020-01-24     2 confirmed
+    ## 65    128.0000 2020-01-24     1 confirmed
+    ## 66    101.0000 2020-01-24     2 confirmed
+    ## 67    117.2264 2020-01-24     6 confirmed
+    ## 68    116.4142 2020-01-24    14 confirmed
+    ## 69    107.8740 2020-01-24    18 confirmed
+    ## 70    -87.6976 2020-01-24     1 confirmed
+    ## 71    117.9874 2020-01-24     5 confirmed
+    ## 72    113.4244 2020-01-24    21 confirmed
+    ## 73    108.7881 2020-01-24    18 confirmed
+    ## 74    109.7453 2020-01-24     3 confirmed
+    ## 75    114.5149 2020-01-24     1 confirmed
+    ## 76    127.7615 2020-01-24     2 confirmed
+    ## 77    113.6140 2020-01-24     4 confirmed
+    ## 78    112.2707 2020-01-24   105 confirmed
+    ## 79    111.7088 2020-01-24    15 confirmed
+    ## 80    113.9448 2020-01-24     1 confirmed
+    ## 81    119.4550 2020-01-24     4 confirmed
+    ## 82    115.7221 2020-01-24    11 confirmed
+    ## 83    126.1923 2020-01-24     2 confirmed
+    ## 84    122.6085 2020-01-24     1 confirmed
+    ## 85    106.1655 2020-01-24     1 confirmed
+    ## 86    108.8701 2020-01-24     2 confirmed
+    ## 87    118.1498 2020-01-24     9 confirmed
+    ## 88    121.4491 2020-01-24     4 confirmed
+    ## 89    102.7103 2020-01-24     7 confirmed
+    ## 90    121.0000 2020-01-24     2 confirmed
+    ## 91    117.3230 2020-01-24     4 confirmed
+    ## 92    101.4870 2020-01-24     3 confirmed
+    ## 93    120.0934 2020-01-24    16 confirmed
+    ## 94    127.7615 2020-01-24     1     death
+    ## 95    112.2707 2020-01-24     7     death
+    ## 96    116.4142 2020-01-24     1 recovered
+    ## 97    112.2707 2020-01-24     3 recovered
+    ## 98    121.4491 2020-01-24     1 recovered
+    ## 99    120.0934 2020-01-24     1 recovered
+    ## 100     2.0000 2020-01-25     1 confirmed
+    ## 101   112.5000 2020-01-25     3 confirmed
+    ## 102    84.2500 2020-01-25     1 confirmed
+    ## 103   101.0000 2020-01-25     2 confirmed
+    ## 104   117.2264 2020-01-25    24 confirmed
+    ## 105   116.4142 2020-01-25     5 confirmed
+    ## 106   107.8740 2020-01-25    30 confirmed
+    ## 107   117.9874 2020-01-25     8 confirmed
+    ## 108   103.8343 2020-01-25     2 confirmed
+    ## 109   113.4244 2020-01-25    25 confirmed
+    ## 110   106.8748 2020-01-25     1 confirmed
+    ## 111   109.7453 2020-01-25    11 confirmed
+    ## 112   114.5149 2020-01-25     6 confirmed
+    ## 113   127.7615 2020-01-25     5 confirmed
+    ## 114   113.6140 2020-01-25    23 confirmed
+    ## 115   114.2000 2020-01-25     3 confirmed
+    ## 116   112.2707 2020-01-25   212 confirmed
+    ## 117   111.7088 2020-01-25    19 confirmed
+    ## 118   113.9448 2020-01-25     6 confirmed
+    ## 119   119.4550 2020-01-25     9 confirmed
+    ## 120   126.1923 2020-01-25     1 confirmed
+    ## 121   122.6085 2020-01-25    13 confirmed
+    ## 122   106.1655 2020-01-25     1 confirmed
+    ## 123    95.9956 2020-01-25     1 confirmed
+    ## 124   108.8701 2020-01-25    10 confirmed
+    ## 125   118.1498 2020-01-25    12 confirmed
+    ## 126   121.4491 2020-01-25    13 confirmed
+    ## 127   112.2922 2020-01-25     5 confirmed
+    ## 128   102.7103 2020-01-25    13 confirmed
+    ## 129   117.3230 2020-01-25     2 confirmed
+    ## 130    85.2401 2020-01-25     1 confirmed
+    ## 131   101.4870 2020-01-25     6 confirmed
+    ## 132   120.0934 2020-01-25    19 confirmed
+    ## 133   112.2707 2020-01-25    16     death
+    ## 134   116.4142 2020-01-25     1 recovered
+    ## 135   112.2707 2020-01-25     1 recovered
+    ## 136   119.4550 2020-01-25     1 recovered
+    ## 137   138.0000 2020-01-26     2 confirmed
+    ## 138   112.5000 2020-01-26     1 confirmed
+    ## 139   103.8333 2020-01-26     1 confirmed
+    ## 140   128.0000 2020-01-26     1 confirmed
+    ## 141   101.0000 2020-01-26     1 confirmed
+    ## 142   117.2264 2020-01-26    21 confirmed
+    ## 143   116.4142 2020-01-26    27 confirmed
+    ## 144   107.8740 2020-01-26    18 confirmed
+    ## 145   117.9874 2020-01-26    17 confirmed
+    ## 146   103.8343 2020-01-26     3 confirmed
+    ## 147   113.4244 2020-01-26    33 confirmed
+    ## 148   108.7881 2020-01-26    13 confirmed
+    ## 149   106.8748 2020-01-26     1 confirmed
+    ## 150   109.7453 2020-01-26     3 confirmed
+    ## 151   114.5149 2020-01-26     5 confirmed
+    ## 152   127.7615 2020-01-26     6 confirmed
+    ## 153   113.6140 2020-01-26    51 confirmed
+    ## 154   114.2000 2020-01-26     3 confirmed
+    ## 155   112.2707 2020-01-26   297 confirmed
+    ## 156   111.7088 2020-01-26    26 confirmed
+    ## 157   119.4550 2020-01-26    15 confirmed
+    ## 158   115.7221 2020-01-26    18 confirmed
+    ## 159   122.6085 2020-01-26     4 confirmed
+    ## 160  -118.2437 2020-01-26     1 confirmed
+    ## 161   113.5500 2020-01-26     3 confirmed
+    ## 162   151.2093 2020-01-26     3 confirmed
+    ## 163   106.1655 2020-01-26     1 confirmed
+    ## 164  -117.8531 2020-01-26     1 confirmed
+    ## 165   108.8701 2020-01-26     7 confirmed
+    ## 166   118.1498 2020-01-26    19 confirmed
+    ## 167   121.4491 2020-01-26     7 confirmed
+    ## 168   112.2922 2020-01-26     3 confirmed
+    ## 169   102.7103 2020-01-26    16 confirmed
+    ## 170   121.0000 2020-01-26     1 confirmed
+    ## 171  -111.9400 2020-01-26     1 confirmed
+    ## 172   117.3230 2020-01-26     4 confirmed
+    ## 173   -79.3832 2020-01-26     1 confirmed
+    ## 174   144.9631 2020-01-26     1 confirmed
+    ## 175    85.2401 2020-01-26     1 confirmed
+    ## 176   101.4870 2020-01-26     5 confirmed
+    ## 177   120.0934 2020-01-26    42 confirmed
+    ## 178   113.6140 2020-01-26     1     death
+    ## 179   112.2707 2020-01-26    12     death
+    ## 180   121.4491 2020-01-26     1     death
+    ## 181   138.0000 2020-01-26     1 recovered
+    ## 182   101.0000 2020-01-26     2 recovered
+    ## 183   112.2707 2020-01-26    10 recovered
+    ## 184   104.9167 2020-01-27     1 confirmed
+    ## 185     9.0000 2020-01-27     1 confirmed
+    ## 186   103.8333 2020-01-27     1 confirmed
+    ## 187   128.0000 2020-01-27     1 confirmed
+    ## 188    81.0000 2020-01-27     1 confirmed
+    ## 189   117.2264 2020-01-27    10 confirmed
+    ## 190   116.4142 2020-01-27    12 confirmed
+    ## 191   107.8740 2020-01-27    35 confirmed
+    ## 192   117.9874 2020-01-27    24 confirmed
+    ## 193   103.8343 2020-01-27     7 confirmed
+    ## 194   113.4244 2020-01-27    40 confirmed
+    ## 195   108.7881 2020-01-27    10 confirmed
+    ## 196   106.8748 2020-01-27     2 confirmed
+    ## 197   109.7453 2020-01-27    11 confirmed
+    ## 198   114.5149 2020-01-27     5 confirmed
+    ## 199   127.7615 2020-01-27     6 confirmed
+    ## 200   113.6140 2020-01-27    45 confirmed
+    ## 201   112.2707 2020-01-27   365 confirmed
+    ## 202   111.7088 2020-01-27    31 confirmed
+    ## 203   113.9448 2020-01-27     4 confirmed
+    ## 204   119.4550 2020-01-27    14 confirmed
+    ## 205   115.7221 2020-01-27    36 confirmed
+    ## 206   126.1923 2020-01-27     2 confirmed
+    ## 207   122.6085 2020-01-27     6 confirmed
+    ## 208   113.5500 2020-01-27     1 confirmed
+    ## 209   151.2093 2020-01-27     1 confirmed
+    ## 210   106.1655 2020-01-27     3 confirmed
+    ## 211    95.9956 2020-01-27     5 confirmed
+    ## 212   108.8701 2020-01-27    13 confirmed
+    ## 213   118.1498 2020-01-27    29 confirmed
+    ## 214   121.4491 2020-01-27    13 confirmed
+    ## 215   112.2922 2020-01-27     4 confirmed
+    ## 216   102.7103 2020-01-27    25 confirmed
+    ## 217   121.0000 2020-01-27     1 confirmed
+    ## 218   117.3230 2020-01-27     9 confirmed
+    ## 219    85.2401 2020-01-27     1 confirmed
+    ## 220   101.4870 2020-01-27    10 confirmed
+    ## 221   120.0934 2020-01-27    24 confirmed
+    ## 222   116.4142 2020-01-27     1     death
+    ## 223   109.7453 2020-01-27     1     death
+    ## 224   112.2707 2020-01-27    24     death
+    ## 225   113.4244 2020-01-27     2 recovered
+    ## 226   112.2707 2020-01-27     3 recovered
+    ## 227   115.7221 2020-01-27     2 recovered
+    ## 228   121.4491 2020-01-27     2 recovered
+    ## 229     2.0000 2020-01-28     1 confirmed
+    ## 230     9.0000 2020-01-28     3 confirmed
+    ## 231   138.0000 2020-01-28     3 confirmed
+    ## 232   103.8333 2020-01-28     2 confirmed
+    ## 233   101.0000 2020-01-28     6 confirmed
+    ## 234   117.2264 2020-01-28    36 confirmed
+    ## 235   116.4142 2020-01-28    11 confirmed
+    ## 236  -123.1207 2020-01-28     1 confirmed
+    ## 237   107.8740 2020-01-28    22 confirmed
+    ## 238   117.9874 2020-01-28    21 confirmed
+    ## 239   103.8343 2020-01-28     5 confirmed
+    ## 240   113.4244 2020-01-28    56 confirmed
+    ## 241   108.7881 2020-01-28     5 confirmed
+    ## 242   106.8748 2020-01-28     2 confirmed
+    ## 243   109.7453 2020-01-28     7 confirmed
+    ## 244   114.5149 2020-01-28    15 confirmed
+    ## 245   127.7615 2020-01-28    12 confirmed
+    ## 246   113.6140 2020-01-28    40 confirmed
+    ## 247   112.2707 2020-01-28  2131 confirmed
+    ## 248   111.7088 2020-01-28    43 confirmed
+    ## 249   113.9448 2020-01-28     4 confirmed
+    ## 250   119.4550 2020-01-28    23 confirmed
+    ## 251   115.7221 2020-01-28    37 confirmed
+    ## 252   126.1923 2020-01-28     2 confirmed
+    ## 253   122.6085 2020-01-28     7 confirmed
+    ## 254   113.5500 2020-01-28     1 confirmed
+    ## 255   106.1655 2020-01-28     4 confirmed
+    ## 256   108.8701 2020-01-28    11 confirmed
+    ## 257   118.1498 2020-01-28    20 confirmed
+    ## 258   121.4491 2020-01-28    13 confirmed
+    ## 259   112.2922 2020-01-28    14 confirmed
+    ## 260   102.7103 2020-01-28    21 confirmed
+    ## 261   121.0000 2020-01-28     3 confirmed
+    ## 262   117.3230 2020-01-28     1 confirmed
+    ## 263    85.2401 2020-01-28     5 confirmed
+    ## 264   101.4870 2020-01-28    18 confirmed
+    ## 265   120.0934 2020-01-28    45 confirmed
+    ## 266   112.2707 2020-01-28    49     death
+    ## 267   101.0000 2020-01-28     3 recovered
+    ## 268   116.4142 2020-01-28     2 recovered
+    ## 269   108.7881 2020-01-28     2 recovered
+    ## 270   112.2707 2020-01-28    35 recovered
+    ## 271   115.7221 2020-01-28     1 recovered
+    ## 272   121.4491 2020-01-28     1 recovered
+    ## 273   120.0934 2020-01-28     2 recovered
+    ## 274    26.0000 2020-01-29     1 confirmed
+    ## 275     2.0000 2020-01-29     1 confirmed
+    ## 276   112.5000 2020-01-29     3 confirmed
+    ## 277    54.0000 2020-01-29     4 confirmed
+    ## 278   117.2264 2020-01-29    46 confirmed
+    ## 279   116.4142 2020-01-29    20 confirmed
+    ## 280   107.8740 2020-01-29    15 confirmed
+    ## 281   117.9874 2020-01-29     4 confirmed
+    ## 282   103.8343 2020-01-29     5 confirmed
+    ## 283   113.4244 2020-01-29    70 confirmed
+    ## 284   108.7881 2020-01-29     7 confirmed
+    ## 285   109.7453 2020-01-29     3 confirmed
+    ## 286   114.5149 2020-01-29    15 confirmed
+    ## 287   127.7615 2020-01-29     5 confirmed
+    ## 288   113.6140 2020-01-29    38 confirmed
+    ## 289   114.2000 2020-01-29     2 confirmed
+    ## 290   111.7088 2020-01-29    78 confirmed
+    ## 291   113.9448 2020-01-29     1 confirmed
+    ## 292   119.4550 2020-01-29    29 confirmed
+    ## 293   126.1923 2020-01-29     1 confirmed
+    ## 294   122.6085 2020-01-29     5 confirmed
+    ## 295   106.1655 2020-01-29     1 confirmed
+    ## 296   153.4000 2020-01-29     1 confirmed
+    ## 297   108.8701 2020-01-29    10 confirmed
+    ## 298   118.1498 2020-01-29    35 confirmed
+    ## 299   121.4491 2020-01-29    30 confirmed
+    ## 300   102.7103 2020-01-29    18 confirmed
+    ## 301   117.3230 2020-01-29     3 confirmed
+    ## 302    85.2401 2020-01-29     3 confirmed
+    ## 303   101.4870 2020-01-29    11 confirmed
+    ## 304   120.0934 2020-01-29   123 confirmed
+    ## 305   113.6140 2020-01-29     1     death
+    ## 306   102.7103 2020-01-29     1     death
+    ## 307   117.2264 2020-01-29     2 recovered
+    ## 308   107.8740 2020-01-29     1 recovered
+    ## 309   113.4244 2020-01-29     1 recovered
+    ## 310   106.8748 2020-01-29     1 recovered
+    ## 311   113.6140 2020-01-29     1 recovered
+    ## 312   112.2707 2020-01-29     8 recovered
+    ## 313   122.6085 2020-01-29     1 recovered
+    ## 314   118.1498 2020-01-29     1 recovered
+    ## 315   121.4491 2020-01-29     1 recovered
+    ## 316   112.2922 2020-01-29     1 recovered
+    ## 317   102.7103 2020-01-29     1 recovered
+    ## 318    78.0000 2020-01-30     1 confirmed
+    ## 319   138.0000 2020-01-30     4 confirmed
+    ## 320   112.5000 2020-01-30     1 confirmed
+    ## 321   122.0000 2020-01-30     1 confirmed
+    ## 322   103.8333 2020-01-30     3 confirmed
+    ## 323   117.2264 2020-01-30    48 confirmed
+    ## 324   116.4142 2020-01-30     3 confirmed
+    ## 325   107.8740 2020-01-30    35 confirmed
+    ## 326   117.9874 2020-01-30    17 confirmed
+    ## 327   103.8343 2020-01-30     2 confirmed
+    ## 328   113.4244 2020-01-30    77 confirmed
+    ## 329   108.7881 2020-01-30    20 confirmed
+    ## 330   106.8748 2020-01-30     3 confirmed
+    ## 331   109.7453 2020-01-30     3 confirmed
+    ## 332   114.5149 2020-01-30    17 confirmed
+    ## 333   127.7615 2020-01-30     6 confirmed
+    ## 334   113.6140 2020-01-30    72 confirmed
+    ## 335   112.2707 2020-01-30  1349 confirmed
+    ## 336   111.7088 2020-01-30    56 confirmed
+    ## 337   113.9448 2020-01-30     3 confirmed
+    ## 338   119.4550 2020-01-30    30 confirmed
+    ## 339   115.7221 2020-01-30    53 confirmed
+    ## 340   126.1923 2020-01-30     5 confirmed
+    ## 341   122.6085 2020-01-30     2 confirmed
+    ## 342   106.1655 2020-01-30     5 confirmed
+    ## 343    95.9956 2020-01-30     2 confirmed
+    ## 344   153.4000 2020-01-30     2 confirmed
+    ## 345   108.8701 2020-01-30     7 confirmed
+    ## 346   118.1498 2020-01-30    28 confirmed
+    ## 347   121.4491 2020-01-30    16 confirmed
+    ## 348   112.2922 2020-01-30     8 confirmed
+    ## 349   102.7103 2020-01-30    34 confirmed
+    ## 350   121.0000 2020-01-30     1 confirmed
+    ## 351   117.3230 2020-01-30     4 confirmed
+    ## 352    88.0924 2020-01-30     1 confirmed
+    ## 353   144.9631 2020-01-30     1 confirmed
+    ## 354    85.2401 2020-01-30     1 confirmed
+    ## 355   101.4870 2020-01-30    15 confirmed
+    ## 356   120.0934 2020-01-30   132 confirmed
+    ## 357   127.7615 2020-01-30     1     death
+    ## 358   112.2707 2020-01-30    37     death
+    ## 359   113.4244 2020-01-30     5 recovered
+    ## 360   109.7453 2020-01-30     1 recovered
+    ## 361   113.6140 2020-01-30     1 recovered
+    ## 362   112.2707 2020-01-30     2 recovered
+    ## 363   111.7088 2020-01-30     2 recovered
+    ## 364   115.7221 2020-01-30     2 recovered
+    ## 365   126.1923 2020-01-30     1 recovered
+    ## 366   151.2093 2020-01-30     2 recovered
+    ## 367   120.0934 2020-01-30     1 recovered
+    ## 368     9.0000 2020-01-31     1 confirmed
+    ## 369    12.0000 2020-01-31     2 confirmed
+    ## 370   138.0000 2020-01-31     4 confirmed
+    ## 371    90.0000 2020-01-31     2 confirmed
+    ## 372   103.8333 2020-01-31     3 confirmed
+    ## 373   128.0000 2020-01-31     7 confirmed
+    ## 374    16.0000 2020-01-31     1 confirmed
+    ## 375   101.0000 2020-01-31     5 confirmed
+    ## 376    -3.0000 2020-01-31     2 confirmed
+    ## 377   117.2264 2020-01-31    37 confirmed
+    ## 378   116.4142 2020-01-31    25 confirmed
+    ## 379   107.8740 2020-01-31    29 confirmed
+    ## 380   -87.6976 2020-01-31     1 confirmed
+    ## 381   117.9874 2020-01-31    19 confirmed
+    ## 382   103.8343 2020-01-31     3 confirmed
+    ## 383   113.4244 2020-01-31    82 confirmed
+    ## 384   108.7881 2020-01-31     9 confirmed
+    ## 385   106.8748 2020-01-31    17 confirmed
+    ## 386   109.7453 2020-01-31     6 confirmed
+    ## 387   114.5149 2020-01-31    17 confirmed
+    ## 388   127.7615 2020-01-31    15 confirmed
+    ## 389   113.6140 2020-01-31    74 confirmed
+    ## 390   114.2000 2020-01-31     2 confirmed
+    ## 391   112.2707 2020-01-31   903 confirmed
+    ## 392   111.7088 2020-01-31    55 confirmed
+    ## 393   113.9448 2020-01-31     1 confirmed
+    ## 394   119.4550 2020-01-31    39 confirmed
+    ## 395   115.7221 2020-01-31    78 confirmed
+    ## 396   122.6085 2020-01-31     7 confirmed
+    ## 397   -81.2453 2020-01-31     1 confirmed
+    ## 398   106.1655 2020-01-31     4 confirmed
+    ## 399   153.4000 2020-01-31    -1 confirmed
+    ## 400  -121.9552 2020-01-31     1 confirmed
+    ## 401   108.8701 2020-01-31    24 confirmed
+    ## 402   118.1498 2020-01-31    26 confirmed
+    ## 403   121.4491 2020-01-31    23 confirmed
+    ## 404   112.2922 2020-01-31     4 confirmed
+    ## 405   102.7103 2020-01-31    35 confirmed
+    ## 406   121.0000 2020-01-31     1 confirmed
+    ## 407   117.3230 2020-01-31     1 confirmed
+    ## 408   -79.3832 2020-01-31     1 confirmed
+    ## 409   144.9631 2020-01-31     1 confirmed
+    ## 410    85.2401 2020-01-31     3 confirmed
+    ## 411   101.4870 2020-01-31    13 confirmed
+    ## 412   120.0934 2020-01-31   110 confirmed
+    ## 413   112.2707 2020-01-31    42     death
+    ## 414   117.2264 2020-01-31     1 recovered
+    ## 415   116.4142 2020-01-31     1 recovered
+    ## 416   113.4244 2020-01-31     1 recovered
+    ## 417   106.8748 2020-01-31     1 recovered
+    ## 418   113.6140 2020-01-31     1 recovered
+    ## 419   112.2707 2020-01-31    51 recovered
+    ## 420   113.9448 2020-01-31     1 recovered
+    ## 421   119.4550 2020-01-31     4 recovered
+    ## 422   115.7221 2020-01-31     2 recovered
+    ## 423   118.1498 2020-01-31     1 recovered
+    ## 424   121.4491 2020-01-31     4 recovered
+    ## 425   101.4870 2020-01-31     1 recovered
+    ## 426   120.0934 2020-01-31    10 recovered
+    ## 427     2.0000 2020-02-01     1 confirmed
+    ## 428     9.0000 2020-02-01     3 confirmed
+    ## 429   138.0000 2020-02-01     5 confirmed
+    ## 430   103.8333 2020-02-01     3 confirmed
+    ## 431   128.0000 2020-02-01     1 confirmed
+    ## 432    -4.0000 2020-02-01     1 confirmed
+    ## 433   108.0000 2020-02-01     4 confirmed
+    ## 434   117.2264 2020-02-01    60 confirmed
+    ## 435   116.4142 2020-02-01    29 confirmed
+    ## 436   -71.0589 2020-02-01     1 confirmed
+    ## 437   107.8740 2020-02-01    36 confirmed
+    ## 438   117.9874 2020-02-01    24 confirmed
+    ## 439   103.8343 2020-02-01    11 confirmed
+    ## 440   113.4244 2020-02-01    99 confirmed
+    ## 441   108.7881 2020-02-01    13 confirmed
+    ## 442   109.7453 2020-02-01    10 confirmed
+    ## 443   114.5149 2020-02-01    14 confirmed
+    ## 444   127.7615 2020-02-01    21 confirmed
+    ## 445   113.6140 2020-02-01    70 confirmed
+    ## 446   114.2000 2020-02-01     1 confirmed
+    ## 447   112.2707 2020-02-01  1347 confirmed
+    ## 448   111.7088 2020-02-01    57 confirmed
+    ## 449   113.9448 2020-02-01     3 confirmed
+    ## 450   119.4550 2020-02-01    34 confirmed
+    ## 451   115.7221 2020-02-01    46 confirmed
+    ## 452   126.1923 2020-02-01     3 confirmed
+    ## 453   122.6085 2020-02-01    16 confirmed
+    ## 454   106.1655 2020-02-01     5 confirmed
+    ## 455    95.9956 2020-02-01     1 confirmed
+    ## 456   153.4000 2020-02-01     1 confirmed
+    ## 457   108.8701 2020-02-01    14 confirmed
+    ## 458   118.1498 2020-02-01    22 confirmed
+    ## 459   121.4491 2020-02-01    34 confirmed
+    ## 460   112.2922 2020-02-01     8 confirmed
+    ## 461   102.7103 2020-02-01    30 confirmed
+    ## 462   138.6007 2020-02-01     1 confirmed
+    ## 463   117.3230 2020-02-01     9 confirmed
+    ## 464   144.9631 2020-02-01     1 confirmed
+    ## 465    85.2401 2020-02-01     1 confirmed
+    ## 466   101.4870 2020-02-01    10 confirmed
+    ## 467   120.0934 2020-02-01    61 confirmed
+    ## 468   107.8740 2020-02-01     1     death
+    ## 469   112.2707 2020-02-01    45     death
+    ## 470   108.0000 2020-02-01     1 recovered
+    ## 471   117.2264 2020-02-01     2 recovered
+    ## 472   116.4142 2020-02-01     4 recovered
+    ## 473   107.8740 2020-02-01     2 recovered
+    ## 474   113.4244 2020-02-01     3 recovered
+    ## 475   127.7615 2020-02-01     2 recovered
+    ## 476   112.2707 2020-02-01    27 recovered
+    ## 477   111.7088 2020-02-01     6 recovered
+    ## 478   119.4550 2020-02-01     1 recovered
+    ## 479   115.7221 2020-02-01     2 recovered
+    ## 480   118.1498 2020-02-01     1 recovered
+    ## 481   121.4491 2020-02-01     1 recovered
+    ## 482   102.7103 2020-02-01     2 recovered
+    ## 483   101.4870 2020-02-01     1 recovered
+    ## 484   120.0934 2020-02-01     7 recovered
+    ## 485     9.0000 2020-02-02     2 confirmed
+    ## 486    78.0000 2020-02-02     1 confirmed
+    ## 487   122.0000 2020-02-02     1 confirmed
+    ## 488   103.8333 2020-02-02     2 confirmed
+    ## 489   128.0000 2020-02-02     3 confirmed
+    ## 490    54.0000 2020-02-02     1 confirmed
+    ## 491   117.2264 2020-02-02    43 confirmed
+    ## 492   116.4142 2020-02-02    23 confirmed
+    ## 493   107.8740 2020-02-02    53 confirmed
+    ## 494   117.9874 2020-02-02    15 confirmed
+    ## 495   103.8343 2020-02-02    11 confirmed
+    ## 496   113.4244 2020-02-02    97 confirmed
+    ## 497   108.7881 2020-02-02    11 confirmed
+    ## 498   106.8748 2020-02-02     9 confirmed
+    ## 499   109.7453 2020-02-02     2 confirmed
+    ## 500   114.5149 2020-02-02     8 confirmed
+    ## 501   127.7615 2020-02-02    15 confirmed
+    ## 502   113.6140 2020-02-02    71 confirmed
+    ## 503   114.2000 2020-02-02     2 confirmed
+    ## 504   112.2707 2020-02-02  4024 confirmed
+    ## 505   111.7088 2020-02-02    74 confirmed
+    ## 506   113.9448 2020-02-02     4 confirmed
+    ## 507   119.4550 2020-02-02    34 confirmed
+    ## 508   115.7221 2020-02-02    47 confirmed
+    ## 509   126.1923 2020-02-02     6 confirmed
+    ## 510   122.6085 2020-02-02     6 confirmed
+    ## 511   113.5500 2020-02-02     1 confirmed
+    ## 512   106.1655 2020-02-02     2 confirmed
+    ## 513    95.9956 2020-02-02     2 confirmed
+    ## 514   153.4000 2020-02-02    -1 confirmed
+    ## 515   108.8701 2020-02-02    15 confirmed
+    ## 516   118.1498 2020-02-02    24 confirmed
+    ## 517   121.4491 2020-02-02    13 confirmed
+    ## 518   112.2922 2020-02-02    19 confirmed
+    ## 519   102.7103 2020-02-02    24 confirmed
+    ## 520   138.6007 2020-02-02     1 confirmed
+    ## 521   117.3230 2020-02-02     7 confirmed
+    ## 522    85.2401 2020-02-02     3 confirmed
+    ## 523   101.4870 2020-02-02    12 confirmed
+    ## 524   120.0934 2020-02-02    62 confirmed
+    ## 525   122.0000 2020-02-02     1     death
+    ## 526   107.8740 2020-02-02     1     death
+    ## 527   112.2707 2020-02-02   101     death
+    ## 528   117.2264 2020-02-02     2 recovered
+    ## 529   107.8740 2020-02-02     4 recovered
+    ## 530   103.8343 2020-02-02     3 recovered
+    ## 531   113.4244 2020-02-02     1 recovered
+    ## 532   109.7453 2020-02-02     3 recovered
+    ## 533   114.5149 2020-02-02     3 recovered
+    ## 534   113.6140 2020-02-02     7 recovered
+    ## 535   112.2707 2020-02-02   127 recovered
+    ## 536   111.7088 2020-02-02     8 recovered
+    ## 537   119.4550 2020-02-02     1 recovered
+    ## 538   115.7221 2020-02-02     3 recovered
+    ## 539   118.1498 2020-02-02     3 recovered
+    ## 540   112.2922 2020-02-02     2 recovered
+    ## 541   102.7103 2020-02-02     8 recovered
+    ## 542   117.3230 2020-02-02     1 recovered
+    ## 543   101.4870 2020-02-02     1 recovered
+    ## 544   120.0934 2020-02-02    11 recovered
+    ## 545     9.0000 2020-02-03     2 confirmed
+    ## 546    78.0000 2020-02-03     1 confirmed
+    ## 547   108.0000 2020-02-03     2 confirmed
+    ## 548   117.2264 2020-02-03    68 confirmed
+    ## 549   116.4142 2020-02-03    21 confirmed
+    ## 550   107.8740 2020-02-03    37 confirmed
+    ## 551   117.9874 2020-02-03    20 confirmed
+    ## 552   103.8343 2020-02-03     4 confirmed
+    ## 553   113.4244 2020-02-03    93 confirmed
+    ## 554   108.7881 2020-02-03    16 confirmed
+    ## 555   106.8748 2020-02-03     8 confirmed
+    ## 556   109.7453 2020-02-03     8 confirmed
+    ## 557   114.5149 2020-02-03     9 confirmed
+    ## 558   127.7615 2020-02-03    26 confirmed
+    ## 559   113.6140 2020-02-03    73 confirmed
+    ## 560   112.2707 2020-02-03  2345 confirmed
+    ## 561   111.7088 2020-02-03    58 confirmed
+    ## 562   113.9448 2020-02-03     7 confirmed
+    ## 563   119.4550 2020-02-03    35 confirmed
+    ## 564   115.7221 2020-02-03    58 confirmed
+    ## 565   126.1923 2020-02-03     8 confirmed
+    ## 566   122.6085 2020-02-03     4 confirmed
+    ## 567   106.1655 2020-02-03     3 confirmed
+    ## 568    95.9956 2020-02-03     2 confirmed
+    ## 569  -120.9876 2020-02-03     2 confirmed
+    ## 570  -121.9552 2020-02-03     1 confirmed
+    ## 571   108.8701 2020-02-03    12 confirmed
+    ## 572   118.1498 2020-02-03    29 confirmed
+    ## 573   121.4491 2020-02-03    21 confirmed
+    ## 574   112.2922 2020-02-03     8 confirmed
+    ## 575   102.7103 2020-02-03    23 confirmed
+    ## 576   117.3230 2020-02-03    12 confirmed
+    ## 577    85.2401 2020-02-03     3 confirmed
+    ## 578   101.4870 2020-02-03    12 confirmed
+    ## 579   120.0934 2020-02-03    63 confirmed
+    ## 580   112.2707 2020-02-03    64     death
+    ## 581   117.2264 2020-02-03     7 recovered
+    ## 582   116.4142 2020-02-03     3 recovered
+    ## 583   107.8740 2020-02-03     2 recovered
+    ## 584   117.9874 2020-02-03     1 recovered
+    ## 585   113.4244 2020-02-03     6 recovered
+    ## 586   108.7881 2020-02-03     5 recovered
+    ## 587   113.6140 2020-02-03     6 recovered
+    ## 588   112.2707 2020-02-03    91 recovered
+    ## 589   111.7088 2020-02-03     6 recovered
+    ## 590   119.4550 2020-02-03     1 recovered
+    ## 591   115.7221 2020-02-03     6 recovered
+    ## 592   106.1655 2020-02-03     1 recovered
+    ## 593   118.1498 2020-02-03     1 recovered
+    ## 594   112.2922 2020-02-03    -1 recovered
+    ## 595   102.7103 2020-02-03     3 recovered
+    ## 596   101.4870 2020-02-03     2 recovered
+    ## 597   120.0934 2020-02-03    11 recovered
+    ## 598     4.0000 2020-02-04     1 confirmed
+    ## 599   138.0000 2020-02-04     2 confirmed
+    ## 600   112.5000 2020-02-04     2 confirmed
+    ## 601   103.8333 2020-02-04     6 confirmed
+    ## 602   128.0000 2020-02-04     1 confirmed
+    ## 603   101.0000 2020-02-04     6 confirmed
+    ## 604   117.2264 2020-02-04    72 confirmed
+    ## 605   116.4142 2020-02-04    16 confirmed
+    ## 606   107.8740 2020-02-04    29 confirmed
+    ## 607   117.9874 2020-02-04    15 confirmed
+    ## 608   103.8343 2020-02-04     2 confirmed
+    ## 609   113.4244 2020-02-04    88 confirmed
+    ## 610   108.7881 2020-02-04    12 confirmed
+    ## 611   106.8748 2020-02-04    12 confirmed
+    ## 612   109.7453 2020-02-04     8 confirmed
+    ## 613   114.5149 2020-02-04    13 confirmed
+    ## 614   127.7615 2020-02-04    34 confirmed
+    ## 615   113.6140 2020-02-04   109 confirmed
+    ## 616   114.2000 2020-02-04     2 confirmed
+    ## 617   112.2707 2020-02-04  3156 confirmed
+    ## 618   111.7088 2020-02-04    72 confirmed
+    ## 619   113.9448 2020-02-04     1 confirmed
+    ## 620   119.4550 2020-02-04    37 confirmed
+    ## 621   115.7221 2020-02-04    85 confirmed
+    ## 622   126.1923 2020-02-04    11 confirmed
+    ## 623   122.6085 2020-02-04     7 confirmed
+    ## 624   113.5500 2020-02-04     2 confirmed
+    ## 625   106.1655 2020-02-04     3 confirmed
+    ## 626    95.9956 2020-02-04     2 confirmed
+    ## 627   153.4000 2020-02-04     1 confirmed
+    ## 628   108.8701 2020-02-04    14 confirmed
+    ## 629   118.1498 2020-02-04    16 confirmed
+    ## 630   121.4491 2020-02-04    16 confirmed
+    ## 631   112.2922 2020-02-04     7 confirmed
+    ## 632   102.7103 2020-02-04    28 confirmed
+    ## 633   121.0000 2020-02-04     1 confirmed
+    ## 634   117.3230 2020-02-04     7 confirmed
+    ## 635    85.2401 2020-02-04     5 confirmed
+    ## 636   101.4870 2020-02-04     5 confirmed
+    ## 637   120.0934 2020-02-04   105 confirmed
+    ## 638   114.2000 2020-02-04     1     death
+    ## 639   112.2707 2020-02-04    65     death
+    ## 640   117.2264 2020-02-04     6 recovered
+    ## 641   116.4142 2020-02-04    11 recovered
+    ## 642   117.9874 2020-02-04     2 recovered
+    ## 643   103.8343 2020-02-04     1 recovered
+    ## 644   113.4244 2020-02-04     9 recovered
+    ## 645   108.7881 2020-02-04     3 recovered
+    ## 646   109.7453 2020-02-04     1 recovered
+    ## 647   114.5149 2020-02-04     1 recovered
+    ## 648   127.7615 2020-02-04     2 recovered
+    ## 649   113.6140 2020-02-04    11 recovered
+    ## 650   112.2707 2020-02-04   136 recovered
+    ## 651   111.7088 2020-02-04     9 recovered
+    ## 652   119.4550 2020-02-04     4 recovered
+    ## 653   115.7221 2020-02-04     2 recovered
+    ## 654   122.6085 2020-02-04     1 recovered
+    ## 655   108.8701 2020-02-04     2 recovered
+    ## 656   118.1498 2020-02-04     4 recovered
+    ## 657   121.4491 2020-02-04     2 recovered
+    ## 658   112.2922 2020-02-04     2 recovered
+    ## 659   117.3230 2020-02-04     1 recovered
+    ## 660   120.0934 2020-02-04    19 recovered
+    ## 661   112.5000 2020-02-05     2 confirmed
+    ## 662   103.8333 2020-02-05     4 confirmed
+    ## 663   128.0000 2020-02-05     3 confirmed
+    ## 664   117.2264 2020-02-05    50 confirmed
+    ## 665   116.4142 2020-02-05    25 confirmed
+    ## 666  -123.1207 2020-02-05     1 confirmed
+    ## 667   107.8740 2020-02-05    23 confirmed
+    ## 668   117.9874 2020-02-05    11 confirmed
+    ## 669   103.8343 2020-02-05     5 confirmed
+    ## 670   113.4244 2020-02-05    82 confirmed
+    ## 671   108.7881 2020-02-05    11 confirmed
+    ## 672   106.8748 2020-02-05     6 confirmed
+    ## 673   109.7453 2020-02-05    19 confirmed
+    ## 674   114.5149 2020-02-05     9 confirmed
+    ## 675   127.7615 2020-02-05    35 confirmed
+    ## 676   113.6140 2020-02-05    89 confirmed
+    ## 677   114.2000 2020-02-05     4 confirmed
+    ## 678   112.2707 2020-02-05  2987 confirmed
+    ## 679   111.7088 2020-02-05    68 confirmed
+    ## 680   113.9448 2020-02-05     7 confirmed
+    ## 681   119.4550 2020-02-05    33 confirmed
+    ## 682   115.7221 2020-02-05    72 confirmed
+    ## 683   126.1923 2020-02-05    12 confirmed
+    ## 684   122.6085 2020-02-05     8 confirmed
+    ## 685   -89.4012 2020-02-05     1 confirmed
+    ## 686    95.9956 2020-02-05     2 confirmed
+    ## 687   108.8701 2020-02-05    23 confirmed
+    ## 688   118.1498 2020-02-05    32 confirmed
+    ## 689   121.4491 2020-02-05    24 confirmed
+    ## 690   102.7103 2020-02-05    19 confirmed
+    ## 691   117.3230 2020-02-05     2 confirmed
+    ## 692    85.2401 2020-02-05     3 confirmed
+    ## 693   101.4870 2020-02-05     6 confirmed
+    ## 694   120.0934 2020-02-05    66 confirmed
+    ## 695   106.8748 2020-02-05     1     death
+    ## 696   112.2707 2020-02-05    70     death
+    ## 697   117.3230 2020-02-05     1     death
+    ## 698   117.2264 2020-02-05     3 recovered
+    ## 699   116.4142 2020-02-05     1 recovered
+    ## 700   107.8740 2020-02-05     6 recovered
+    ## 701   117.9874 2020-02-05     8 recovered
+    ## 702   103.8343 2020-02-05     2 recovered
+    ## 703   113.4244 2020-02-05    19 recovered
+    ## 704   108.7881 2020-02-05     3 recovered
+    ## 705   106.8748 2020-02-05     7 recovered
+    ## 706   114.5149 2020-02-05     2 recovered
+    ## 707   127.7615 2020-02-05     3 recovered
+    ## 708   113.6140 2020-02-05    20 recovered
+    ## 709   112.2707 2020-02-05   111 recovered
+    ## 710   111.7088 2020-02-05    23 recovered
+    ## 711   113.9448 2020-02-05     2 recovered
+    ## 712   119.4550 2020-02-05    11 recovered
+    ## 713   115.7221 2020-02-05     7 recovered
+    ## 714   126.1923 2020-02-05     1 recovered
+    ## 715   122.6085 2020-02-05     2 recovered
+    ## 716    95.9956 2020-02-05     3 recovered
+    ## 717   108.8701 2020-02-05     4 recovered
+    ## 718   118.1498 2020-02-05     4 recovered
+    ## 719   121.4491 2020-02-05     3 recovered
+    ## 720   112.2922 2020-02-05     1 recovered
+    ## 721   102.7103 2020-02-05    10 recovered
+    ## 722   120.0934 2020-02-05    16 recovered
+    ## 723   138.0000 2020-02-06    23 confirmed
+    ## 724   128.0000 2020-02-06     4 confirmed
+    ## 725   108.0000 2020-02-06     2 confirmed
+    ## 726   117.2264 2020-02-06    61 confirmed
+    ## 727   116.4142 2020-02-06    21 confirmed
+    ## 728   107.8740 2020-02-06    22 confirmed
+    ## 729   117.9874 2020-02-06    10 confirmed
+    ## 730   113.4244 2020-02-06    75 confirmed
+    ## 731   108.7881 2020-02-06    18 confirmed
+    ## 732   106.8748 2020-02-06     7 confirmed
+    ## 733   109.7453 2020-02-06     7 confirmed
+    ## 734   114.5149 2020-02-06    22 confirmed
+    ## 735   127.7615 2020-02-06    37 confirmed
+    ## 736   113.6140 2020-02-06    87 confirmed
+    ## 737   114.2000 2020-02-06     3 confirmed
+    ## 738   112.2707 2020-02-06  2447 confirmed
+    ## 739   111.7088 2020-02-06    50 confirmed
+    ## 740   113.9448 2020-02-06     4 confirmed
+    ## 741   119.4550 2020-02-06    32 confirmed
+    ## 742   115.7221 2020-02-06    52 confirmed
+    ## 743   126.1923 2020-02-06     5 confirmed
+    ## 744   122.6085 2020-02-06     5 confirmed
+    ## 745   106.1655 2020-02-06     6 confirmed
+    ## 746    95.9956 2020-02-06     1 confirmed
+    ## 747   153.4000 2020-02-06     1 confirmed
+    ## 748   108.8701 2020-02-06     8 confirmed
+    ## 749   118.1498 2020-02-06    40 confirmed
+    ## 750   121.4491 2020-02-06    14 confirmed
+    ## 751   112.2922 2020-02-06    15 confirmed
+    ## 752   102.7103 2020-02-06    20 confirmed
+    ## 753   121.0000 2020-02-06     5 confirmed
+    ## 754   117.3230 2020-02-06    10 confirmed
+    ## 755    85.2401 2020-02-06     4 confirmed
+    ## 756   101.4870 2020-02-06     5 confirmed
+    ## 757   120.0934 2020-02-06    59 confirmed
+    ## 758   127.7615 2020-02-06     1     death
+    ## 759   112.2707 2020-02-06    69     death
+    ## 760   117.2264 2020-02-06    11 recovered
+    ## 761   116.4142 2020-02-06     7 recovered
+    ## 762   107.8740 2020-02-06     9 recovered
+    ## 763   117.9874 2020-02-06     3 recovered
+    ## 764   113.4244 2020-02-06    20 recovered
+    ## 765   108.7881 2020-02-06     1 recovered
+    ## 766   106.8748 2020-02-06    -3 recovered
+    ## 767   109.7453 2020-02-06     3 recovered
+    ## 768   114.5149 2020-02-06     7 recovered
+    ## 769   127.7615 2020-02-06     1 recovered
+    ## 770   113.6140 2020-02-06     9 recovered
+    ## 771   112.2707 2020-02-06   184 recovered
+    ## 772   111.7088 2020-02-06    27 recovered
+    ## 773   113.9448 2020-02-06     1 recovered
+    ## 774   119.4550 2020-02-06    11 recovered
+    ## 775   115.7221 2020-02-06    10 recovered
+    ## 776   126.1923 2020-02-06     2 recovered
+    ## 777   122.6085 2020-02-06     1 recovered
+    ## 778   113.5500 2020-02-06     1 recovered
+    ## 779   108.8701 2020-02-06     3 recovered
+    ## 780   118.1498 2020-02-06    12 recovered
+    ## 781   121.4491 2020-02-06    10 recovered
+    ## 782   112.2922 2020-02-06     7 recovered
+    ## 783   102.7103 2020-02-06     7 recovered
+    ## 784   121.0000 2020-02-06     1 recovered
+    ## 785   101.4870 2020-02-06     2 recovered
+    ## 786   120.0934 2020-02-06    16 recovered
+    ## 787     9.0000 2020-02-07     1 confirmed
+    ## 788    12.0000 2020-02-07     1 confirmed
+    ## 789   138.0000 2020-02-07   -20 confirmed
+    ## 790   122.0000 2020-02-07     1 confirmed
+    ## 791   103.8333 2020-02-07     2 confirmed
+    ## 792   128.0000 2020-02-07     1 confirmed
+    ## 793    -3.0000 2020-02-07     1 confirmed
+    ## 794   117.2264 2020-02-07    74 confirmed
+    ## 795   116.4142 2020-02-07    23 confirmed
+    ## 796  -123.1207 2020-02-07     2 confirmed
+    ## 797   107.8740 2020-02-07    15 confirmed
+    ## 798   139.6380 2020-02-07    61 confirmed
+    ## 799   117.9874 2020-02-07     9 confirmed
+    ## 800   103.8343 2020-02-07     5 confirmed
+    ## 801   113.4244 2020-02-07    64 confirmed
+    ## 802   108.7881 2020-02-07     4 confirmed
+    ## 803   106.8748 2020-02-07    10 confirmed
+    ## 804   109.7453 2020-02-07    11 confirmed
+    ## 805   114.5149 2020-02-07    15 confirmed
+    ## 806   127.7615 2020-02-07    50 confirmed
+    ## 807   113.6140 2020-02-07    63 confirmed
+    ## 808   114.2000 2020-02-07     1 confirmed
+    ## 809   112.2707 2020-02-07  2841 confirmed
+    ## 810   111.7088 2020-02-07    61 confirmed
+    ## 811   113.9448 2020-02-07     4 confirmed
+    ## 812   119.4550 2020-02-07    35 confirmed
+    ## 813   115.7221 2020-02-07    61 confirmed
+    ## 814   126.1923 2020-02-07     6 confirmed
+    ## 815   122.6085 2020-02-07     5 confirmed
+    ## 816   106.1655 2020-02-07     3 confirmed
+    ## 817   153.4000 2020-02-07     1 confirmed
+    ## 818   108.8701 2020-02-07    11 confirmed
+    ## 819   118.1498 2020-02-07    39 confirmed
+    ## 820   121.4491 2020-02-07    20 confirmed
+    ## 821   112.2922 2020-02-07     8 confirmed
+    ## 822   102.7103 2020-02-07    23 confirmed
+    ## 823   117.3230 2020-02-07     2 confirmed
+    ## 824    85.2401 2020-02-07     3 confirmed
+    ## 825   101.4870 2020-02-07     5 confirmed
+    ## 826   120.0934 2020-02-07    52 confirmed
+    ## 827   113.4244 2020-02-07     1     death
+    ## 828   109.7453 2020-02-07     1     death
+    ## 829   113.6140 2020-02-07     1     death
+    ## 830   112.2707 2020-02-07    81     death
+    ## 831   126.1923 2020-02-07     1     death
+    ## 832   112.5000 2020-02-07     1 recovered
+    ## 833   128.0000 2020-02-07     1 recovered
+    ## 834   117.2264 2020-02-07    13 recovered
+    ## 835   116.4142 2020-02-07     2 recovered
+    ## 836   107.8740 2020-02-07     7 recovered
+    ## 837   117.9874 2020-02-07     6 recovered
+    ## 838   103.8343 2020-02-07     3 recovered
+    ## 839   113.4244 2020-02-07    19 recovered
+    ## 840   108.7881 2020-02-07     3 recovered
+    ## 841   109.7453 2020-02-07     2 recovered
+    ## 842   114.5149 2020-02-07     9 recovered
+    ## 843   127.7615 2020-02-07     4 recovered
+    ## 844   113.6140 2020-02-07    30 recovered
+    ## 845   112.2707 2020-02-07   298 recovered
+    ## 846   111.7088 2020-02-07    31 recovered
+    ## 847   113.9448 2020-02-07     1 recovered
+    ## 848   119.4550 2020-02-07     9 recovered
+    ## 849   115.7221 2020-02-07     8 recovered
+    ## 850   122.6085 2020-02-07     2 recovered
+    ## 851   106.1655 2020-02-07     4 recovered
+    ## 852   108.8701 2020-02-07     8 recovered
+    ## 853   118.1498 2020-02-07    10 recovered
+    ## 854   121.4491 2020-02-07     5 recovered
+    ## 855   112.2922 2020-02-07     3 recovered
+    ## 856   102.7103 2020-02-07    11 recovered
+    ## 857   101.4870 2020-02-07     5 recovered
+    ## 858   120.0934 2020-02-07    29 recovered
+    ## 859     2.0000 2020-02-08     5 confirmed
+    ## 860   112.5000 2020-02-08     4 confirmed
+    ## 861   103.8333 2020-02-08     3 confirmed
+    ## 862   101.0000 2020-02-08     7 confirmed
+    ## 863    54.0000 2020-02-08     2 confirmed
+    ## 864   108.0000 2020-02-08     3 confirmed
+    ## 865   117.2264 2020-02-08    68 confirmed
+    ## 866   116.4142 2020-02-08    18 confirmed
+    ## 867   107.8740 2020-02-08     2 confirmed
+    ## 868   117.9874 2020-02-08    15 confirmed
+    ## 869   103.8343 2020-02-08    12 confirmed
+    ## 870   113.4244 2020-02-08    61 confirmed
+    ## 871   108.7881 2020-02-08    11 confirmed
+    ## 872   106.8748 2020-02-08     8 confirmed
+    ## 873   109.7453 2020-02-08     7 confirmed
+    ## 874   114.5149 2020-02-08    23 confirmed
+    ## 875   127.7615 2020-02-08    18 confirmed
+    ## 876   113.6140 2020-02-08    67 confirmed
+    ## 877   114.2000 2020-02-08     1 confirmed
+    ## 878   112.2707 2020-02-08  2147 confirmed
+    ## 879   111.7088 2020-02-08    31 confirmed
+    ## 880   113.9448 2020-02-08     2 confirmed
+    ## 881   119.4550 2020-02-08    31 confirmed
+    ## 882   115.7221 2020-02-08    37 confirmed
+    ## 883   126.1923 2020-02-08     4 confirmed
+    ## 884   122.6085 2020-02-08     6 confirmed
+    ## 885   106.1655 2020-02-08     2 confirmed
+    ## 886   108.8701 2020-02-08    11 confirmed
+    ## 887   118.1498 2020-02-08    30 confirmed
+    ## 888   121.4491 2020-02-08     9 confirmed
+    ## 889   112.2922 2020-02-08    11 confirmed
+    ## 890   102.7103 2020-02-08    20 confirmed
+    ## 891   121.0000 2020-02-08     1 confirmed
+    ## 892   117.3230 2020-02-08     7 confirmed
+    ## 893    85.2401 2020-02-08     3 confirmed
+    ## 894   120.0934 2020-02-08    42 confirmed
+    ## 895   116.4142 2020-02-08     1     death
+    ## 896   103.8343 2020-02-08     1     death
+    ## 897   127.7615 2020-02-08     2     death
+    ## 898   113.6140 2020-02-08     1     death
+    ## 899   112.2707 2020-02-08    81     death
+    ## 900   111.7088 2020-02-08     1     death
+    ## 901   103.8333 2020-02-08     2 recovered
+    ## 902    81.0000 2020-02-08     1 recovered
+    ## 903   101.0000 2020-02-08     5 recovered
+    ## 904   117.2264 2020-02-08    12 recovered
+    ## 905   116.4142 2020-02-08     1 recovered
+    ## 906   107.8740 2020-02-08     8 recovered
+    ## 907   117.9874 2020-02-08     4 recovered
+    ## 908   103.8343 2020-02-08     3 recovered
+    ## 909   113.4244 2020-02-08    24 recovered
+    ## 910   106.8748 2020-02-08     1 recovered
+    ## 911   109.7453 2020-02-08     4 recovered
+    ## 912   114.5149 2020-02-08     8 recovered
+    ## 913   127.7615 2020-02-08     1 recovered
+    ## 914   113.6140 2020-02-08    30 recovered
+    ## 915   112.2707 2020-02-08   324 recovered
+    ## 916   111.7088 2020-02-08    44 recovered
+    ## 917   119.4550 2020-02-08     8 recovered
+    ## 918   115.7221 2020-02-08    10 recovered
+    ## 919   122.6085 2020-02-08     1 recovered
+    ## 920   106.1655 2020-02-08    10 recovered
+    ## 921   108.8701 2020-02-08     3 recovered
+    ## 922   118.1498 2020-02-08     7 recovered
+    ## 923   121.4491 2020-02-08    11 recovered
+    ## 924   112.2922 2020-02-08     6 recovered
+    ## 925   102.7103 2020-02-08    18 recovered
+    ## 926   117.3230 2020-02-08     2 recovered
+    ## 927   101.4870 2020-02-08     5 recovered
+    ## 928   120.0934 2020-02-08    52 recovered
+    ## 929     9.0000 2020-02-09     1 confirmed
+    ## 930   138.0000 2020-02-09     1 confirmed
+    ## 931   103.8333 2020-02-09     7 confirmed
+    ## 932   128.0000 2020-02-09     1 confirmed
+    ## 933    -4.0000 2020-02-09     1 confirmed
+    ## 934   117.2264 2020-02-09    46 confirmed
+    ## 935   116.4142 2020-02-09    11 confirmed
+    ## 936   107.8740 2020-02-09    40 confirmed
+    ## 937   139.6380 2020-02-09     3 confirmed
+    ## 938   117.9874 2020-02-09    11 confirmed
+    ## 939   103.8343 2020-02-09     4 confirmed
+    ## 940   113.4244 2020-02-09    36 confirmed
+    ## 941   108.7881 2020-02-09    12 confirmed
+    ## 942   106.8748 2020-02-09    10 confirmed
+    ## 943   109.7453 2020-02-09     7 confirmed
+    ## 944   114.5149 2020-02-09    11 confirmed
+    ## 945   127.7615 2020-02-09    12 confirmed
+    ## 946   113.6140 2020-02-09    52 confirmed
+    ## 947   114.2000 2020-02-09     3 confirmed
+    ## 948   112.2707 2020-02-09  2531 confirmed
+    ## 949   111.7088 2020-02-09    35 confirmed
+    ## 950   113.9448 2020-02-09     2 confirmed
+    ## 951   119.4550 2020-02-09    29 confirmed
+    ## 952   115.7221 2020-02-09    42 confirmed
+    ## 953   126.1923 2020-02-09     9 confirmed
+    ## 954   122.6085 2020-02-09     2 confirmed
+    ## 955   108.8701 2020-02-09    13 confirmed
+    ## 956   118.1498 2020-02-09    28 confirmed
+    ## 957   121.4491 2020-02-09     7 confirmed
+    ## 958   112.2922 2020-02-09     4 confirmed
+    ## 959   102.7103 2020-02-09    22 confirmed
+    ## 960   121.0000 2020-02-09     1 confirmed
+    ## 961   117.3230 2020-02-09     3 confirmed
+    ## 962    85.2401 2020-02-09     3 confirmed
+    ## 963   101.4870 2020-02-09     3 confirmed
+    ## 964   120.0934 2020-02-09    27 confirmed
+    ## 965   117.2264 2020-02-09     1     death
+    ## 966   103.8343 2020-02-09     1     death
+    ## 967   108.7881 2020-02-09     1     death
+    ## 968   109.7453 2020-02-09     1     death
+    ## 969   114.5149 2020-02-09     1     death
+    ## 970   127.7615 2020-02-09     1     death
+    ## 971   113.6140 2020-02-09     2     death
+    ## 972   112.2707 2020-02-09    91     death
+    ## 973   118.1498 2020-02-09     1     death
+    ## 974   128.0000 2020-02-09     2 recovered
+    ## 975   117.2264 2020-02-09    13 recovered
+    ## 976   116.4142 2020-02-09     3 recovered
+    ## 977   107.8740 2020-02-09    12 recovered
+    ## 978   -87.6976 2020-02-09     2 recovered
+    ## 979   117.9874 2020-02-09    11 recovered
+    ## 980   103.8343 2020-02-09     4 recovered
+    ## 981   113.4244 2020-02-09    29 recovered
+    ## 982   108.7881 2020-02-09     1 recovered
+    ## 983   109.7453 2020-02-09     5 recovered
+    ## 984   114.5149 2020-02-09     4 recovered
+    ## 985   127.7615 2020-02-09     1 recovered
+    ## 986   113.6140 2020-02-09    37 recovered
+    ## 987   112.2707 2020-02-09   356 recovered
+    ## 988   111.7088 2020-02-09    30 recovered
+    ## 989   119.4550 2020-02-09    20 recovered
+    ## 990   115.7221 2020-02-09    18 recovered
+    ## 991   126.1923 2020-02-09     8 recovered
+    ## 992  -122.3321 2020-02-09     1 recovered
+    ## 993   122.6085 2020-02-09     4 recovered
+    ## 994   106.1655 2020-02-09    -2 recovered
+    ## 995   108.8701 2020-02-09     5 recovered
+    ## 996   118.1498 2020-02-09    19 recovered
+    ## 997   121.4491 2020-02-09     3 recovered
+    ## 998   112.2922 2020-02-09     4 recovered
+    ## 999   102.7103 2020-02-09    11 recovered
+    ## 1000  101.4870 2020-02-09     1 recovered
+    ## 1001  120.0934 2020-02-09    26 recovered
+    ## 1002  112.5000 2020-02-10     2 confirmed
+    ## 1003  103.8333 2020-02-10     5 confirmed
+    ## 1004  128.0000 2020-02-10     2 confirmed
+    ## 1005   -3.0000 2020-02-10     5 confirmed
+    ## 1006   54.0000 2020-02-10     1 confirmed
+    ## 1007  108.0000 2020-02-10     1 confirmed
+    ## 1008  117.2264 2020-02-10    51 confirmed
+    ## 1009  116.4142 2020-02-10    11 confirmed
+    ## 1010  107.8740 2020-02-10    18 confirmed
+    ## 1011  139.6380 2020-02-10    71 confirmed
+    ## 1012  117.9874 2020-02-10    11 confirmed
+    ## 1013  113.4244 2020-02-10    28 confirmed
+    ## 1014  108.7881 2020-02-10    15 confirmed
+    ## 1015  106.8748 2020-02-10    10 confirmed
+    ## 1016  109.7453 2020-02-10     7 confirmed
+    ## 1017  114.5149 2020-02-10    12 confirmed
+    ## 1018  127.7615 2020-02-10    24 confirmed
+    ## 1019  113.6140 2020-02-10    40 confirmed
+    ## 1020  114.2000 2020-02-10     9 confirmed
+    ## 1021  112.2707 2020-02-10  2097 confirmed
+    ## 1022  111.7088 2020-02-10    41 confirmed
+    ## 1023  113.9448 2020-02-10     4 confirmed
+    ## 1024  119.4550 2020-02-10    24 confirmed
+    ## 1025  115.7221 2020-02-10    31 confirmed
+    ## 1026  126.1923 2020-02-10     2 confirmed
+    ## 1027  122.6085 2020-02-10     1 confirmed
+    ## 1028  106.1655 2020-02-10     4 confirmed
+    ## 1029  108.8701 2020-02-10     5 confirmed
+    ## 1030  118.1498 2020-02-10    22 confirmed
+    ## 1031  121.4491 2020-02-10     6 confirmed
+    ## 1032  102.7103 2020-02-10    19 confirmed
+    ## 1033  117.3230 2020-02-10     4 confirmed
+    ## 1034   85.2401 2020-02-10     4 confirmed
+    ## 1035  101.4870 2020-02-10     8 confirmed
+    ## 1036  120.0934 2020-02-10    17 confirmed
+    ## 1037  117.2264 2020-02-10     2     death
+    ## 1038  127.7615 2020-02-10     1     death
+    ## 1039  112.2707 2020-02-10   103     death
+    ## 1040  115.7221 2020-02-10     1     death
+    ## 1041  138.0000 2020-02-10     3 recovered
+    ## 1042  117.2264 2020-02-10    16 recovered
+    ## 1043  116.4142 2020-02-10     7 recovered
+    ## 1044  107.8740 2020-02-10    15 recovered
+    ## 1045  117.9874 2020-02-10     4 recovered
+    ## 1046  103.8343 2020-02-10     1 recovered
+    ## 1047  113.4244 2020-02-10    26 recovered
+    ## 1048  108.7881 2020-02-10     6 recovered
+    ## 1049  106.8748 2020-02-10     3 recovered
+    ## 1050  114.5149 2020-02-10     7 recovered
+    ## 1051  127.7615 2020-02-10    16 recovered
+    ## 1052  113.6140 2020-02-10    38 recovered
+    ## 1053  112.2707 2020-02-10   427 recovered
+    ## 1054  111.7088 2020-02-10    22 recovered
+    ## 1055  119.4550 2020-02-10    10 recovered
+    ## 1056  115.7221 2020-02-10    32 recovered
+    ## 1057  126.1923 2020-02-10     1 recovered
+    ## 1058  122.6085 2020-02-10     1 recovered
+    ## 1059  108.8701 2020-02-10     5 recovered
+    ## 1060  118.1498 2020-02-10     3 recovered
+    ## 1061  121.4491 2020-02-10     4 recovered
+    ## 1062  102.7103 2020-02-10     9 recovered
+    ## 1063  117.3230 2020-02-10     4 recovered
+    ## 1064  101.4870 2020-02-10     1 recovered
+    ## 1065  120.0934 2020-02-10    41 recovered
+    ## 1066    9.0000 2020-02-11     2 confirmed
+    ## 1067  103.8333 2020-02-11     2 confirmed
+    ## 1068  128.0000 2020-02-11     1 confirmed
+    ## 1069  101.0000 2020-02-11     1 confirmed
+    ## 1070  108.0000 2020-02-11     1 confirmed
+    ## 1071  117.2264 2020-02-11    30 confirmed
+    ## 1072  116.4142 2020-02-11     5 confirmed
+    ## 1073  107.8740 2020-02-11    19 confirmed
+    ## 1074  117.9874 2020-02-11     6 confirmed
+    ## 1075  103.8343 2020-02-11     3 confirmed
+    ## 1076  113.4244 2020-02-11    18 confirmed
+    ## 1077  108.7881 2020-02-11     5 confirmed
+    ## 1078  106.8748 2020-02-11    18 confirmed
+    ## 1079  109.7453 2020-02-11     6 confirmed
+    ## 1080  114.5149 2020-02-11    21 confirmed
+    ## 1081  127.7615 2020-02-11    29 confirmed
+    ## 1082  113.6140 2020-02-11    32 confirmed
+    ## 1083  114.2000 2020-02-11    11 confirmed
+    ## 1084  112.2707 2020-02-11  1638 confirmed
+    ## 1085  111.7088 2020-02-11    33 confirmed
+    ## 1086  119.4550 2020-02-11    23 confirmed
+    ## 1087  115.7221 2020-02-11    33 confirmed
+    ## 1088  126.1923 2020-02-11     1 confirmed
+    ## 1089  122.6085 2020-02-11     3 confirmed
+    ## 1090  106.1655 2020-02-11     4 confirmed
+    ## 1091 -117.1611 2020-02-11     1 confirmed
+    ## 1092  108.8701 2020-02-11     6 confirmed
+    ## 1093  118.1498 2020-02-11    21 confirmed
+    ## 1094  121.4491 2020-02-11     4 confirmed
+    ## 1095  112.2922 2020-02-11     5 confirmed
+    ## 1096  102.7103 2020-02-11    12 confirmed
+    ## 1097  117.3230 2020-02-11    11 confirmed
+    ## 1098   85.2401 2020-02-11     6 confirmed
+    ## 1099  101.4870 2020-02-11     4 confirmed
+    ## 1100  120.0934 2020-02-11    25 confirmed
+    ## 1101  117.2264 2020-02-11     1     death
+    ## 1102  116.4142 2020-02-11     1     death
+    ## 1103  107.8740 2020-02-11     1     death
+    ## 1104  127.7615 2020-02-11     1     death
+    ## 1105  113.6140 2020-02-11     1     death
+    ## 1106  112.2707 2020-02-11    94     death
+    ## 1107  117.3230 2020-02-11     1     death
+    ## 1108  138.0000 2020-02-11     5 recovered
+    ## 1109  112.5000 2020-02-11     2 recovered
+    ## 1110  103.8333 2020-02-11     7 recovered
+    ## 1111  108.0000 2020-02-11     5 recovered
+    ## 1112  117.2264 2020-02-11    17 recovered
+    ## 1113  116.4142 2020-02-11     4 recovered
+    ## 1114  107.8740 2020-02-11    13 recovered
+    ## 1115  117.9874 2020-02-11     6 recovered
+    ## 1116  103.8343 2020-02-11     7 recovered
+    ## 1117  113.4244 2020-02-11    45 recovered
+    ## 1118  108.7881 2020-02-11     9 recovered
+    ## 1119  106.8748 2020-02-11     7 recovered
+    ## 1120  109.7453 2020-02-11     1 recovered
+    ## 1121  114.5149 2020-02-11     7 recovered
+    ## 1122  127.7615 2020-02-11    -2 recovered
+    ## 1123  113.6140 2020-02-11    27 recovered
+    ## 1124  112.2707 2020-02-11   417 recovered
+    ## 1125  111.7088 2020-02-11    39 recovered
+    ## 1126  119.4550 2020-02-11    12 recovered
+    ## 1127  115.7221 2020-02-11    23 recovered
+    ## 1128  126.1923 2020-02-11     5 recovered
+    ## 1129  122.6085 2020-02-11     6 recovered
+    ## 1130  106.1655 2020-02-11     9 recovered
+    ## 1131   95.9956 2020-02-11     2 recovered
+    ## 1132  108.8701 2020-02-11     2 recovered
+    ## 1133  118.1498 2020-02-11    14 recovered
+    ## 1134  121.4491 2020-02-11     4 recovered
+    ## 1135  112.2922 2020-02-11     5 recovered
+    ## 1136  102.7103 2020-02-11     5 recovered
+    ## 1137  117.3230 2020-02-11     2 recovered
+    ## 1138   85.2401 2020-02-11     3 recovered
+    ## 1139  101.4870 2020-02-11     1 recovered
+    ## 1140  120.0934 2020-02-11    28 recovered
+    ## 1141  138.0000 2020-02-12     2 confirmed
+    ## 1142  103.8333 2020-02-12     3 confirmed
+    ## 1143   -3.0000 2020-02-12     1 confirmed
+    ## 1144  117.2264 2020-02-12    29 confirmed
+    ## 1145  116.4142 2020-02-12    10 confirmed
+    ## 1146  107.8740 2020-02-12    13 confirmed
+    ## 1147  139.6380 2020-02-12    40 confirmed
+    ## 1148  117.9874 2020-02-12     5 confirmed
+    ## 1149  103.8343 2020-02-12     1 confirmed
+    ## 1150  113.4244 2020-02-12    42 confirmed
+    ## 1151  108.7881 2020-02-12     7 confirmed
+    ## 1152  106.8748 2020-02-12     6 confirmed
+    ## 1153  109.7453 2020-02-12    13 confirmed
+    ## 1154  114.5149 2020-02-12    12 confirmed
+    ## 1155  127.7615 2020-02-12    18 confirmed
+    ## 1156  113.6140 2020-02-12    30 confirmed
+    ## 1157  114.2000 2020-02-12     1 confirmed
+    ## 1158  111.7088 2020-02-12    34 confirmed
+    ## 1159  113.9448 2020-02-12     2 confirmed
+    ## 1160  119.4550 2020-02-12    28 confirmed
+    ## 1161  115.7221 2020-02-12    40 confirmed
+    ## 1162  126.1923 2020-02-12     2 confirmed
+    ## 1163  122.6085 2020-02-12     5 confirmed
+    ## 1164  106.1655 2020-02-12     5 confirmed
+    ## 1165  108.8701 2020-02-12     6 confirmed
+    ## 1166  118.1498 2020-02-12    10 confirmed
+    ## 1167  121.4491 2020-02-12     8 confirmed
+    ## 1168  112.2922 2020-02-12     2 confirmed
+    ## 1169  102.7103 2020-02-12    19 confirmed
+    ## 1170  117.3230 2020-02-12     6 confirmed
+    ## 1171   85.2401 2020-02-12     4 confirmed
+    ## 1172  101.4870 2020-02-12     1 confirmed
+    ## 1173  120.0934 2020-02-12    14 confirmed
+    ## 1174  109.7453 2020-02-12     1     death
+    ## 1175  113.6140 2020-02-12     1     death
+    ## 1176  111.7088 2020-02-12     1     death
+    ## 1177  122.6085 2020-02-12     1     death
+    ## 1178  118.1498 2020-02-12     1     death
+    ## 1179  104.9167 2020-02-12     1 recovered
+    ## 1180   26.0000 2020-02-12     1 recovered
+    ## 1181    2.0000 2020-02-12     2 recovered
+    ## 1182   84.2500 2020-02-12     1 recovered
+    ## 1183  122.0000 2020-02-12     1 recovered
+    ## 1184   90.0000 2020-02-12     2 recovered
+    ## 1185  103.8333 2020-02-12     6 recovered
+    ## 1186  128.0000 2020-02-12     4 recovered
+    ## 1187   -3.0000 2020-02-12     1 recovered
+    ## 1188   54.0000 2020-02-12     1 recovered
+    ## 1189  117.2264 2020-02-12    22 recovered
+    ## 1190  116.4142 2020-02-12     8 recovered
+    ## 1191  107.8740 2020-02-12    23 recovered
+    ## 1192  117.9874 2020-02-12     8 recovered
+    ## 1193  103.8343 2020-02-12     7 recovered
+    ## 1194  113.4244 2020-02-12    63 recovered
+    ## 1195  108.7881 2020-02-12    -1 recovered
+    ## 1196  106.8748 2020-02-12     1 recovered
+    ## 1197  109.7453 2020-02-12     7 recovered
+    ## 1198  114.5149 2020-02-12     6 recovered
+    ## 1199  127.7615 2020-02-12     3 recovered
+    ## 1200  113.6140 2020-02-12    28 recovered
+    ## 1201  114.2000 2020-02-12     1 recovered
+    ## 1202  112.2707 2020-02-12    47 recovered
+    ## 1203  111.7088 2020-02-12    57 recovered
+    ## 1204  113.9448 2020-02-12     1 recovered
+    ## 1205  119.4550 2020-02-12    32 recovered
+    ## 1206  115.7221 2020-02-12    24 recovered
+    ## 1207  126.1923 2020-02-12     4 recovered
+    ## 1208  122.6085 2020-02-12     1 recovered
+    ## 1209  -81.2453 2020-02-12     1 recovered
+    ## 1210  113.5500 2020-02-12     1 recovered
+    ## 1211  106.1655 2020-02-12     2 recovered
+    ## 1212   95.9956 2020-02-12     4 recovered
+    ## 1213  108.8701 2020-02-12    11 recovered
+    ## 1214  118.1498 2020-02-12    12 recovered
+    ## 1215  121.4491 2020-02-12     5 recovered
+    ## 1216  112.2922 2020-02-12     3 recovered
+    ## 1217  102.7103 2020-02-12     7 recovered
+    ## 1218  117.3230 2020-02-12     1 recovered
+    ## 1219   88.0924 2020-02-12     1 recovered
+    ## 1220  101.4870 2020-02-12     6 recovered
+    ## 1221  120.0934 2020-02-12    51 recovered
+    ## 1222  112.5000 2020-02-13     1 confirmed
+    ## 1223  103.8333 2020-02-13     8 confirmed
+    ## 1224  108.0000 2020-02-13     1 confirmed
+    ## 1225  117.2264 2020-02-13    21 confirmed
+    ## 1226  116.4142 2020-02-13    14 confirmed
+    ## 1227  107.8740 2020-02-13    11 confirmed
+    ## 1228  117.9874 2020-02-13     7 confirmed
+    ## 1229  103.8343 2020-02-13     3 confirmed
+    ## 1230  113.4244 2020-02-13    22 confirmed
+    ## 1231  106.8748 2020-02-13     2 confirmed
+    ## 1232  114.5149 2020-02-13    14 confirmed
+    ## 1233  127.7615 2020-02-13    17 confirmed
+    ## 1234  113.6140 2020-02-13    34 confirmed
+    ## 1235  114.2000 2020-02-13     3 confirmed
+    ## 1236  112.2707 2020-02-13 14840 confirmed
+    ## 1237  111.7088 2020-02-13    22 confirmed
+    ## 1238  113.9448 2020-02-13     1 confirmed
+    ## 1239  119.4550 2020-02-13    27 confirmed
+    ## 1240  115.7221 2020-02-13    28 confirmed
+    ## 1241  126.1923 2020-02-13     1 confirmed
+    ## 1242  122.6085 2020-02-13     1 confirmed
+    ## 1243  106.1655 2020-02-13     6 confirmed
+    ## 1244  -98.4936 2020-02-13     1 confirmed
+    ## 1245 -117.1611 2020-02-13     1 confirmed
+    ## 1246  108.8701 2020-02-13     4 confirmed
+    ## 1247  118.1498 2020-02-13    12 confirmed
+    ## 1248  121.4491 2020-02-13     4 confirmed
+    ## 1249  102.7103 2020-02-13    15 confirmed
+    ## 1250  117.3230 2020-02-13     7 confirmed
+    ## 1251   85.2401 2020-02-13     4 confirmed
+    ## 1252  101.4870 2020-02-13     2 confirmed
+    ## 1253  120.0934 2020-02-13    14 confirmed
+    ## 1254  138.0000 2020-02-13     1     death
+    ## 1255  117.2264 2020-02-13     1     death
+    ## 1256  107.8740 2020-02-13     1     death
+    ## 1257  113.4244 2020-02-13     1     death
+    ## 1258  108.7881 2020-02-13     1     death
+    ## 1259  114.5149 2020-02-13     1     death
+    ## 1260  127.7615 2020-02-13     1     death
+    ## 1261  113.6140 2020-02-13     2     death
+    ## 1262  112.2707 2020-02-13   242     death
+    ## 1263  117.3230 2020-02-13     1     death
+    ## 1264   85.2401 2020-02-13     1     death
+    ## 1265    9.0000 2020-02-13     1 recovered
+    ## 1266  101.0000 2020-02-13     2 recovered
+    ## 1267  108.0000 2020-02-13     1 recovered
+    ## 1268  117.2264 2020-02-13    30 recovered
+    ## 1269  116.4142 2020-02-13    13 recovered
+    ## 1270  107.8740 2020-02-13    26 recovered
+    ## 1271  117.9874 2020-02-13     4 recovered
+    ## 1272  103.8343 2020-02-13     8 recovered
+    ## 1273  113.4244 2020-02-13    39 recovered
+    ## 1274  108.7881 2020-02-13     1 recovered
+    ## 1275  106.8748 2020-02-13     9 recovered
+    ## 1276  109.7453 2020-02-13     3 recovered
+    ## 1277  114.5149 2020-02-13    14 recovered
+    ## 1278  127.7615 2020-02-13     2 recovered
+    ## 1279  113.6140 2020-02-13    50 recovered
+    ## 1280  112.2707 2020-02-13   773 recovered
+    ## 1281  111.7088 2020-02-13    35 recovered
+    ## 1282  119.4550 2020-02-13    14 recovered
+    ## 1283  115.7221 2020-02-13    18 recovered
+    ## 1284  126.1923 2020-02-13     2 recovered
+    ## 1285  122.6085 2020-02-13     2 recovered
+    ## 1286  113.5500 2020-02-13     1 recovered
+    ## 1287  151.2093 2020-02-13     2 recovered
+    ## 1288   95.9956 2020-02-13     2 recovered
+    ## 1289  108.8701 2020-02-13     3 recovered
+    ## 1290  118.1498 2020-02-13    13 recovered
+    ## 1291  121.4491 2020-02-13     5 recovered
+    ## 1292  112.2922 2020-02-13     3 recovered
+    ## 1293  102.7103 2020-02-13    12 recovered
+    ## 1294  117.3230 2020-02-13    10 recovered
+    ## 1295  144.9631 2020-02-13     4 recovered
+    ## 1296   85.2401 2020-02-13     3 recovered
+    ## 1297  101.4870 2020-02-13     1 recovered
+    ## 1298  120.0934 2020-02-13    39 recovered
+    ## 1299   30.0000 2020-02-14     1 confirmed
+    ## 1300  138.0000 2020-02-14     1 confirmed
+    ## 1301  103.8333 2020-02-14     9 confirmed
+    ## 1302  117.2264 2020-02-14    24 confirmed
+    ## 1303  116.4142 2020-02-14     6 confirmed
+    ## 1304  107.8740 2020-02-14     8 confirmed
+    ## 1305  139.6380 2020-02-14    43 confirmed
+    ## 1306  117.9874 2020-02-14     2 confirmed
+    ## 1307  113.4244 2020-02-14    20 confirmed
+    ## 1308  108.7881 2020-02-14     4 confirmed
+    ## 1309  106.8748 2020-02-14     5 confirmed
+    ## 1310  109.7453 2020-02-14     2 confirmed
+    ## 1311  114.5149 2020-02-14    18 confirmed
+    ## 1312  127.7615 2020-02-14    24 confirmed
+    ## 1313  113.6140 2020-02-14    15 confirmed
+    ## 1314  114.2000 2020-02-14     3 confirmed
+    ## 1315  112.2707 2020-02-14  6200 confirmed
+    ## 1316  111.7088 2020-02-14    20 confirmed
+    ## 1317  113.9448 2020-02-14     4 confirmed
+    ## 1318  119.4550 2020-02-14    23 confirmed
+    ## 1319  115.7221 2020-02-14    28 confirmed
+    ## 1320  126.1923 2020-02-14     2 confirmed
+    ## 1321  122.6085 2020-02-14     2 confirmed
+    ## 1322  106.1655 2020-02-14     3 confirmed
+    ## 1323  108.8701 2020-02-14     1 confirmed
+    ## 1324  118.1498 2020-02-14    14 confirmed
+    ## 1325  121.4491 2020-02-14     3 confirmed
+    ## 1326  112.2922 2020-02-14     1 confirmed
+    ## 1327  102.7103 2020-02-14    12 confirmed
+    ## 1328  117.3230 2020-02-14     1 confirmed
+    ## 1329   85.2401 2020-02-14     2 confirmed
+    ## 1330  101.4870 2020-02-14     6 confirmed
+    ## 1331  120.0934 2020-02-14    10 confirmed
+    ## 1332  117.2264 2020-02-14     1     death
+    ## 1333  107.8740 2020-02-14     1     death
+    ## 1334  127.7615 2020-02-14     2     death
+    ## 1335  113.6140 2020-02-14     1     death
+    ## 1336  112.2707 2020-02-14   147     death
+    ## 1337  103.8333 2020-02-14     2 recovered
+    ## 1338  117.2264 2020-02-14    36 recovered
+    ## 1339  116.4142 2020-02-14    11 recovered
+    ## 1340  107.8740 2020-02-14    24 recovered
+    ## 1341  117.9874 2020-02-14     6 recovered
+    ## 1342  113.4244 2020-02-14    48 recovered
+    ## 1343  108.7881 2020-02-14     3 recovered
+    ## 1344  106.8748 2020-02-14     1 recovered
+    ## 1345  109.7453 2020-02-14    13 recovered
+    ## 1346  114.5149 2020-02-14    19 recovered
+    ## 1347  127.7615 2020-02-14    14 recovered
+    ## 1348  113.6140 2020-02-14    61 recovered
+    ## 1349  112.2707 2020-02-14  1315 recovered
+    ## 1350  111.7088 2020-02-14    25 recovered
+    ## 1351  119.4550 2020-02-14    18 recovered
+    ## 1352  115.7221 2020-02-14    17 recovered
+    ## 1353  126.1923 2020-02-14     1 recovered
+    ## 1354  122.6085 2020-02-14     7 recovered
+    ## 1355  108.8701 2020-02-14     8 recovered
+    ## 1356  118.1498 2020-02-14    31 recovered
+    ## 1357  121.4491 2020-02-14    28 recovered
+    ## 1358  112.2922 2020-02-14     2 recovered
+    ## 1359  102.7103 2020-02-14    10 recovered
+    ## 1360  121.0000 2020-02-14     1 recovered
+    ## 1361  117.3230 2020-02-14    10 recovered
+    ## 1362  101.4870 2020-02-14     9 recovered
+    ## 1363  120.0934 2020-02-14    43 recovered
+    ## 1364    2.0000 2020-02-15     1 confirmed
+    ## 1365  138.0000 2020-02-15    14 confirmed
+    ## 1366  112.5000 2020-02-15     3 confirmed
+    ## 1367  103.8333 2020-02-15     5 confirmed
+    ## 1368  117.2264 2020-02-15    16 confirmed
+    ## 1369  116.4142 2020-02-15     3 confirmed
+    ## 1370  107.8740 2020-02-15     7 confirmed
+    ## 1371  139.6380 2020-02-15    67 confirmed
+    ## 1372  117.9874 2020-02-15     4 confirmed
+    ## 1373  113.4244 2020-02-15    33 confirmed
+    ## 1374  108.7881 2020-02-15     9 confirmed
+    ## 1375  106.8748 2020-02-15     3 confirmed
+    ## 1376  109.7453 2020-02-15     3 confirmed
+    ## 1377  114.5149 2020-02-15     8 confirmed
+    ## 1378  127.7615 2020-02-15     6 confirmed
+    ## 1379  113.6140 2020-02-15    28 confirmed
+    ## 1380  112.2707 2020-02-15  1843 confirmed
+    ## 1381  111.7088 2020-02-15    13 confirmed
+    ## 1382  113.9448 2020-02-15     3 confirmed
+    ## 1383  119.4550 2020-02-15    11 confirmed
+    ## 1384  115.7221 2020-02-15    13 confirmed
+    ## 1385  126.1923 2020-02-15     2 confirmed
+    ## 1386  106.1655 2020-02-15     3 confirmed
+    ## 1387  108.8701 2020-02-15     2 confirmed
+    ## 1388  118.1498 2020-02-15     9 confirmed
+    ## 1389  121.4491 2020-02-15     8 confirmed
+    ## 1390  112.2922 2020-02-15     1 confirmed
+    ## 1391  102.7103 2020-02-15     7 confirmed
+    ## 1392  117.3230 2020-02-15     2 confirmed
+    ## 1393   85.2401 2020-02-15     5 confirmed
+    ## 1394  101.4870 2020-02-15     6 confirmed
+    ## 1395  120.0934 2020-02-15     7 confirmed
+    ## 1396    2.0000 2020-02-15     1     death
+    ## 1397  116.4142 2020-02-15     1     death
+    ## 1398  113.6140 2020-02-15     2     death
+    ## 1399  112.2707 2020-02-15   139     death
+    ## 1400    2.0000 2020-02-15     2 recovered
+    ## 1401  138.0000 2020-02-15     3 recovered
+    ## 1402  112.5000 2020-02-15     4 recovered
+    ## 1403  103.8333 2020-02-15     1 recovered
+    ## 1404  128.0000 2020-02-15     2 recovered
+    ## 1405   -4.0000 2020-02-15     2 recovered
+    ## 1406   54.0000 2020-02-15     2 recovered
+    ## 1407  117.2264 2020-02-15    28 recovered
+    ## 1408  116.4142 2020-02-15    18 recovered
+    ## 1409  107.8740 2020-02-15    32 recovered
+    ## 1410  117.9874 2020-02-15     8 recovered
+    ## 1411  103.8343 2020-02-15    10 recovered
+    ## 1412  113.4244 2020-02-15    48 recovered
+    ## 1413  108.7881 2020-02-15     8 recovered
+    ## 1414  106.8748 2020-02-15    13 recovered
+    ## 1415  109.7453 2020-02-15    -4 recovered
+    ## 1416  114.5149 2020-02-15    14 recovered
+    ## 1417  127.7615 2020-02-15    21 recovered
+    ## 1418  113.6140 2020-02-15    34 recovered
+    ## 1419  112.2707 2020-02-15   849 recovered
+    ## 1420  111.7088 2020-02-15    61 recovered
+    ## 1421  113.9448 2020-02-15     1 recovered
+    ## 1422  119.4550 2020-02-15    29 recovered
+    ## 1423  115.7221 2020-02-15    23 recovered
+    ## 1424  126.1923 2020-02-15     1 recovered
+    ## 1425  122.6085 2020-02-15     2 recovered
+    ## 1426  106.1655 2020-02-15     9 recovered
+    ## 1427   95.9956 2020-02-15     2 recovered
+    ## 1428  108.8701 2020-02-15     6 recovered
+    ## 1429  118.1498 2020-02-15    20 recovered
+    ## 1430  121.4491 2020-02-15    34 recovered
+    ## 1431  112.2922 2020-02-15     8 recovered
+    ## 1432  102.7103 2020-02-15     5 recovered
+    ## 1433  117.3230 2020-02-15     6 recovered
+    ## 1434   85.2401 2020-02-15     4 recovered
+    ## 1435  101.4870 2020-02-15     6 recovered
+    ## 1436  120.0934 2020-02-15    25 recovered
+    ## 1437  138.0000 2020-02-16    16 confirmed
+    ## 1438  103.8333 2020-02-16     3 confirmed
+    ## 1439  128.0000 2020-02-16     1 confirmed
+    ## 1440  101.0000 2020-02-16     1 confirmed
+    ## 1441   54.0000 2020-02-16     1 confirmed
+    ## 1442  117.2264 2020-02-16    12 confirmed
+    ## 1443  116.4142 2020-02-16     5 confirmed
+    ## 1444  107.8740 2020-02-16     7 confirmed
+    ## 1445  139.6380 2020-02-16    70 confirmed
+    ## 1446  117.9874 2020-02-16     2 confirmed
+    ## 1447  113.4244 2020-02-16    22 confirmed
+    ## 1448  108.7881 2020-02-16     2 confirmed
+    ## 1449  106.8748 2020-02-16     1 confirmed
+    ## 1450  114.5149 2020-02-16     9 confirmed
+    ## 1451  127.7615 2020-02-16    20 confirmed
+    ## 1452  113.6140 2020-02-16    19 confirmed
+    ## 1453  114.2000 2020-02-16     1 confirmed
+    ## 1454  112.2707 2020-02-16  1933 confirmed
+    ## 1455  111.7088 2020-02-16     3 confirmed
+    ## 1456  113.9448 2020-02-16     2 confirmed
+    ## 1457  119.4550 2020-02-16    13 confirmed
+    ## 1458  115.7221 2020-02-16    12 confirmed
+    ## 1459  126.1923 2020-02-16     1 confirmed
+    ## 1460  122.6085 2020-02-16     2 confirmed
+    ## 1461  108.8701 2020-02-16     4 confirmed
+    ## 1462  118.1498 2020-02-16     5 confirmed
+    ## 1463  121.4491 2020-02-16     2 confirmed
+    ## 1464  112.2922 2020-02-16     1 confirmed
+    ## 1465  102.7103 2020-02-16    11 confirmed
+    ## 1466  121.0000 2020-02-16     2 confirmed
+    ## 1467  117.3230 2020-02-16     2 confirmed
+    ## 1468   85.2401 2020-02-16     1 confirmed
+    ## 1469  101.4870 2020-02-16     3 confirmed
+    ## 1470  120.0934 2020-02-16     5 confirmed
+    ## 1471  112.2707 2020-02-16   100     death
+    ## 1472  111.7088 2020-02-16     1     death
+    ## 1473  102.7103 2020-02-16     2     death
+    ## 1474  121.0000 2020-02-16     1     death
+    ## 1475   78.0000 2020-02-16     3 recovered
+    ## 1476  101.0000 2020-02-16     2 recovered
+    ## 1477   -3.0000 2020-02-16     7 recovered
+    ## 1478   54.0000 2020-02-16     1 recovered
+    ## 1479  117.2264 2020-02-16    34 recovered
+    ## 1480  116.4142 2020-02-16    10 recovered
+    ## 1481  107.8740 2020-02-16    23 recovered
+    ## 1482  117.9874 2020-02-16    11 recovered
+    ## 1483  103.8343 2020-02-16     5 recovered
+    ## 1484  113.4244 2020-02-16    55 recovered
+    ## 1485  108.7881 2020-02-16     5 recovered
+    ## 1486  106.8748 2020-02-16     5 recovered
+    ## 1487  109.7453 2020-02-16    13 recovered
+    ## 1488  114.5149 2020-02-16     4 recovered
+    ## 1489  127.7615 2020-02-16    11 recovered
+    ## 1490  113.6140 2020-02-16    49 recovered
+    ## 1491  114.2000 2020-02-16     1 recovered
+    ## 1492  112.2707 2020-02-16  1016 recovered
+    ## 1493  111.7088 2020-02-16    39 recovered
+    ## 1494  113.9448 2020-02-16     1 recovered
+    ## 1495  119.4550 2020-02-16    32 recovered
+    ## 1496  115.7221 2020-02-16    30 recovered
+    ## 1497  126.1923 2020-02-16     4 recovered
+    ## 1498  122.6085 2020-02-16     9 recovered
+    ## 1499  113.5500 2020-02-16     2 recovered
+    ## 1500  108.8701 2020-02-16    11 recovered
+    ## 1501  118.1498 2020-02-16    17 recovered
+    ## 1502  121.4491 2020-02-16    16 recovered
+    ## 1503  112.2922 2020-02-16     4 recovered
+    ## 1504  102.7103 2020-02-16    12 recovered
+    ## 1505  117.3230 2020-02-16     8 recovered
+    ## 1506   85.2401 2020-02-16     2 recovered
+    ## 1507  120.0934 2020-02-16    28 recovered
+    ## 1508  138.0000 2020-02-17     7 confirmed
+    ## 1509  103.8333 2020-02-17     2 confirmed
+    ## 1510  128.0000 2020-02-17     1 confirmed
+    ## 1511  101.0000 2020-02-17     1 confirmed
+    ## 1512  117.2264 2020-02-17    11 confirmed
+    ## 1513  116.4142 2020-02-17     1 confirmed
+    ## 1514 -123.1207 2020-02-17     1 confirmed
+    ## 1515  107.8740 2020-02-17     2 confirmed
+    ## 1516  139.6380 2020-02-17    99 confirmed
+    ## 1517  117.9874 2020-02-17     3 confirmed
+    ## 1518  103.8343 2020-02-17     1 confirmed
+    ## 1519  113.4244 2020-02-17     6 confirmed
+    ## 1520  108.7881 2020-02-17     1 confirmed
+    ## 1521  106.8748 2020-02-17     2 confirmed
+    ## 1522  109.7453 2020-02-17     1 confirmed
+    ## 1523  114.5149 2020-02-17     1 confirmed
+    ## 1524  127.7615 2020-02-17    12 confirmed
+    ## 1525  113.6140 2020-02-17    15 confirmed
+    ## 1526  114.2000 2020-02-17     3 confirmed
+    ## 1527  112.2707 2020-02-17  1807 confirmed
+    ## 1528  111.7088 2020-02-17     2 confirmed
+    ## 1529  113.9448 2020-02-17     2 confirmed
+    ## 1530  119.4550 2020-02-17     9 confirmed
+    ## 1531  115.7221 2020-02-17     5 confirmed
+    ## 1532  108.8701 2020-02-17     4 confirmed
+    ## 1533  118.1498 2020-02-17     4 confirmed
+    ## 1534  121.4491 2020-02-17     5 confirmed
+    ## 1535  112.2922 2020-02-17     1 confirmed
+    ## 1536  102.7103 2020-02-17    14 confirmed
+    ## 1537  121.0000 2020-02-17     2 confirmed
+    ## 1538  117.3230 2020-02-17     1 confirmed
+    ## 1539   85.2401 2020-02-17     4 confirmed
+    ## 1540  120.0934 2020-02-17     4 confirmed
+    ## 1541  113.4244 2020-02-17     2     death
+    ## 1542  113.6140 2020-02-17     3     death
+    ## 1543  112.2707 2020-02-17    93     death
+    ## 1544    4.0000 2020-02-17     1 recovered
+    ## 1545  103.8333 2020-02-17     6 recovered
+    ## 1546  128.0000 2020-02-17     1 recovered
+    ## 1547  101.0000 2020-02-17     1 recovered
+    ## 1548  117.2264 2020-02-17    25 recovered
+    ## 1549  116.4142 2020-02-17     6 recovered
+    ## 1550  107.8740 2020-02-17    18 recovered
+    ## 1551  117.9874 2020-02-17     8 recovered
+    ## 1552  103.8343 2020-02-17     4 recovered
+    ## 1553  113.4244 2020-02-17    59 recovered
+    ## 1554  108.7881 2020-02-17     4 recovered
+    ## 1555  106.8748 2020-02-17    11 recovered
+    ## 1556  109.7453 2020-02-17     7 recovered
+    ## 1557  114.5149 2020-02-17    17 recovered
+    ## 1558  127.7615 2020-02-17     6 recovered
+    ## 1559  113.6140 2020-02-17    69 recovered
+    ## 1560  112.2707 2020-02-17  1223 recovered
+    ## 1561  111.7088 2020-02-17    34 recovered
+    ## 1562  119.4550 2020-02-17    40 recovered
+    ## 1563  115.7221 2020-02-17    35 recovered
+    ## 1564  126.1923 2020-02-17     4 recovered
+    ## 1565  122.6085 2020-02-17     3 recovered
+    ## 1566  106.1655 2020-02-17     2 recovered
+    ## 1567  108.8701 2020-02-17     8 recovered
+    ## 1568  118.1498 2020-02-17    18 recovered
+    ## 1569  121.4491 2020-02-17    21 recovered
+    ## 1570  112.2922 2020-02-17     3 recovered
+    ## 1571  102.7103 2020-02-17    25 recovered
+    ## 1572  138.6007 2020-02-17     2 recovered
+    ## 1573  117.3230 2020-02-17     1 recovered
+    ## 1574  101.4870 2020-02-17     5 recovered
+    ## 1575  120.0934 2020-02-17    51 recovered
+    ## 1576  138.0000 2020-02-18     8 confirmed
+    ## 1577  103.8333 2020-02-18     4 confirmed
+    ## 1578  128.0000 2020-02-18     1 confirmed
+    ## 1579  117.2264 2020-02-18     9 confirmed
+    ## 1580  116.4142 2020-02-18     6 confirmed
+    ## 1581  107.8740 2020-02-18     2 confirmed
+    ## 1582  139.6380 2020-02-18    88 confirmed
+    ## 1583  117.9874 2020-02-18     2 confirmed
+    ## 1584  113.4244 2020-02-18     6 confirmed
+    ## 1585  108.7881 2020-02-18     4 confirmed
+    ## 1586  114.5149 2020-02-18     5 confirmed
+    ## 1587  127.7615 2020-02-18     7 confirmed
+    ## 1588  113.6140 2020-02-18    11 confirmed
+    ## 1589  114.2000 2020-02-18     2 confirmed
+    ## 1590  112.2707 2020-02-18  1693 confirmed
+    ## 1591  111.7088 2020-02-18     1 confirmed
+    ## 1592  113.9448 2020-02-18     1 confirmed
+    ## 1593  119.4550 2020-02-18     3 confirmed
+    ## 1594  115.7221 2020-02-18     3 confirmed
+    ## 1595  118.1498 2020-02-18     2 confirmed
+    ## 1596  112.2922 2020-02-18     1 confirmed
+    ## 1597  102.7103 2020-02-18    13 confirmed
+    ## 1598  117.3230 2020-02-18     3 confirmed
+    ## 1599   85.2401 2020-02-18     1 confirmed
+    ## 1600  101.4870 2020-02-18     1 confirmed
+    ## 1601  120.0934 2020-02-18     1 confirmed
+    ## 1602  106.8748 2020-02-18     1     death
+    ## 1603  114.5149 2020-02-18     1     death
+    ## 1604  113.6140 2020-02-18     3     death
+    ## 1605  112.2707 2020-02-18   132     death
+    ## 1606  111.7088 2020-02-18     1     death
+    ## 1607  118.1498 2020-02-18     1     death
+    ## 1608    9.0000 2020-02-18    11 recovered
+    ## 1609  138.0000 2020-02-18     1 recovered
+    ## 1610  112.5000 2020-02-18     6 recovered
+    ## 1611  103.8333 2020-02-18     5 recovered
+    ## 1612  128.0000 2020-02-18     2 recovered
+    ## 1613  117.2264 2020-02-18    81 recovered
+    ## 1614  116.4142 2020-02-18     8 recovered
+    ## 1615  107.8740 2020-02-18    29 recovered
+    ## 1616  117.9874 2020-02-18     3 recovered
+    ## 1617  103.8343 2020-02-18     4 recovered
+    ## 1618  113.4244 2020-02-18    41 recovered
+    ## 1619  108.7881 2020-02-18    16 recovered
+    ## 1620  106.8748 2020-02-18     9 recovered
+    ## 1621  109.7453 2020-02-18    20 recovered
+    ## 1622  114.5149 2020-02-18    14 recovered
+    ## 1623  127.7615 2020-02-18    26 recovered
+    ## 1624  113.6140 2020-02-18    13 recovered
+    ## 1625  112.2707 2020-02-18  1266 recovered
+    ## 1626  111.7088 2020-02-18    29 recovered
+    ## 1627  119.4550 2020-02-18    22 recovered
+    ## 1628  115.7221 2020-02-18    35 recovered
+    ## 1629  126.1923 2020-02-18     2 recovered
+    ## 1630  122.6085 2020-02-18    10 recovered
+    ## 1631  106.1655 2020-02-18     7 recovered
+    ## 1632   95.9956 2020-02-18     2 recovered
+    ## 1633  108.8701 2020-02-18    10 recovered
+    ## 1634  118.1498 2020-02-18    20 recovered
+    ## 1635  121.4491 2020-02-18    16 recovered
+    ## 1636  112.2922 2020-02-18     8 recovered
+    ## 1637  102.7103 2020-02-18    13 recovered
+    ## 1638  117.3230 2020-02-18     2 recovered
+    ## 1639  101.4870 2020-02-18    10 recovered
+    ## 1640  120.0934 2020-02-18    28 recovered
+    ## 1641   53.0000 2020-02-19     2 confirmed
+    ## 1642  138.0000 2020-02-19    10 confirmed
+    ## 1643  103.8333 2020-02-19     3 confirmed
+    ## 1644  117.2264 2020-02-19     4 confirmed
+    ## 1645  116.4142 2020-02-19     6 confirmed
+    ## 1646  107.8740 2020-02-19     5 confirmed
+    ## 1647  139.6380 2020-02-19    79 confirmed
+    ## 1648  117.9874 2020-02-19     1 confirmed
+    ## 1649  113.4244 2020-02-19     3 confirmed
+    ## 1650  108.7881 2020-02-19     2 confirmed
+    ## 1651  109.7453 2020-02-19     5 confirmed
+    ## 1652  127.7615 2020-02-19     6 confirmed
+    ## 1653  113.6140 2020-02-19     5 confirmed
+    ## 1654  114.2000 2020-02-19     1 confirmed
+    ## 1655  112.2707 2020-02-19   349 confirmed
+    ## 1656  111.7088 2020-02-19     1 confirmed
+    ## 1657  113.9448 2020-02-19     2 confirmed
+    ## 1658  119.4550 2020-02-19     2 confirmed
+    ## 1659  115.7221 2020-02-19     1 confirmed
+    ## 1660  126.1923 2020-02-19     1 confirmed
+    ## 1661  106.1655 2020-02-19     1 confirmed
+    ## 1662  108.8701 2020-02-19     2 confirmed
+    ## 1663  118.1498 2020-02-19     1 confirmed
+    ## 1664  102.7103 2020-02-19     6 confirmed
+    ## 1665  121.0000 2020-02-19     1 confirmed
+    ## 1666  117.3230 2020-02-19     2 confirmed
+    ## 1667  120.0934 2020-02-19     2 confirmed
+    ## 1668   53.0000 2020-02-19     2     death
+    ## 1669  113.4244 2020-02-19     1     death
+    ## 1670  127.7615 2020-02-19     1     death
+    ## 1671  114.2000 2020-02-19     1     death
+    ## 1672  112.2707 2020-02-19   108     death
+    ## 1673  121.4491 2020-02-19     1     death
+    ## 1674  101.4870 2020-02-19     1     death
+    ## 1675  138.0000 2020-02-19     5 recovered
+    ## 1676  112.5000 2020-02-19     2 recovered
+    ## 1677  103.8333 2020-02-19     5 recovered
+    ## 1678  117.2264 2020-02-19    52 recovered
+    ## 1679  116.4142 2020-02-19    23 recovered
+    ## 1680  107.8740 2020-02-19    20 recovered
+    ## 1681  139.6380 2020-02-19     1 recovered
+    ## 1682  117.9874 2020-02-19    19 recovered
+    ## 1683  103.8343 2020-02-19     3 recovered
+    ## 1684  113.4244 2020-02-19    41 recovered
+    ## 1685  108.7881 2020-02-19    17 recovered
+    ## 1686  106.8748 2020-02-19     4 recovered
+    ## 1687  109.7453 2020-02-19     5 recovered
+    ## 1688  114.5149 2020-02-19    16 recovered
+    ## 1689  127.7615 2020-02-19     9 recovered
+    ## 1690  113.6140 2020-02-19    51 recovered
+    ## 1691  114.2000 2020-02-19     3 recovered
+    ## 1692  112.2707 2020-02-19  1209 recovered
+    ## 1693  111.7088 2020-02-19    34 recovered
+    ## 1694  113.9448 2020-02-19     2 recovered
+    ## 1695  119.4550 2020-02-19    38 recovered
+    ## 1696  115.7221 2020-02-19    52 recovered
+    ## 1697  126.1923 2020-02-19     1 recovered
+    ## 1698  122.6085 2020-02-19     2 recovered
+    ## 1699   95.9956 2020-02-19     1 recovered
+    ## 1700  108.8701 2020-02-19    13 recovered
+    ## 1701  118.1498 2020-02-19    20 recovered
+    ## 1702  121.4491 2020-02-19     9 recovered
+    ## 1703  112.2922 2020-02-19     7 recovered
+    ## 1704  102.7103 2020-02-19    19 recovered
+    ## 1705  117.3230 2020-02-19     6 recovered
+    ## 1706   85.2401 2020-02-19     8 recovered
+    ## 1707  101.4870 2020-02-19     3 recovered
+    ## 1708  120.0934 2020-02-19    69 recovered
+    ## 1709   53.0000 2020-02-20     3 confirmed
+    ## 1710  138.0000 2020-02-20    10 confirmed
+    ## 1711  128.0000 2020-02-20    73 confirmed
+    ## 1712  117.2264 2020-02-20     1 confirmed
+    ## 1713  116.4142 2020-02-20     2 confirmed
+    ## 1714  107.8740 2020-02-20     7 confirmed
+    ## 1715  139.6380 2020-02-20    13 confirmed
+    ## 1716  113.4244 2020-02-20     1 confirmed
+    ## 1717  108.7881 2020-02-20     1 confirmed
+    ## 1718  114.5149 2020-02-20     1 confirmed
+    ## 1719  127.7615 2020-02-20     6 confirmed
+    ## 1720  113.6140 2020-02-20     3 confirmed
+    ## 1721  114.2000 2020-02-20     5 confirmed
+    ## 1722  112.2707 2020-02-20   411 confirmed
+    ## 1723  111.7088 2020-02-20     2 confirmed
+    ## 1724  126.1923 2020-02-20     1 confirmed
+    ## 1725  108.8701 2020-02-20     3 confirmed
+    ## 1726  118.1498 2020-02-20     2 confirmed
+    ## 1727  121.4491 2020-02-20     1 confirmed
+    ## 1728  112.2922 2020-02-20     1 confirmed
+    ## 1729  102.7103 2020-02-20     6 confirmed
+    ## 1730  121.0000 2020-02-20     1 confirmed
+    ## 1731  117.3230 2020-02-20     1 confirmed
+    ## 1732  101.4870 2020-02-20     2 confirmed
+    ## 1733  120.0934 2020-02-20     1 confirmed
+    ## 1734  128.0000 2020-02-20     1     death
+    ## 1735  107.8740 2020-02-20     1     death
+    ## 1736  139.6380 2020-02-20     2     death
+    ## 1737  117.9874 2020-02-20     1     death
+    ## 1738  114.5149 2020-02-20     1     death
+    ## 1739  112.2707 2020-02-20   115     death
+    ## 1740  108.8701 2020-02-20     1     death
+    ## 1741  118.1498 2020-02-20     1     death
+    ## 1742  101.4870 2020-02-20     1     death
+    ## 1743  120.0934 2020-02-20     1     death
+    ## 1744  128.0000 2020-02-20     4 recovered
+    ## 1745  117.2264 2020-02-20    61 recovered
+    ## 1746  116.4142 2020-02-20     8 recovered
+    ## 1747  107.8740 2020-02-20    25 recovered
+    ## 1748  117.9874 2020-02-20    14 recovered
+    ## 1749  103.8343 2020-02-20     6 recovered
+    ## 1750  113.4244 2020-02-20    36 recovered
+    ## 1751  108.7881 2020-02-20     4 recovered
+    ## 1752  106.8748 2020-02-20     2 recovered
+    ## 1753  109.7453 2020-02-20     2 recovered
+    ## 1754  114.5149 2020-02-20    17 recovered
+    ## 1755  127.7615 2020-02-20    16 recovered
+    ## 1756  113.6140 2020-02-20    64 recovered
+    ## 1757  114.2000 2020-02-20     1 recovered
+    ## 1758  112.2707 2020-02-20  1451 recovered
+    ## 1759  111.7088 2020-02-20    73 recovered
+    ## 1760  113.9448 2020-02-20     6 recovered
+    ## 1761  119.4550 2020-02-20    38 recovered
+    ## 1762  115.7221 2020-02-20    71 recovered
+    ## 1763  126.1923 2020-02-20     6 recovered
+    ## 1764  122.6085 2020-02-20     4 recovered
+    ## 1765  113.5500 2020-02-20     1 recovered
+    ## 1766  106.1655 2020-02-20     2 recovered
+    ## 1767  108.8701 2020-02-20    16 recovered
+    ## 1768  118.1498 2020-02-20    23 recovered
+    ## 1769  121.4491 2020-02-20    13 recovered
+    ## 1770  112.2922 2020-02-20     8 recovered
+    ## 1771  102.7103 2020-02-20    29 recovered
+    ## 1772  117.3230 2020-02-20     5 recovered
+    ## 1773   85.2401 2020-02-20     2 recovered
+    ## 1774  101.4870 2020-02-20    19 recovered
+    ## 1775  120.0934 2020-02-20    29 recovered
+    ## 1776   53.0000 2020-02-21    13 confirmed
+    ## 1777   35.0000 2020-02-21     1 confirmed
+    ## 1778   12.0000 2020-02-21    17 confirmed
+    ## 1779  138.0000 2020-02-21    11 confirmed
+    ## 1780   35.8623 2020-02-21     1 confirmed
+    ## 1781  103.8333 2020-02-21     1 confirmed
+    ## 1782  128.0000 2020-02-21   100 confirmed
+    ## 1783  117.2264 2020-02-21     1 confirmed
+    ## 1784  116.4142 2020-02-21     1 confirmed
+    ## 1785 -123.1207 2020-02-21     1 confirmed
+    ## 1786  107.8740 2020-02-21     5 confirmed
+    ## 1787  139.6380 2020-02-21     4 confirmed
+    ## 1788  113.4244 2020-02-21     1 confirmed
+    ## 1789  108.7881 2020-02-21     1 confirmed
+    ## 1790  114.5149 2020-02-21     1 confirmed
+    ## 1791  127.7615 2020-02-21     3 confirmed
+    ## 1792  113.6140 2020-02-21     2 confirmed
+    ## 1793  112.2707 2020-02-21   220 confirmed
+    ## 1794 -123.8695 2020-02-21     1 confirmed
+    ## 1795  111.7088 2020-02-21     1 confirmed
+    ## 1796  -98.6134 2020-02-21     2 confirmed
+    ## 1797  -95.9758 2020-02-21    11 confirmed
+    ## 1798 -121.3542 2020-02-21     1 confirmed
+    ## 1799  118.1498 2020-02-21   203 confirmed
+    ## 1800  102.7103 2020-02-21     5 confirmed
+    ## 1801  121.0000 2020-02-21     2 confirmed
+    ## 1802  117.3230 2020-02-21     1 confirmed
+    ## 1803 -121.9399 2020-02-21     5 confirmed
+    ## 1804  120.0934 2020-02-21    28 confirmed
+    ## 1805   53.0000 2020-02-21     2     death
+    ## 1806   12.0000 2020-02-21     1     death
+    ## 1807  128.0000 2020-02-21     1     death
+    ## 1808    9.0000 2020-02-21     2 recovered
+    ## 1809  138.0000 2020-02-21     4 recovered
+    ## 1810  103.8333 2020-02-21     3 recovered
+    ## 1811  101.0000 2020-02-21     2 recovered
+    ## 1812  108.0000 2020-02-21     7 recovered
+    ## 1813  117.2264 2020-02-21    65 recovered
+    ## 1814  116.4142 2020-02-21    16 recovered
+    ## 1815  107.8740 2020-02-21    17 recovered
+    ## 1816  117.9874 2020-02-21    23 recovered
+    ## 1817  103.8343 2020-02-21     5 recovered
+    ## 1818  113.4244 2020-02-21    48 recovered
+    ## 1819  108.7881 2020-02-21     7 recovered
+    ## 1820  106.8748 2020-02-21     5 recovered
+    ## 1821  109.7453 2020-02-21     9 recovered
+    ## 1822  114.5149 2020-02-21    15 recovered
+    ## 1823  127.7615 2020-02-21    39 recovered
+    ## 1824  113.6140 2020-02-21    99 recovered
+    ## 1825  114.2000 2020-02-21    -1 recovered
+    ## 1826  112.2707 2020-02-21    93 recovered
+    ## 1827  111.7088 2020-02-21    27 recovered
+    ## 1828  113.9448 2020-02-21     1 recovered
+    ## 1829  119.4550 2020-02-21    17 recovered
+    ## 1830  115.7221 2020-02-21    56 recovered
+    ## 1831  126.1923 2020-02-21     2 recovered
+    ## 1832  122.6085 2020-02-21     2 recovered
+    ## 1833  106.1655 2020-02-21     4 recovered
+    ## 1834   95.9956 2020-02-21     2 recovered
+    ## 1835  153.4000 2020-02-21     1 recovered
+    ## 1836 -117.1611 2020-02-21     1 recovered
+    ## 1837 -121.9552 2020-02-21     1 recovered
+    ## 1838  108.8701 2020-02-21    16 recovered
+    ## 1839  118.1498 2020-02-21    27 recovered
+    ## 1840  121.4491 2020-02-21    12 recovered
+    ## 1841  112.2922 2020-02-21     2 recovered
+    ## 1842  102.7103 2020-02-21    14 recovered
+    ## 1843  117.3230 2020-02-21     3 recovered
+    ## 1844  -79.3832 2020-02-21     2 recovered
+    ## 1845   85.2401 2020-02-21     2 recovered
+    ## 1846  101.4870 2020-02-21    17 recovered
+    ## 1847  120.0934 2020-02-21    46 recovered
+    ## 1848   53.0000 2020-02-22    10 confirmed
+    ## 1849   12.0000 2020-02-22    42 confirmed
+    ## 1850  138.0000 2020-02-22    17 confirmed
+    ## 1851  128.0000 2020-02-22   229 confirmed
+    ## 1852   54.0000 2020-02-22     4 confirmed
+    ## 1853  117.2264 2020-02-22     1 confirmed
+    ## 1854  116.4142 2020-02-22     3 confirmed
+    ## 1855  107.8740 2020-02-22     1 confirmed
+    ## 1856  139.6380 2020-02-22     3 confirmed
+    ## 1857  113.4244 2020-02-22     6 confirmed
+    ## 1858  108.7881 2020-02-22     3 confirmed
+    ## 1859  114.5149 2020-02-22     1 confirmed
+    ## 1860  113.6140 2020-02-22     3 confirmed
+    ## 1861  114.2000 2020-02-22     1 confirmed
+    ## 1862  112.2707 2020-02-22  1422 confirmed
+    ## 1863  111.7088 2020-02-22     2 confirmed
+    ## 1864  118.1498 2020-02-22     1 confirmed
+    ## 1865  121.4491 2020-02-22     1 confirmed
+    ## 1866  102.7103 2020-02-22     1 confirmed
+    ## 1867  117.3230 2020-02-22     3 confirmed
+    ## 1868  120.0934 2020-02-22     2 confirmed
+    ## 1869   53.0000 2020-02-22     1     death
+    ## 1870   12.0000 2020-02-22     1     death
+    ## 1871  114.5149 2020-02-22     1     death
+    ## 1872  112.2707 2020-02-22   202     death
+    ## 1873  121.4491 2020-02-22     1     death
+    ## 1874   85.2401 2020-02-22     1     death
+    ## 1875   12.0000 2020-02-22     1 recovered
+    ## 1876  117.2264 2020-02-22    58 recovered
+    ## 1877  116.4142 2020-02-22     9 recovered
+    ## 1878  107.8740 2020-02-22    12 recovered
+    ## 1879  117.9874 2020-02-22    13 recovered
+    ## 1880  113.4244 2020-02-22    38 recovered
+    ## 1881  108.7881 2020-02-22     7 recovered
+    ## 1882  106.8748 2020-02-22    13 recovered
+    ## 1883  109.7453 2020-02-22     9 recovered
+    ## 1884  114.5149 2020-02-22    19 recovered
+    ## 1885  127.7615 2020-02-22    29 recovered
+    ## 1886  113.6140 2020-02-22    94 recovered
+    ## 1887  114.2000 2020-02-22     1 recovered
+    ## 1888  112.2707 2020-02-22  3418 recovered
+    ## 1889  111.7088 2020-02-22    31 recovered
+    ## 1890  113.9448 2020-02-22     9 recovered
+    ## 1891  119.4550 2020-02-22    28 recovered
+    ## 1892  115.7221 2020-02-22    66 recovered
+    ## 1893  126.1923 2020-02-22     7 recovered
+    ## 1894  122.6085 2020-02-22     5 recovered
+    ## 1895  108.8701 2020-02-22    15 recovered
+    ## 1896  118.1498 2020-02-22    21 recovered
+    ## 1897  121.4491 2020-02-22    16 recovered
+    ## 1898  112.2922 2020-02-22     3 recovered
+    ## 1899  102.7103 2020-02-22    19 recovered
+    ## 1900  117.3230 2020-02-22     3 recovered
+    ## 1901   85.2401 2020-02-22     1 recovered
+    ## 1902  101.4870 2020-02-22    11 recovered
+    ## 1903  120.0934 2020-02-22    40 recovered
+    ## 1904   53.0000 2020-02-23    15 confirmed
+    ## 1905   12.0000 2020-02-23    93 confirmed
+    ## 1906  138.0000 2020-02-23    25 confirmed
+    ## 1907  103.8333 2020-02-23     4 confirmed
+    ## 1908  128.0000 2020-02-23   169 confirmed
+    ## 1909  107.8740 2020-02-23     2 confirmed
+    ## 1910  139.6380 2020-02-23    57 confirmed
+    ## 1911  113.4244 2020-02-23     3 confirmed
+    ## 1912  114.5149 2020-02-23     2 confirmed
+    ## 1913  127.7615 2020-02-23     1 confirmed
+    ## 1914  113.6140 2020-02-23     1 confirmed
+    ## 1915  114.2000 2020-02-23     5 confirmed
+    ## 1916  111.7088 2020-02-23     3 confirmed
+    ## 1917  118.1498 2020-02-23     4 confirmed
+    ## 1918  121.0000 2020-02-23     2 confirmed
+    ## 1919   53.0000 2020-02-23     3     death
+    ## 1920   12.0000 2020-02-23     1     death
+    ## 1921  128.0000 2020-02-23     4     death
+    ## 1922  139.6380 2020-02-23     1     death
+    ## 1923  113.4244 2020-02-23     1     death
+    ## 1924  109.7453 2020-02-23     1     death
+    ## 1925   12.0000 2020-02-23     1 recovered
+    ## 1926  103.8333 2020-02-23    14 recovered
+    ## 1927  128.0000 2020-02-23     2 recovered
+    ## 1928  101.0000 2020-02-23     4 recovered
+    ## 1929  117.2264 2020-02-23    40 recovered
+    ## 1930  116.4142 2020-02-23    11 recovered
+    ## 1931  107.8740 2020-02-23     7 recovered
+    ## 1932  139.6380 2020-02-23    -1 recovered
+    ## 1933  117.9874 2020-02-23     8 recovered
+    ## 1934  103.8343 2020-02-23     2 recovered
+    ## 1935  113.4244 2020-02-23    27 recovered
+    ## 1936  108.7881 2020-02-23     2 recovered
+    ## 1937  106.8748 2020-02-23    12 recovered
+    ## 1938  109.7453 2020-02-23     2 recovered
+    ## 1939  114.5149 2020-02-23    16 recovered
+    ## 1940  127.7615 2020-02-23    18 recovered
+    ## 1941  113.6140 2020-02-23    38 recovered
+    ## 1942  114.2000 2020-02-23     5 recovered
+    ## 1943  112.2707 2020-02-23    44 recovered
+    ## 1944  111.7088 2020-02-23    22 recovered
+    ## 1945  113.9448 2020-02-23     1 recovered
+    ## 1946  119.4550 2020-02-23    17 recovered
+    ## 1947  115.7221 2020-02-23    58 recovered
+    ## 1948  126.1923 2020-02-23     2 recovered
+    ## 1949  122.6085 2020-02-23     7 recovered
+    ## 1950  106.1655 2020-02-23     8 recovered
+    ## 1951  108.8701 2020-02-23    14 recovered
+    ## 1952  118.1498 2020-02-23    19 recovered
+    ## 1953  121.4491 2020-02-23    22 recovered
+    ## 1954  112.2922 2020-02-23     7 recovered
+    ## 1955  102.7103 2020-02-23    11 recovered
+    ## 1956  117.3230 2020-02-23    16 recovered
+    ## 1957   85.2401 2020-02-23     3 recovered
+    ## 1958  101.4870 2020-02-23     8 recovered
+    ## 1959  120.0934 2020-02-23    41 recovered
+    ## 1960   65.0000 2020-02-24     1 confirmed
+    ## 1961   50.5500 2020-02-24     1 confirmed
+    ## 1962   53.0000 2020-02-24    18 confirmed
+    ## 1963   44.0000 2020-02-24     1 confirmed
+    ## 1964   12.0000 2020-02-24    74 confirmed
+    ## 1965  138.0000 2020-02-24    12 confirmed
+    ## 1966   47.7500 2020-02-24     1 confirmed
+    ## 1967   57.0000 2020-02-24     2 confirmed
+    ## 1968  128.0000 2020-02-24   231 confirmed
+    ## 1969   -3.0000 2020-02-24     4 confirmed
+    ## 1970  107.8740 2020-02-24     1 confirmed
+    ## 1971  113.4244 2020-02-24     3 confirmed
+    ## 1972  108.7881 2020-02-24     2 confirmed
+    ## 1973  114.2000 2020-02-24     5 confirmed
+    ## 1974  112.2707 2020-02-24   203 confirmed
+    ## 1975  126.1923 2020-02-24     2 confirmed
+    ## 1976  -98.6134 2020-02-24    -2 confirmed
+    ## 1977  -95.9758 2020-02-24   -11 confirmed
+    ## 1978  118.1498 2020-02-24     1 confirmed
+    ## 1979  112.2922 2020-02-24     1 confirmed
+    ## 1980  102.7103 2020-02-24     1 confirmed
+    ## 1981  121.0000 2020-02-24     2 confirmed
+    ## 1982  -79.3832 2020-02-24     1 confirmed
+    ## 1983 -121.9399 2020-02-24    -5 confirmed
+    ## 1984  139.6380 2020-02-24    36 confirmed
+    ## 1985   53.0000 2020-02-24     4     death
+    ## 1986   12.0000 2020-02-24     4     death
+    ## 1987  128.0000 2020-02-24     2     death
+    ## 1988  112.2707 2020-02-24   149     death
+    ## 1989  118.1498 2020-02-24     1     death
+    ## 1990   12.0000 2020-02-24    -1 recovered
+    ## 1991  112.5000 2020-02-24     3 recovered
+    ## 1992  117.2264 2020-02-24    26 recovered
+    ## 1993  116.4142 2020-02-24     9 recovered
+    ## 1994  107.8740 2020-02-24    14 recovered
+    ## 1995  117.9874 2020-02-24    13 recovered
+    ## 1996  103.8343 2020-02-24     2 recovered
+    ## 1997  113.4244 2020-02-24    31 recovered
+    ## 1998  108.7881 2020-02-24     6 recovered
+    ## 1999  109.7453 2020-02-24    10 recovered
+    ## 2000  114.5149 2020-02-24    15 recovered
+    ## 2001  127.7615 2020-02-24     5 recovered
+    ## 2002  113.6140 2020-02-24    75 recovered
+    ## 2003  114.2000 2020-02-24     8 recovered
+    ## 2004  112.2707 2020-02-24  1405 recovered
+    ## 2005  111.7088 2020-02-24    17 recovered
+    ## 2006  113.9448 2020-02-24     7 recovered
+    ## 2007  119.4550 2020-02-24    34 recovered
+    ## 2008  115.7221 2020-02-24    32 recovered
+    ## 2009  126.1923 2020-02-24     6 recovered
+    ## 2010  122.6085 2020-02-24     7 recovered
+    ## 2011  106.1655 2020-02-24     2 recovered
+    ## 2012  108.8701 2020-02-24    10 recovered
+    ## 2013  118.1498 2020-02-24    22 recovered
+    ## 2014  121.4491 2020-02-24    12 recovered
+    ## 2015  112.2922 2020-02-24     6 recovered
+    ## 2016  102.7103 2020-02-24    15 recovered
+    ## 2017  121.0000 2020-02-24     3 recovered
+    ## 2018  117.3230 2020-02-24     6 recovered
+    ## 2019   85.2401 2020-02-24     2 recovered
+    ## 2020  101.4870 2020-02-24     9 recovered
+    ## 2021  120.0934 2020-02-24    22 recovered
+    ## 2022    1.6596 2020-02-25     1 confirmed
+    ## 2023   14.5501 2020-02-25     2 confirmed
+    ## 2024   50.5500 2020-02-25    22 confirmed
+    ## 2025   15.2000 2020-02-25     1 confirmed
+    ## 2026    2.0000 2020-02-25     2 confirmed
+    ## 2027    9.0000 2020-02-25     1 confirmed
+    ## 2028   53.0000 2020-02-25    34 confirmed
+    ## 2029   12.0000 2020-02-25    93 confirmed
+    ## 2030  138.0000 2020-02-25    11 confirmed
+    ## 2031   47.7500 2020-02-25    10 confirmed
+    ## 2032  103.8333 2020-02-25     2 confirmed
+    ## 2033  128.0000 2020-02-25   144 confirmed
+    ## 2034   -4.0000 2020-02-25     4 confirmed
+    ## 2035    8.2275 2020-02-25     1 confirmed
+    ## 2036  101.0000 2020-02-25     2 confirmed
+    ## 2037  116.4142 2020-02-25     1 confirmed
+    ## 2038 -123.1207 2020-02-25     1 confirmed
+    ## 2039  117.9874 2020-02-25     1 confirmed
+    ## 2040  113.4244 2020-02-25     2 confirmed
+    ## 2041  108.7881 2020-02-25     1 confirmed
+    ## 2042  114.2000 2020-02-25     5 confirmed
+    ## 2043  112.2707 2020-02-25   499 confirmed
+    ## 2044  118.1498 2020-02-25     1 confirmed
+    ## 2045  121.4491 2020-02-25     1 confirmed
+    ## 2046  102.7103 2020-02-25     2 confirmed
+    ## 2047  121.0000 2020-02-25     1 confirmed
+    ## 2048   53.0000 2020-02-25     4     death
+    ## 2049   12.0000 2020-02-25     3     death
+    ## 2050  128.0000 2020-02-25     2     death
+    ## 2051  113.4244 2020-02-25     1     death
+    ## 2052  112.2707 2020-02-25    68     death
+    ## 2053  118.1498 2020-02-25     1     death
+    ## 2054    2.0000 2020-02-25     7 recovered
+    ## 2055  103.8333 2020-02-25     2 recovered
+    ## 2056  128.0000 2020-02-25     4 recovered
+    ## 2057  101.0000 2020-02-25     1 recovered
+    ## 2058  108.0000 2020-02-25     2 recovered
+    ## 2059  117.2264 2020-02-25    49 recovered
+    ## 2060  116.4142 2020-02-25    17 recovered
+    ## 2061  107.8740 2020-02-25    23 recovered
+    ## 2062  117.9874 2020-02-25    16 recovered
+    ## 2063  113.4244 2020-02-25    36 recovered
+    ## 2064  108.7881 2020-02-25    22 recovered
+    ## 2065  106.8748 2020-02-25     2 recovered
+    ## 2066  109.7453 2020-02-25     8 recovered
+    ## 2067  114.5149 2020-02-25    14 recovered
+    ## 2068  127.7615 2020-02-25    16 recovered
+    ## 2069  113.6140 2020-02-25    59 recovered
+    ## 2070  112.2707 2020-02-25  2223 recovered
+    ## 2071  111.7088 2020-02-25    37 recovered
+    ## 2072  113.9448 2020-02-25     1 recovered
+    ## 2073  119.4550 2020-02-25     6 recovered
+    ## 2074  115.7221 2020-02-25    38 recovered
+    ## 2075  126.1923 2020-02-25     3 recovered
+    ## 2076  122.6085 2020-02-25     3 recovered
+    ## 2077  113.5500 2020-02-25     1 recovered
+    ## 2078  106.1655 2020-02-25     3 recovered
+    ## 2079  108.8701 2020-02-25    13 recovered
+    ## 2080  118.1498 2020-02-25    12 recovered
+    ## 2081  121.4491 2020-02-25     7 recovered
+    ## 2082  112.2922 2020-02-25     4 recovered
+    ## 2083  102.7103 2020-02-25    13 recovered
+    ## 2084 -111.9400 2020-02-25     1 recovered
+    ## 2085  117.3230 2020-02-25     4 recovered
+    ## 2086  101.4870 2020-02-25     5 recovered
+    ## 2087  120.0934 2020-02-25    26 recovered
+    ## 2088   50.5500 2020-02-26    10 confirmed
+    ## 2089  -51.9253 2020-02-26     1 confirmed
+    ## 2090   15.2000 2020-02-26     2 confirmed
+    ## 2091   26.0000 2020-02-26     1 confirmed
+    ## 2092    2.0000 2020-02-26     4 confirmed
+    ## 2093   43.3569 2020-02-26     1 confirmed
+    ## 2094    9.0000 2020-02-26    10 confirmed
+    ## 2095   21.8243 2020-02-26     1 confirmed
+    ## 2096   53.0000 2020-02-26    44 confirmed
+    ## 2097   44.0000 2020-02-26     4 confirmed
+    ## 2098   35.0000 2020-02-26     1 confirmed
+    ## 2099   12.0000 2020-02-26   131 confirmed
+    ## 2100  138.0000 2020-02-26    19 confirmed
+    ## 2101   47.7500 2020-02-26    15 confirmed
+    ## 2102   35.8623 2020-02-26     1 confirmed
+    ## 2103   21.7453 2020-02-26     1 confirmed
+    ## 2104    8.4689 2020-02-26     1 confirmed
+    ## 2105   57.0000 2020-02-26     2 confirmed
+    ## 2106   69.3451 2020-02-26     2 confirmed
+    ## 2107   24.9668 2020-02-26     1 confirmed
+    ## 2108  103.8333 2020-02-26     2 confirmed
+    ## 2109  128.0000 2020-02-26   284 confirmed
+    ## 2110   -4.0000 2020-02-26     7 confirmed
+    ## 2111   16.0000 2020-02-26     1 confirmed
+    ## 2112  101.0000 2020-02-26     3 confirmed
+    ## 2113  139.6380 2020-02-26    14 confirmed
+    ## 2114  114.5149 2020-02-26     1 confirmed
+    ## 2115  114.2000 2020-02-26     7 confirmed
+    ## 2116  112.2707 2020-02-26   401 confirmed
+    ## 2117  121.4491 2020-02-26     1 confirmed
+    ## 2118  102.7103 2020-02-26     2 confirmed
+    ## 2119  121.0000 2020-02-26     1 confirmed
+    ## 2120  139.6380 2020-02-26     6 confirmed
+    ## 2121    2.0000 2020-02-26     1     death
+    ## 2122   53.0000 2020-02-26     3     death
+    ## 2123   12.0000 2020-02-26     2     death
+    ## 2124  138.0000 2020-02-26     1     death
+    ## 2125  128.0000 2020-02-26     2     death
+    ## 2126  139.6380 2020-02-26     1     death
+    ## 2127  112.2707 2020-02-26    52     death
+    ## 2128    9.0000 2020-02-26     1 recovered
+    ## 2129   53.0000 2020-02-26    49 recovered
+    ## 2130   12.0000 2020-02-26     2 recovered
+    ## 2131  103.8333 2020-02-26     9 recovered
+    ## 2132  117.2264 2020-02-26    32 recovered
+    ## 2133  116.4142 2020-02-26    20 recovered
+    ## 2134  107.8740 2020-02-26    12 recovered
+    ## 2135  139.6380 2020-02-26    10 recovered
+    ## 2136  117.9874 2020-02-26    19 recovered
+    ## 2137  103.8343 2020-02-26     1 recovered
+    ## 2138  113.4244 2020-02-26    29 recovered
+    ## 2139  108.7881 2020-02-26    13 recovered
+    ## 2140  109.7453 2020-02-26     5 recovered
+    ## 2141  114.5149 2020-02-26    13 recovered
+    ## 2142  127.7615 2020-02-26     6 recovered
+    ## 2143  113.6140 2020-02-26    31 recovered
+    ## 2144  114.2000 2020-02-26     5 recovered
+    ## 2145  112.2707 2020-02-26  1998 recovered
+    ## 2146  111.7088 2020-02-26    15 recovered
+    ## 2147  113.9448 2020-02-26     3 recovered
+    ## 2148  119.4550 2020-02-26    20 recovered
+    ## 2149  115.7221 2020-02-26    36 recovered
+    ## 2150  126.1923 2020-02-26     2 recovered
+    ## 2151  122.6085 2020-02-26     5 recovered
+    ## 2152  106.1655 2020-02-26     4 recovered
+    ## 2153  108.8701 2020-02-26     6 recovered
+    ## 2154  118.1498 2020-02-26    22 recovered
+    ## 2155  121.4491 2020-02-26     4 recovered
+    ## 2156  112.2922 2020-02-26     6 recovered
+    ## 2157  102.7103 2020-02-26    18 recovered
+    ## 2158  117.3230 2020-02-26     5 recovered
+    ## 2159   85.2401 2020-02-26     4 recovered
+    ## 2160  101.4870 2020-02-26    15 recovered
+    ## 2161  120.0934 2020-02-26    59 recovered
+    ## 2162   14.5501 2020-02-27     1 confirmed
+    ## 2163    9.5018 2020-02-27     1 confirmed
+    ## 2164   25.0136 2020-02-27     1 confirmed
+    ## 2165    2.0000 2020-02-27    20 confirmed
+    ## 2166    9.0000 2020-02-27    19 confirmed
+    ## 2167   21.8243 2020-02-27     2 confirmed
+    ## 2168   53.0000 2020-02-27   106 confirmed
+    ## 2169   44.0000 2020-02-27     2 confirmed
+    ## 2170   35.0000 2020-02-27     1 confirmed
+    ## 2171   12.0000 2020-02-27   202 confirmed
+    ## 2172  138.0000 2020-02-27    25 confirmed
+    ## 2173   47.7500 2020-02-27    17 confirmed
+    ## 2174  112.5000 2020-02-27     1 confirmed
+    ## 2175    5.2913 2020-02-27     1 confirmed
+    ## 2176   12.4578 2020-02-27     1 confirmed
+    ## 2177  128.0000 2020-02-27   505 confirmed
+    ## 2178   -4.0000 2020-02-27     2 confirmed
+    ## 2179   16.0000 2020-02-27     5 confirmed
+    ## 2180    8.2275 2020-02-27     7 confirmed
+    ## 2181   -3.0000 2020-02-27     2 confirmed
+    ## 2182  116.4142 2020-02-27    10 confirmed
+    ## 2183  139.6380 2020-02-27     1 confirmed
+    ## 2184  117.9874 2020-02-27     2 confirmed
+    ## 2185  114.5149 2020-02-27     5 confirmed
+    ## 2186  113.6140 2020-02-27     1 confirmed
+    ## 2187  114.2000 2020-02-27     1 confirmed
+    ## 2188  112.2707 2020-02-27   409 confirmed
+    ## 2189  111.7088 2020-02-27     1 confirmed
+    ## 2190  106.1655 2020-02-27     1 confirmed
+    ## 2191 -121.3542 2020-02-27     1 confirmed
+    ## 2192  102.7103 2020-02-27     3 confirmed
+    ## 2193  117.3230 2020-02-27     1 confirmed
+    ## 2194  -79.3832 2020-02-27     2 confirmed
+    ## 2195   53.0000 2020-02-27     7     death
+    ## 2196   12.0000 2020-02-27     5     death
+    ## 2197  138.0000 2020-02-27     2     death
+    ## 2198  128.0000 2020-02-27     1     death
+    ## 2199  116.4142 2020-02-27     1     death
+    ## 2200  127.7615 2020-02-27     1     death
+    ## 2201  113.6140 2020-02-27     1     death
+    ## 2202  112.2707 2020-02-27    26     death
+    ## 2203    9.0000 2020-02-27     1 recovered
+    ## 2204   35.0000 2020-02-27     1 recovered
+    ## 2205   12.0000 2020-02-27    42 recovered
+    ## 2206  117.2264 2020-02-27    48 recovered
+    ## 2207  116.4142 2020-02-27    13 recovered
+    ## 2208 -123.1207 2020-02-27     3 recovered
+    ## 2209  107.8740 2020-02-27    17 recovered
+    ## 2210  117.9874 2020-02-27    10 recovered
+    ## 2211  113.4244 2020-02-27    39 recovered
+    ## 2212  108.7881 2020-02-27    14 recovered
+    ## 2213  106.8748 2020-02-27     8 recovered
+    ## 2214  109.7453 2020-02-27     2 recovered
+    ## 2215  114.5149 2020-02-27    13 recovered
+    ## 2216  127.7615 2020-02-27    21 recovered
+    ## 2217  113.6140 2020-02-27    35 recovered
+    ## 2218  112.2707 2020-02-27  2414 recovered
+    ## 2219  111.7088 2020-02-27    21 recovered
+    ## 2220  113.9448 2020-02-27     5 recovered
+    ## 2221  119.4550 2020-02-27    20 recovered
+    ## 2222  115.7221 2020-02-27    35 recovered
+    ## 2223  126.1923 2020-02-27     2 recovered
+    ## 2224  122.6085 2020-02-27     5 recovered
+    ## 2225  113.5500 2020-02-27     1 recovered
+    ## 2226  106.1655 2020-02-27     3 recovered
+    ## 2227  108.8701 2020-02-27     3 recovered
+    ## 2228  118.1498 2020-02-27    10 recovered
+    ## 2229  121.4491 2020-02-27     4 recovered
+    ## 2230  112.2922 2020-02-27     3 recovered
+    ## 2231  102.7103 2020-02-27    14 recovered
+    ## 2232  117.3230 2020-02-27     6 recovered
+    ## 2233   85.2401 2020-02-27     9 recovered
+    ## 2234  101.4870 2020-02-27     6 recovered
+    ## 2235  120.0934 2020-02-27    65 recovered
+    ## 2236   50.5500 2020-02-28     3 confirmed
+    ## 2237   27.9534 2020-02-28     1 confirmed
+    ## 2238   15.2000 2020-02-28     2 confirmed
+    ## 2239    2.0000 2020-02-28    19 confirmed
+    ## 2240    9.0000 2020-02-28     2 confirmed
+    ## 2241   21.8243 2020-02-28     1 confirmed
+    ## 2242  -19.0208 2020-02-28     1 confirmed
+    ## 2243   53.0000 2020-02-28   143 confirmed
+    ## 2244   35.0000 2020-02-28     1 confirmed
+    ## 2245   12.0000 2020-02-28   233 confirmed
+    ## 2246  138.0000 2020-02-28    14 confirmed
+    ## 2247   47.7500 2020-02-28     2 confirmed
+    ## 2248   23.8813 2020-02-28     1 confirmed
+    ## 2249 -102.5528 2020-02-28     1 confirmed
+    ## 2250  174.8860 2020-02-28     1 confirmed
+    ## 2251    8.6753 2020-02-28     1 confirmed
+    ## 2252    8.4689 2020-02-28     5 confirmed
+    ## 2253   24.9668 2020-02-28     2 confirmed
+    ## 2254  128.0000 2020-02-28   571 confirmed
+    ## 2255   -4.0000 2020-02-28    17 confirmed
+    ## 2256  101.0000 2020-02-28     1 confirmed
+    ## 2257   -3.0000 2020-02-28     5 confirmed
+    ## 2258   54.0000 2020-02-28     6 confirmed
+    ## 2259  -73.5673 2020-02-28     1 confirmed
+    ## 2260  117.2264 2020-02-28     1 confirmed
+    ## 2261  113.4244 2020-02-28     1 confirmed
+    ## 2262  114.5149 2020-02-28     1 confirmed
+    ## 2263  114.2000 2020-02-28     2 confirmed
+    ## 2264  112.2707 2020-02-28   318 confirmed
+    ## 2265  115.7221 2020-02-28     1 confirmed
+    ## 2266  102.7103 2020-02-28     4 confirmed
+    ## 2267  121.0000 2020-02-28     2 confirmed
+    ## 2268  139.6380 2020-02-28     2 confirmed
+    ## 2269   53.0000 2020-02-28     8     death
+    ## 2270   12.0000 2020-02-28     4     death
+    ## 2271  116.4142 2020-02-28     2     death
+    ## 2272  139.6380 2020-02-28     2     death
+    ## 2273  112.2707 2020-02-28    41     death
+    ## 2274   85.2401 2020-02-28     1     death
+    ## 2275   30.0000 2020-02-28     1 recovered
+    ## 2276   53.0000 2020-02-28    24 recovered
+    ## 2277   12.0000 2020-02-28     1 recovered
+    ## 2278  101.0000 2020-02-28     6 recovered
+    ## 2279   54.0000 2020-02-28     1 recovered
+    ## 2280  117.2264 2020-02-28    29 recovered
+    ## 2281  116.4142 2020-02-28     9 recovered
+    ## 2282  -71.0589 2020-02-28     1 recovered
+    ## 2283  107.8740 2020-02-28    21 recovered
+    ## 2284  117.9874 2020-02-28     7 recovered
+    ## 2285  103.8343 2020-02-28     1 recovered
+    ## 2286  113.4244 2020-02-28    45 recovered
+    ## 2287  108.7881 2020-02-28     7 recovered
+    ## 2288  109.7453 2020-02-28     2 recovered
+    ## 2289  114.5149 2020-02-28     3 recovered
+    ## 2290  127.7615 2020-02-28    13 recovered
+    ## 2291  113.6140 2020-02-28    44 recovered
+    ## 2292  114.2000 2020-02-28     6 recovered
+    ## 2293  112.2707 2020-02-28  3020 recovered
+    ## 2294  111.7088 2020-02-28    26 recovered
+    ## 2295  113.9448 2020-02-28     2 recovered
+    ## 2296  119.4550 2020-02-28    17 recovered
+    ## 2297  115.7221 2020-02-28    36 recovered
+    ## 2298  126.1923 2020-02-28     6 recovered
+    ## 2299  108.8701 2020-02-28     4 recovered
+    ## 2300  118.1498 2020-02-28    18 recovered
+    ## 2301  121.4491 2020-02-28     3 recovered
+    ## 2302  112.2922 2020-02-28     5 recovered
+    ## 2303  102.7103 2020-02-28    17 recovered
+    ## 2304  121.0000 2020-02-28     1 recovered
+    ## 2305   85.2401 2020-02-28     9 recovered
+    ## 2306  101.4870 2020-02-28     6 recovered
+    ## 2307  120.0934 2020-02-28    43 recovered
+    ## 2308   14.5501 2020-02-29     6 confirmed
+    ## 2309   50.5500 2020-02-29     5 confirmed
+    ## 2310  -51.9253 2020-02-29     1 confirmed
+    ## 2311   15.2000 2020-02-29     1 confirmed
+    ## 2312    9.5018 2020-02-29     2 confirmed
+    ## 2313   26.0000 2020-02-29     1 confirmed
+    ## 2314    2.0000 2020-02-29    43 confirmed
+    ## 2315    9.0000 2020-02-29    31 confirmed
+    ## 2316   53.0000 2020-02-29   205 confirmed
+    ## 2317   44.0000 2020-02-29     6 confirmed
+    ## 2318   -7.6921 2020-02-29     1 confirmed
+    ## 2319   35.0000 2020-02-29     3 confirmed
+    ## 2320   12.0000 2020-02-29   240 confirmed
+    ## 2321  138.0000 2020-02-29    13 confirmed
+    ## 2322   35.8623 2020-02-29     2 confirmed
+    ## 2323    6.1296 2020-02-29     1 confirmed
+    ## 2324  112.5000 2020-02-29     2 confirmed
+    ## 2325 -102.5528 2020-02-29     3 confirmed
+    ## 2326    7.4167 2020-02-29     1 confirmed
+    ## 2327    5.2913 2020-02-29     5 confirmed
+    ## 2328    8.4689 2020-02-29     9 confirmed
+    ## 2329   57.0000 2020-02-29     2 confirmed
+    ## 2330   69.3451 2020-02-29     2 confirmed
+    ## 2331   51.1839 2020-02-29     1 confirmed
+    ## 2332  103.8333 2020-02-29     9 confirmed
+    ## 2333  128.0000 2020-02-29   813 confirmed
+    ## 2334   -4.0000 2020-02-29    13 confirmed
+    ## 2335   16.0000 2020-02-29     5 confirmed
+    ## 2336    8.2275 2020-02-29    10 confirmed
+    ## 2337  101.0000 2020-02-29     1 confirmed
+    ## 2338   -3.0000 2020-02-29     3 confirmed
+    ## 2339   54.0000 2020-02-29     2 confirmed
+    ## 2340  116.4142 2020-02-29     1 confirmed
+    ## 2341 -123.1207 2020-02-29     1 confirmed
+    ## 2342  139.6380 2020-02-29    -8 confirmed
+    ## 2343  113.4244 2020-02-29     1 confirmed
+    ## 2344  114.2000 2020-02-29     1 confirmed
+    ## 2345  112.2707 2020-02-29   423 confirmed
+    ## 2346  111.7088 2020-02-29     1 confirmed
+    ## 2347 -122.3321 2020-02-29     5 confirmed
+    ## 2348  106.1655 2020-02-29     1 confirmed
+    ## 2349  153.4000 2020-02-29     4 confirmed
+    ## 2350 -121.9552 2020-02-29     1 confirmed
+    ## 2351 -121.8339 2020-02-29     1 confirmed
+    ## 2352  138.6007 2020-02-29     1 confirmed
+    ## 2353  121.0000 2020-02-29     5 confirmed
+    ## 2354  -79.3832 2020-02-29     5 confirmed
+    ## 2355  144.9631 2020-02-29     3 confirmed
+    ## 2356 -123.1386 2020-02-29     1 confirmed
+    ## 2357  115.8605 2020-02-29     2 confirmed
+    ## 2358   53.0000 2020-02-29     9     death
+    ## 2359   12.0000 2020-02-29     8     death
+    ## 2360  138.0000 2020-02-29     1     death
+    ## 2361  128.0000 2020-02-29     3     death
+    ## 2362  116.4142 2020-02-29     1     death
+    ## 2363  113.6140 2020-02-29     1     death
+    ## 2364  112.2707 2020-02-29    45     death
+    ## 2365 -122.3321 2020-02-29     1     death
+    ## 2366    2.0000 2020-02-29     1 recovered
+    ## 2367   53.0000 2020-02-29    50 recovered
+    ## 2368  138.0000 2020-02-29    10 recovered
+    ## 2369   57.0000 2020-02-29     1 recovered
+    ## 2370  103.8333 2020-02-29    10 recovered
+    ## 2371  128.0000 2020-02-29     5 recovered
+    ## 2372  117.2264 2020-02-29    47 recovered
+    ## 2373  116.4142 2020-02-29    14 recovered
+    ## 2374  107.8740 2020-02-29    16 recovered
+    ## 2375  117.9874 2020-02-29     8 recovered
+    ## 2376  113.4244 2020-02-29    48 recovered
+    ## 2377  108.7881 2020-02-29     8 recovered
+    ## 2378  109.7453 2020-02-29    15 recovered
+    ## 2379  114.5149 2020-02-29     5 recovered
+    ## 2380  127.7615 2020-02-29    18 recovered
+    ## 2381  113.6140 2020-02-29    58 recovered
+    ## 2382  114.2000 2020-02-29     3 recovered
+    ## 2383  112.2707 2020-02-29  2590 recovered
+    ## 2384  111.7088 2020-02-29    16 recovered
+    ## 2385  113.9448 2020-02-29     4 recovered
+    ## 2386  119.4550 2020-02-29     8 recovered
+    ## 2387  115.7221 2020-02-29    21 recovered
+    ## 2388  126.1923 2020-02-29     2 recovered
+    ## 2389  122.6085 2020-02-29     3 recovered
+    ## 2390  106.1655 2020-02-29     1 recovered
+    ## 2391  108.8701 2020-02-29     8 recovered
+    ## 2392  118.1498 2020-02-29    16 recovered
+    ## 2393  121.4491 2020-02-29     8 recovered
+    ## 2394  112.2922 2020-02-29     2 recovered
+    ## 2395  102.7103 2020-02-29    13 recovered
+    ## 2396  121.0000 2020-02-29     3 recovered
+    ## 2397  117.3230 2020-02-29     7 recovered
+    ## 2398   85.2401 2020-02-29    10 recovered
+    ## 2399  101.4870 2020-02-29     1 recovered
+    ## 2400  120.0934 2020-02-29    41 recovered
+    ## 2401   45.0382 2020-03-01     1 confirmed
+    ## 2402   14.5501 2020-03-01     5 confirmed
+    ## 2403   47.5769 2020-03-01     3 confirmed
+    ## 2404   50.5500 2020-03-01     6 confirmed
+    ## 2405    4.0000 2020-03-01     1 confirmed
+    ## 2406   15.2000 2020-03-01     1 confirmed
+    ## 2407   15.4730 2020-03-01     3 confirmed
+    ## 2408    9.5018 2020-03-01     1 confirmed
+    ## 2409  -70.1627 2020-03-01     1 confirmed
+    ## 2410  -78.1834 2020-03-01     6 confirmed
+    ## 2411   30.0000 2020-03-01     1 confirmed
+    ## 2412   26.0000 2020-03-01     3 confirmed
+    ## 2413    2.0000 2020-03-01    30 confirmed
+    ## 2414   43.3569 2020-03-01     2 confirmed
+    ## 2415    9.0000 2020-03-01    51 confirmed
+    ## 2416   21.8243 2020-03-01     3 confirmed
+    ## 2417  -19.0208 2020-03-01     2 confirmed
+    ## 2418   53.0000 2020-03-01   385 confirmed
+    ## 2419   44.0000 2020-03-01     6 confirmed
+    ## 2420   35.0000 2020-03-01     3 confirmed
+    ## 2421   12.0000 2020-03-01   566 confirmed
+    ## 2422  138.0000 2020-03-01    15 confirmed
+    ## 2423   35.8623 2020-03-01     6 confirmed
+    ## 2424  112.5000 2020-03-01     4 confirmed
+    ## 2425 -102.5528 2020-03-01     1 confirmed
+    ## 2426    5.2913 2020-03-01     4 confirmed
+    ## 2427    8.4689 2020-03-01     4 confirmed
+    ## 2428   51.1839 2020-03-01     2 confirmed
+    ## 2429  103.8333 2020-03-01     4 confirmed
+    ## 2430  128.0000 2020-03-01   586 confirmed
+    ## 2431   -4.0000 2020-03-01    39 confirmed
+    ## 2432   16.0000 2020-03-01     2 confirmed
+    ## 2433    8.2275 2020-03-01     9 confirmed
+    ## 2434   -3.0000 2020-03-01    13 confirmed
+    ## 2435  116.4142 2020-03-01     2 confirmed
+    ## 2436  -87.6976 2020-03-01     1 confirmed
+    ## 2437  114.2000 2020-03-01     1 confirmed
+    ## 2438  112.2707 2020-03-01   570 confirmed
+    ## 2439 -122.3321 2020-03-01     3 confirmed
+    ## 2440  122.6085 2020-03-01     1 confirmed
+    ## 2441  151.2093 2020-03-01     2 confirmed
+    ## 2442  -71.4128 2020-03-01     1 confirmed
+    ## 2443  118.1498 2020-03-01     2 confirmed
+    ## 2444 -121.8339 2020-03-01     1 confirmed
+    ## 2445  121.0000 2020-03-01     1 confirmed
+    ## 2446  -79.3832 2020-03-01     4 confirmed
+    ## 2447   53.0000 2020-03-01    11     death
+    ## 2448   12.0000 2020-03-01     5     death
+    ## 2449  138.0000 2020-03-01     1     death
+    ## 2450  128.0000 2020-03-01     1     death
+    ## 2451  101.0000 2020-03-01     1     death
+    ## 2452  113.6140 2020-03-01     1     death
+    ## 2453  112.2707 2020-03-01    34     death
+    ## 2454  115.8605 2020-03-01     1     death
+    ## 2455   53.0000 2020-03-01    52 recovered
+    ## 2456   12.0000 2020-03-01    37 recovered
+    ## 2457  128.0000 2020-03-01     3 recovered
+    ## 2458  117.2264 2020-03-01     5 recovered
+    ## 2459  116.4142 2020-03-01     5 recovered
+    ## 2460  107.8740 2020-03-01    12 recovered
+    ## 2461  117.9874 2020-03-01     4 recovered
+    ## 2462  103.8343 2020-03-01     2 recovered
+    ## 2463  113.4244 2020-03-01    33 recovered
+    ## 2464  108.7881 2020-03-01     5 recovered
+    ## 2465  109.7453 2020-03-01     1 recovered
+    ## 2466  114.5149 2020-03-01    12 recovered
+    ## 2467  127.7615 2020-03-01    41 recovered
+    ## 2468  113.6140 2020-03-01    28 recovered
+    ## 2469  114.2000 2020-03-01     3 recovered
+    ## 2470  112.2707 2020-03-01  2543 recovered
+    ## 2471  111.7088 2020-03-01    20 recovered
+    ## 2472  113.9448 2020-03-01     3 recovered
+    ## 2473  119.4550 2020-03-01    13 recovered
+    ## 2474  115.7221 2020-03-01    20 recovered
+    ## 2475  126.1923 2020-03-01     3 recovered
+    ## 2476  122.6085 2020-03-01     7 recovered
+    ## 2477  108.8701 2020-03-01     1 recovered
+    ## 2478  118.1498 2020-03-01    22 recovered
+    ## 2479  121.4491 2020-03-01     3 recovered
+    ## 2480  112.2922 2020-03-01     2 recovered
+    ## 2481  102.7103 2020-03-01    14 recovered
+    ## 2482  117.3230 2020-03-01     2 recovered
+    ## 2483   85.2401 2020-03-01     2 recovered
+    ## 2484  101.4870 2020-03-01     6 recovered
+    ## 2485  120.0934 2020-03-01    30 recovered
+    ## 2486    1.6596 2020-03-02     2 confirmed
+    ## 2487    1.5218 2020-03-02     1 confirmed
+    ## 2488   14.5501 2020-03-02     4 confirmed
+    ## 2489   50.5500 2020-03-02     2 confirmed
+    ## 2490    4.0000 2020-03-02     6 confirmed
+    ## 2491    2.0000 2020-03-02    61 confirmed
+    ## 2492    9.0000 2020-03-02    29 confirmed
+    ## 2493  -19.0208 2020-03-02     3 confirmed
+    ## 2494   78.0000 2020-03-02     2 confirmed
+    ## 2495  113.9213 2020-03-02     2 confirmed
+    ## 2496   53.0000 2020-03-02   523 confirmed
+    ## 2497   44.0000 2020-03-02     7 confirmed
+    ## 2498   12.0000 2020-03-02   342 confirmed
+    ## 2499  138.0000 2020-03-02    18 confirmed
+    ## 2500   47.7500 2020-03-02    11 confirmed
+    ## 2501   24.6032 2020-03-02     1 confirmed
+    ## 2502   35.8623 2020-03-02     3 confirmed
+    ## 2503   -7.0926 2020-03-02     1 confirmed
+    ## 2504    5.2913 2020-03-02     8 confirmed
+    ## 2505    8.4689 2020-03-02     6 confirmed
+    ## 2506   -8.2245 2020-03-02     2 confirmed
+    ## 2507   90.0000 2020-03-02     1 confirmed
+    ## 2508   12.4578 2020-03-02     7 confirmed
+    ## 2509   45.0000 2020-03-02     1 confirmed
+    ## 2510  -14.4524 2020-03-02     1 confirmed
+    ## 2511  103.8333 2020-03-02     2 confirmed
+    ## 2512  128.0000 2020-03-02   599 confirmed
+    ## 2513   -4.0000 2020-03-02    36 confirmed
+    ## 2514   16.0000 2020-03-02     1 confirmed
+    ## 2515    8.2275 2020-03-02    15 confirmed
+    ## 2516  101.0000 2020-03-02     1 confirmed
+    ## 2517   -3.0000 2020-03-02     4 confirmed
+    ## 2518  116.4142 2020-03-02     1 confirmed
+    ## 2519  -87.6976 2020-03-02     1 confirmed
+    ## 2520  -71.8260 2020-03-02     1 confirmed
+    ## 2521  113.4244 2020-03-02     1 confirmed
+    ## 2522  -82.3018 2020-03-02     1 confirmed
+    ## 2523  114.2000 2020-03-02     4 confirmed
+    ## 2524  112.2707 2020-03-02   196 confirmed
+    ## 2525 -122.3321 2020-03-02     5 confirmed
+    ## 2526  -74.0060 2020-03-02     1 confirmed
+    ## 2527  106.1655 2020-03-02     1 confirmed
+    ## 2528 -120.8039 2020-03-02     1 confirmed
+    ## 2529  -71.4128 2020-03-02     1 confirmed
+    ## 2530 -122.3255 2020-03-02     1 confirmed
+    ## 2531 -121.9552 2020-03-02     6 confirmed
+    ## 2532  -82.5307 2020-03-02     1 confirmed
+    ## 2533 -121.8339 2020-03-02     2 confirmed
+    ## 2534 -122.9888 2020-03-02     1 confirmed
+    ## 2535  121.0000 2020-03-02     1 confirmed
+    ## 2536  145.9707 2020-03-02     1 confirmed
+    ## 2537  -79.3832 2020-03-02     3 confirmed
+    ## 2538 -118.7606 2020-03-02     1 confirmed
+    ## 2539  139.6380 2020-03-02     1 confirmed
+    ## 2540  144.9631 2020-03-02     2 confirmed
+    ## 2541 -123.1386 2020-03-02     1 confirmed
+    ## 2542  120.0934 2020-03-02     1 confirmed
+    ## 2543    2.0000 2020-03-02     1     death
+    ## 2544   53.0000 2020-03-02    12     death
+    ## 2545   12.0000 2020-03-02    18     death
+    ## 2546  128.0000 2020-03-02    11     death
+    ## 2547  112.2707 2020-03-02    42     death
+    ## 2548 -122.3321 2020-03-02     4     death
+    ## 2549 -121.8339 2020-03-02     1     death
+    ## 2550   53.0000 2020-03-02   116 recovered
+    ## 2551   12.0000 2020-03-02    66 recovered
+    ## 2552  103.8333 2020-03-02     6 recovered
+    ## 2553  101.0000 2020-03-02     3 recovered
+    ## 2554  117.2264 2020-03-02    44 recovered
+    ## 2555  116.4142 2020-03-02     6 recovered
+    ## 2556  107.8740 2020-03-02    19 recovered
+    ## 2557  117.9874 2020-03-02     8 recovered
+    ## 2558  103.8343 2020-03-02     1 recovered
+    ## 2559  113.4244 2020-03-02    43 recovered
+    ## 2560  108.7881 2020-03-02    11 recovered
+    ## 2561  106.8748 2020-03-02     2 recovered
+    ## 2562  109.7453 2020-03-02     2 recovered
+    ## 2563  114.5149 2020-03-02     2 recovered
+    ## 2564  127.7615 2020-03-02    14 recovered
+    ## 2565  113.6140 2020-03-02     7 recovered
+    ## 2566  112.2707 2020-03-02  2398 recovered
+    ## 2567  111.7088 2020-03-02    21 recovered
+    ## 2568  113.9448 2020-03-02     2 recovered
+    ## 2569  119.4550 2020-03-02     7 recovered
+    ## 2570  115.7221 2020-03-02    19 recovered
+    ## 2571  126.1923 2020-03-02     5 recovered
+    ## 2572  108.8701 2020-03-02     8 recovered
+    ## 2573  118.1498 2020-03-02    17 recovered
+    ## 2574  121.4491 2020-03-02     2 recovered
+    ## 2575  112.2922 2020-03-02     3 recovered
+    ## 2576  102.7103 2020-03-02    21 recovered
+    ## 2577  121.0000 2020-03-02     3 recovered
+    ## 2578   85.2401 2020-03-02     2 recovered
+    ## 2579  101.4870 2020-03-02     5 recovered
+    ## 2580  120.0934 2020-03-02    23 recovered
+    ## 2581    1.6596 2020-03-03     2 confirmed
+    ## 2582  -63.6167 2020-03-03     1 confirmed
+    ## 2583   14.5501 2020-03-03     3 confirmed
+    ## 2584    4.0000 2020-03-03     5 confirmed
+    ## 2585  -71.5430 2020-03-03     1 confirmed
+    ## 2586   15.2000 2020-03-03     2 confirmed
+    ## 2587   15.4730 2020-03-03     2 confirmed
+    ## 2588    9.5018 2020-03-03     2 confirmed
+    ## 2589  -78.1834 2020-03-03     1 confirmed
+    ## 2590   25.0136 2020-03-03     1 confirmed
+    ## 2591    2.0000 2020-03-03    13 confirmed
+    ## 2592    9.0000 2020-03-03    37 confirmed
+    ## 2593  -19.0208 2020-03-03     5 confirmed
+    ## 2594   53.0000 2020-03-03   835 confirmed
+    ## 2595   44.0000 2020-03-03     6 confirmed
+    ## 2596   -7.6921 2020-03-03     1 confirmed
+    ## 2597   35.0000 2020-03-03     2 confirmed
+    ## 2598   12.0000 2020-03-03   466 confirmed
+    ## 2599  138.0000 2020-03-03    19 confirmed
+    ## 2600   36.5100 2020-03-03     1 confirmed
+    ## 2601  112.5000 2020-03-03     7 confirmed
+    ## 2602    5.2913 2020-03-03     6 confirmed
+    ## 2603    8.4689 2020-03-03     7 confirmed
+    ## 2604   57.0000 2020-03-03     6 confirmed
+    ## 2605   69.3451 2020-03-03     1 confirmed
+    ## 2606   51.1839 2020-03-03     4 confirmed
+    ## 2607   12.4578 2020-03-03     2 confirmed
+    ## 2608  -14.4524 2020-03-03     1 confirmed
+    ## 2609  103.8333 2020-03-03     2 confirmed
+    ## 2610  128.0000 2020-03-03   851 confirmed
+    ## 2611   -4.0000 2020-03-03    45 confirmed
+    ## 2612   16.0000 2020-03-03     6 confirmed
+    ## 2613    8.2275 2020-03-03    14 confirmed
+    ## 2614   -3.0000 2020-03-03    11 confirmed
+    ## 2615   31.1656 2020-03-03     1 confirmed
+    ## 2616   54.0000 2020-03-03     6 confirmed
+    ## 2617  -71.1449 2020-03-03     1 confirmed
+    ## 2618 -122.2730 2020-03-03     1 confirmed
+    ## 2619 -123.1207 2020-03-03     1 confirmed
+    ## 2620  139.6380 2020-03-03     1 confirmed
+    ## 2621  -84.3963 2020-03-03     2 confirmed
+    ## 2622  -71.8260 2020-03-03     1 confirmed
+    ## 2623  -82.3018 2020-03-03     1 confirmed
+    ## 2624  112.2707 2020-03-03   114 confirmed
+    ## 2625 -122.3321 2020-03-03     7 confirmed
+    ## 2626  122.6085 2020-03-03     3 confirmed
+    ## 2627 -112.4291 2020-03-03     1 confirmed
+    ## 2628  151.2093 2020-03-03     7 confirmed
+    ## 2629  153.4000 2020-03-03     2 confirmed
+    ## 2630 -122.3255 2020-03-03     1 confirmed
+    ## 2631 -121.9552 2020-03-03     2 confirmed
+    ## 2632  121.4491 2020-03-03     1 confirmed
+    ## 2633 -121.8339 2020-03-03     2 confirmed
+    ## 2634  121.0000 2020-03-03     1 confirmed
+    ## 2635  -79.3832 2020-03-03     2 confirmed
+    ## 2636  -78.5661 2020-03-03     1 confirmed
+    ## 2637  -73.7949 2020-03-03     1 confirmed
+    ## 2638  120.0934 2020-03-03     7 confirmed
+    ## 2639    2.0000 2020-03-03     1     death
+    ## 2640   53.0000 2020-03-03    11     death
+    ## 2641   12.0000 2020-03-03    27     death
+    ## 2642   12.4578 2020-03-03     1     death
+    ## 2643   -4.0000 2020-03-03     1     death
+    ## 2644  112.2707 2020-03-03    32     death
+    ## 2645  113.9448 2020-03-03     1     death
+    ## 2646 -122.3321 2020-03-03     1     death
+    ## 2647   12.0000 2020-03-03    11 recovered
+    ## 2648  138.0000 2020-03-03    11 recovered
+    ## 2649  112.5000 2020-03-03     4 recovered
+    ## 2650 -102.5528 2020-03-03     1 recovered
+    ## 2651   57.0000 2020-03-03     1 recovered
+    ## 2652    8.2275 2020-03-03     2 recovered
+    ## 2653  117.2264 2020-03-03    19 recovered
+    ## 2654  116.4142 2020-03-03     6 recovered
+    ## 2655  107.8740 2020-03-03    21 recovered
+    ## 2656  117.9874 2020-03-03     5 recovered
+    ## 2657  103.8343 2020-03-03     1 recovered
+    ## 2658  113.4244 2020-03-03    42 recovered
+    ## 2659  108.7881 2020-03-03    10 recovered
+    ## 2660  109.7453 2020-03-03     4 recovered
+    ## 2661  114.5149 2020-03-03     4 recovered
+    ## 2662  127.7615 2020-03-03    10 recovered
+    ## 2663  113.6140 2020-03-03    26 recovered
+    ## 2664  114.2000 2020-03-03     1 recovered
+    ## 2665  112.2707 2020-03-03  2274 recovered
+    ## 2666  111.7088 2020-03-03    19 recovered
+    ## 2667  113.9448 2020-03-03     5 recovered
+    ## 2668  119.4550 2020-03-03    19 recovered
+    ## 2669  115.7221 2020-03-03    20 recovered
+    ## 2670  122.6085 2020-03-03     3 recovered
+    ## 2671  113.5500 2020-03-03     1 recovered
+    ## 2672  -89.4012 2020-03-03     1 recovered
+    ## 2673  118.1498 2020-03-03    51 recovered
+    ## 2674  121.4491 2020-03-03     2 recovered
+    ## 2675  112.2922 2020-03-03     5 recovered
+    ## 2676  102.7103 2020-03-03     8 recovered
+    ## 2677  117.3230 2020-03-03    13 recovered
+    ## 2678   85.2401 2020-03-03     2 recovered
+    ## 2679  101.4870 2020-03-03     1 recovered
+    ## 2680  120.0934 2020-03-03    24 recovered
+    ## 2681    1.6596 2020-03-04     7 confirmed
+    ## 2682   14.5501 2020-03-04     8 confirmed
+    ## 2683   50.5500 2020-03-04     3 confirmed
+    ## 2684   27.9534 2020-03-04     5 confirmed
+    ## 2685    4.0000 2020-03-04    10 confirmed
+    ## 2686  -51.9253 2020-03-04     2 confirmed
+    ## 2687   15.2000 2020-03-04     1 confirmed
+    ## 2688   15.4730 2020-03-04     3 confirmed
+    ## 2689    9.5018 2020-03-04     4 confirmed
+    ## 2690  -78.1834 2020-03-04     3 confirmed
+    ## 2691   -6.9118 2020-03-04     1 confirmed
+    ## 2692    2.0000 2020-03-04    81 confirmed
+    ## 2693    9.0000 2020-03-04    66 confirmed
+    ## 2694   -5.3536 2020-03-04     1 confirmed
+    ## 2695   21.8243 2020-03-04     2 confirmed
+    ## 2696   19.5033 2020-03-04     2 confirmed
+    ## 2697  -19.0208 2020-03-04    15 confirmed
+    ## 2698   78.0000 2020-03-04    23 confirmed
+    ## 2699   53.0000 2020-03-04   586 confirmed
+    ## 2700   44.0000 2020-03-04     3 confirmed
+    ## 2701   -7.6921 2020-03-04     4 confirmed
+    ## 2702   35.0000 2020-03-04     3 confirmed
+    ## 2703   12.0000 2020-03-04   587 confirmed
+    ## 2704  138.0000 2020-03-04    38 confirmed
+    ## 2705    9.5500 2020-03-04     1 confirmed
+    ## 2706  112.5000 2020-03-04    14 confirmed
+    ## 2707    5.2913 2020-03-04    14 confirmed
+    ## 2708  174.8860 2020-03-04     2 confirmed
+    ## 2709    8.4689 2020-03-04    24 confirmed
+    ## 2710   57.0000 2020-03-04     3 confirmed
+    ## 2711   19.1451 2020-03-04     1 confirmed
+    ## 2712   -8.2245 2020-03-04     3 confirmed
+    ## 2713   51.1839 2020-03-04     1 confirmed
+    ## 2714   24.9668 2020-03-04     1 confirmed
+    ## 2715  -62.8333 2020-03-04     3 confirmed
+    ## 2716   12.4578 2020-03-04     6 confirmed
+    ## 2717  -14.4524 2020-03-04     2 confirmed
+    ## 2718  128.0000 2020-03-04   435 confirmed
+    ## 2719   -4.0000 2020-03-04    57 confirmed
+    ## 2720   16.0000 2020-03-04    14 confirmed
+    ## 2721    8.2275 2020-03-04    34 confirmed
+    ## 2722    9.0000 2020-03-04     1 confirmed
+    ## 2723   -3.0000 2020-03-04    34 confirmed
+    ## 2724  116.4142 2020-03-04     4 confirmed
+    ## 2725 -123.1207 2020-03-04     3 confirmed
+    ## 2726 -121.9018 2020-03-04     1 confirmed
+    ## 2727  114.2000 2020-03-04     5 confirmed
+    ## 2728  112.2707 2020-03-04   115 confirmed
+    ## 2729 -122.3321 2020-03-04    10 confirmed
+    ## 2730 -118.2437 2020-03-04     6 confirmed
+    ## 2731  151.2093 2020-03-04     9 confirmed
+    ## 2732  106.1655 2020-03-04     1 confirmed
+    ## 2733  130.8456 2020-03-04     1 confirmed
+    ## 2734 -117.8531 2020-03-04     2 confirmed
+    ## 2735 -120.8039 2020-03-04     1 confirmed
+    ## 2736 -121.8339 2020-03-04     2 confirmed
+    ## 2737  138.6007 2020-03-04     2 confirmed
+    ## 2738  144.9631 2020-03-04     1 confirmed
+    ## 2739  -73.7949 2020-03-04     9 confirmed
+    ## 2740   53.0000 2020-03-04    15     death
+    ## 2741   44.0000 2020-03-04     2     death
+    ## 2742   12.0000 2020-03-04    28     death
+    ## 2743  128.0000 2020-03-04     7     death
+    ## 2744   -4.0000 2020-03-04     1     death
+    ## 2745  112.2707 2020-03-04    36     death
+    ## 2746 -122.3321 2020-03-04     3     death
+    ## 2747  151.2093 2020-03-04     1     death
+    ## 2748 -120.8039 2020-03-04     1     death
+    ## 2749   53.0000 2020-03-04   261 recovered
+    ## 2750   12.0000 2020-03-04   116 recovered
+    ## 2751   35.8623 2020-03-04     1 recovered
+    ## 2752   24.9668 2020-03-04     1 recovered
+    ## 2753  128.0000 2020-03-04    11 recovered
+    ## 2754    8.2275 2020-03-04     1 recovered
+    ## 2755  117.2264 2020-03-04    20 recovered
+    ## 2756  116.4142 2020-03-04     9 recovered
+    ## 2757  107.8740 2020-03-04    12 recovered
+    ## 2758  117.9874 2020-03-04    10 recovered
+    ## 2759  103.8343 2020-03-04     1 recovered
+    ## 2760  113.4244 2020-03-04    32 recovered
+    ## 2761  108.7881 2020-03-04     8 recovered
+    ## 2762  109.7453 2020-03-04     3 recovered
+    ## 2763  114.5149 2020-03-04     1 recovered
+    ## 2764  127.7615 2020-03-04     7 recovered
+    ## 2765  113.6140 2020-03-04     3 recovered
+    ## 2766  112.2707 2020-03-04  2349 recovered
+    ## 2767  111.7088 2020-03-04    10 recovered
+    ## 2768  113.9448 2020-03-04     4 recovered
+    ## 2769  119.4550 2020-03-04    15 recovered
+    ## 2770  115.7221 2020-03-04    14 recovered
+    ## 2771  126.1923 2020-03-04     3 recovered
+    ## 2772  108.8701 2020-03-04     7 recovered
+    ## 2773  118.1498 2020-03-04     5 recovered
+    ## 2774  121.4491 2020-03-04     4 recovered
+    ## 2775  102.7103 2020-03-04    12 recovered
+    ## 2776   85.2401 2020-03-04     1 recovered
+    ## 2777  120.0934 2020-03-04    21 recovered
+
+\#\#Time for some HW\!
+
+``` r
+mainland <- virus[grep("Mainland China",virus$Country.Region),]
+mainland
+```
+
+    ##      Province.State Country.Region      Lat     Long       date cases      type
+    ## 4             Anhui Mainland China 31.82570 117.2264 2020-01-22     1 confirmed
+    ## 5           Beijing Mainland China 40.18240 116.4142 2020-01-22    14 confirmed
+    ## 6         Chongqing Mainland China 30.05720 107.8740 2020-01-22     6 confirmed
+    ## 7            Fujian Mainland China 26.07890 117.9874 2020-01-22     1 confirmed
+    ## 8         Guangdong Mainland China 23.34170 113.4244 2020-01-22    26 confirmed
+    ## 9           Guangxi Mainland China 23.82980 108.7881 2020-01-22     2 confirmed
+    ## 10          Guizhou Mainland China 26.81540 106.8748 2020-01-22     1 confirmed
+    ## 11           Hainan Mainland China 19.19590 109.7453 2020-01-22     4 confirmed
+    ## 12            Hebei Mainland China 38.04280 114.5149 2020-01-22     1 confirmed
+    ## 13            Henan Mainland China 33.88202 113.6140 2020-01-22     5 confirmed
+    ## 14            Hubei Mainland China 30.97560 112.2707 2020-01-22   444 confirmed
+    ## 15            Hunan Mainland China 27.61040 111.7088 2020-01-22     4 confirmed
+    ## 16          Jiangsu Mainland China 32.97110 119.4550 2020-01-22     1 confirmed
+    ## 17          Jiangxi Mainland China 27.61400 115.7221 2020-01-22     2 confirmed
+    ## 19         Liaoning Mainland China 41.29560 122.6085 2020-01-22     2 confirmed
+    ## 21          Ningxia Mainland China 37.26920 106.1655 2020-01-22     1 confirmed
+    ## 22         Shandong Mainland China 36.34270 118.1498 2020-01-22     2 confirmed
+    ## 23         Shanghai Mainland China 31.20200 121.4491 2020-01-22     9 confirmed
+    ## 24           Shanxi Mainland China 37.57770 112.2922 2020-01-22     1 confirmed
+    ## 25          Sichuan Mainland China 30.61710 102.7103 2020-01-22     5 confirmed
+    ## 27          Tianjin Mainland China 39.30540 117.3230 2020-01-22     4 confirmed
+    ## 28           Yunnan Mainland China 24.97400 101.4870 2020-01-22     1 confirmed
+    ## 29         Zhejiang Mainland China 29.18320 120.0934 2020-01-22    10 confirmed
+    ## 30            Hubei Mainland China 30.97560 112.2707 2020-01-22    17     death
+    ## 31            Hubei Mainland China 30.97560 112.2707 2020-01-22    28 recovered
+    ## 36            Anhui Mainland China 31.82570 117.2264 2020-01-23     8 confirmed
+    ## 37          Beijing Mainland China 40.18240 116.4142 2020-01-23     8 confirmed
+    ## 38        Chongqing Mainland China 30.05720 107.8740 2020-01-23     3 confirmed
+    ## 39           Fujian Mainland China 26.07890 117.9874 2020-01-23     4 confirmed
+    ## 40            Gansu Mainland China 36.06110 103.8343 2020-01-23     2 confirmed
+    ## 41        Guangdong Mainland China 23.34170 113.4244 2020-01-23     6 confirmed
+    ## 42          Guangxi Mainland China 23.82980 108.7881 2020-01-23     3 confirmed
+    ## 43          Guizhou Mainland China 26.81540 106.8748 2020-01-23     2 confirmed
+    ## 44           Hainan Mainland China 19.19590 109.7453 2020-01-23     1 confirmed
+    ## 45     Heilongjiang Mainland China 47.86200 127.7615 2020-01-23     2 confirmed
+    ## 47            Hunan Mainland China 27.61040 111.7088 2020-01-23     5 confirmed
+    ## 48          Jiangsu Mainland China 32.97110 119.4550 2020-01-23     4 confirmed
+    ## 49          Jiangxi Mainland China 27.61400 115.7221 2020-01-23     5 confirmed
+    ## 50            Jilin Mainland China 43.66610 126.1923 2020-01-23     1 confirmed
+    ## 51         Liaoning Mainland China 41.29560 122.6085 2020-01-23     1 confirmed
+    ## 53          Shaanxi Mainland China 35.19170 108.8701 2020-01-23     3 confirmed
+    ## 54         Shandong Mainland China 36.34270 118.1498 2020-01-23     4 confirmed
+    ## 55         Shanghai Mainland China 31.20200 121.4491 2020-01-23     7 confirmed
+    ## 56          Sichuan Mainland China 30.61710 102.7103 2020-01-23     3 confirmed
+    ## 57         Xinjiang Mainland China 41.11290  85.2401 2020-01-23     2 confirmed
+    ## 58           Yunnan Mainland China 24.97400 101.4870 2020-01-23     1 confirmed
+    ## 59         Zhejiang Mainland China 29.18320 120.0934 2020-01-23    17 confirmed
+    ## 60            Hebei Mainland China 38.04280 114.5149 2020-01-23     1     death
+    ## 61        Guangdong Mainland China 23.34170 113.4244 2020-01-23     2 recovered
+    ## 67            Anhui Mainland China 31.82570 117.2264 2020-01-24     6 confirmed
+    ## 68          Beijing Mainland China 40.18240 116.4142 2020-01-24    14 confirmed
+    ## 69        Chongqing Mainland China 30.05720 107.8740 2020-01-24    18 confirmed
+    ## 71           Fujian Mainland China 26.07890 117.9874 2020-01-24     5 confirmed
+    ## 72        Guangdong Mainland China 23.34170 113.4244 2020-01-24    21 confirmed
+    ## 73          Guangxi Mainland China 23.82980 108.7881 2020-01-24    18 confirmed
+    ## 74           Hainan Mainland China 19.19590 109.7453 2020-01-24     3 confirmed
+    ## 75            Hebei Mainland China 38.04280 114.5149 2020-01-24     1 confirmed
+    ## 76     Heilongjiang Mainland China 47.86200 127.7615 2020-01-24     2 confirmed
+    ## 77            Henan Mainland China 33.88202 113.6140 2020-01-24     4 confirmed
+    ## 78            Hubei Mainland China 30.97560 112.2707 2020-01-24   105 confirmed
+    ## 79            Hunan Mainland China 27.61040 111.7088 2020-01-24    15 confirmed
+    ## 80   Inner Mongolia Mainland China 44.09350 113.9448 2020-01-24     1 confirmed
+    ## 81          Jiangsu Mainland China 32.97110 119.4550 2020-01-24     4 confirmed
+    ## 82          Jiangxi Mainland China 27.61400 115.7221 2020-01-24    11 confirmed
+    ## 83            Jilin Mainland China 43.66610 126.1923 2020-01-24     2 confirmed
+    ## 84         Liaoning Mainland China 41.29560 122.6085 2020-01-24     1 confirmed
+    ## 85          Ningxia Mainland China 37.26920 106.1655 2020-01-24     1 confirmed
+    ## 86          Shaanxi Mainland China 35.19170 108.8701 2020-01-24     2 confirmed
+    ## 87         Shandong Mainland China 36.34270 118.1498 2020-01-24     9 confirmed
+    ## 88         Shanghai Mainland China 31.20200 121.4491 2020-01-24     4 confirmed
+    ## 89          Sichuan Mainland China 30.61710 102.7103 2020-01-24     7 confirmed
+    ## 91          Tianjin Mainland China 39.30540 117.3230 2020-01-24     4 confirmed
+    ## 92           Yunnan Mainland China 24.97400 101.4870 2020-01-24     3 confirmed
+    ## 93         Zhejiang Mainland China 29.18320 120.0934 2020-01-24    16 confirmed
+    ## 94     Heilongjiang Mainland China 47.86200 127.7615 2020-01-24     1     death
+    ## 95            Hubei Mainland China 30.97560 112.2707 2020-01-24     7     death
+    ## 96          Beijing Mainland China 40.18240 116.4142 2020-01-24     1 recovered
+    ## 97            Hubei Mainland China 30.97560 112.2707 2020-01-24     3 recovered
+    ## 98         Shanghai Mainland China 31.20200 121.4491 2020-01-24     1 recovered
+    ## 99         Zhejiang Mainland China 29.18320 120.0934 2020-01-24     1 recovered
+    ## 104           Anhui Mainland China 31.82570 117.2264 2020-01-25    24 confirmed
+    ## 105         Beijing Mainland China 40.18240 116.4142 2020-01-25     5 confirmed
+    ## 106       Chongqing Mainland China 30.05720 107.8740 2020-01-25    30 confirmed
+    ## 107          Fujian Mainland China 26.07890 117.9874 2020-01-25     8 confirmed
+    ## 108           Gansu Mainland China 36.06110 103.8343 2020-01-25     2 confirmed
+    ## 109       Guangdong Mainland China 23.34170 113.4244 2020-01-25    25 confirmed
+    ## 110         Guizhou Mainland China 26.81540 106.8748 2020-01-25     1 confirmed
+    ## 111          Hainan Mainland China 19.19590 109.7453 2020-01-25    11 confirmed
+    ## 112           Hebei Mainland China 38.04280 114.5149 2020-01-25     6 confirmed
+    ## 113    Heilongjiang Mainland China 47.86200 127.7615 2020-01-25     5 confirmed
+    ## 114           Henan Mainland China 33.88202 113.6140 2020-01-25    23 confirmed
+    ## 116           Hubei Mainland China 30.97560 112.2707 2020-01-25   212 confirmed
+    ## 117           Hunan Mainland China 27.61040 111.7088 2020-01-25    19 confirmed
+    ## 118  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-25     6 confirmed
+    ## 119         Jiangsu Mainland China 32.97110 119.4550 2020-01-25     9 confirmed
+    ## 120           Jilin Mainland China 43.66610 126.1923 2020-01-25     1 confirmed
+    ## 121        Liaoning Mainland China 41.29560 122.6085 2020-01-25    13 confirmed
+    ## 122         Ningxia Mainland China 37.26920 106.1655 2020-01-25     1 confirmed
+    ## 123         Qinghai Mainland China 35.74520  95.9956 2020-01-25     1 confirmed
+    ## 124         Shaanxi Mainland China 35.19170 108.8701 2020-01-25    10 confirmed
+    ## 125        Shandong Mainland China 36.34270 118.1498 2020-01-25    12 confirmed
+    ## 126        Shanghai Mainland China 31.20200 121.4491 2020-01-25    13 confirmed
+    ## 127          Shanxi Mainland China 37.57770 112.2922 2020-01-25     5 confirmed
+    ## 128         Sichuan Mainland China 30.61710 102.7103 2020-01-25    13 confirmed
+    ## 129         Tianjin Mainland China 39.30540 117.3230 2020-01-25     2 confirmed
+    ## 130        Xinjiang Mainland China 41.11290  85.2401 2020-01-25     1 confirmed
+    ## 131          Yunnan Mainland China 24.97400 101.4870 2020-01-25     6 confirmed
+    ## 132        Zhejiang Mainland China 29.18320 120.0934 2020-01-25    19 confirmed
+    ## 133           Hubei Mainland China 30.97560 112.2707 2020-01-25    16     death
+    ## 134         Beijing Mainland China 40.18240 116.4142 2020-01-25     1 recovered
+    ## 135           Hubei Mainland China 30.97560 112.2707 2020-01-25     1 recovered
+    ## 136         Jiangsu Mainland China 32.97110 119.4550 2020-01-25     1 recovered
+    ## 142           Anhui Mainland China 31.82570 117.2264 2020-01-26    21 confirmed
+    ## 143         Beijing Mainland China 40.18240 116.4142 2020-01-26    27 confirmed
+    ## 144       Chongqing Mainland China 30.05720 107.8740 2020-01-26    18 confirmed
+    ## 145          Fujian Mainland China 26.07890 117.9874 2020-01-26    17 confirmed
+    ## 146           Gansu Mainland China 36.06110 103.8343 2020-01-26     3 confirmed
+    ## 147       Guangdong Mainland China 23.34170 113.4244 2020-01-26    33 confirmed
+    ## 148         Guangxi Mainland China 23.82980 108.7881 2020-01-26    13 confirmed
+    ## 149         Guizhou Mainland China 26.81540 106.8748 2020-01-26     1 confirmed
+    ## 150          Hainan Mainland China 19.19590 109.7453 2020-01-26     3 confirmed
+    ## 151           Hebei Mainland China 38.04280 114.5149 2020-01-26     5 confirmed
+    ## 152    Heilongjiang Mainland China 47.86200 127.7615 2020-01-26     6 confirmed
+    ## 153           Henan Mainland China 33.88202 113.6140 2020-01-26    51 confirmed
+    ## 155           Hubei Mainland China 30.97560 112.2707 2020-01-26   297 confirmed
+    ## 156           Hunan Mainland China 27.61040 111.7088 2020-01-26    26 confirmed
+    ## 157         Jiangsu Mainland China 32.97110 119.4550 2020-01-26    15 confirmed
+    ## 158         Jiangxi Mainland China 27.61400 115.7221 2020-01-26    18 confirmed
+    ## 159        Liaoning Mainland China 41.29560 122.6085 2020-01-26     4 confirmed
+    ## 163         Ningxia Mainland China 37.26920 106.1655 2020-01-26     1 confirmed
+    ## 165         Shaanxi Mainland China 35.19170 108.8701 2020-01-26     7 confirmed
+    ## 166        Shandong Mainland China 36.34270 118.1498 2020-01-26    19 confirmed
+    ## 167        Shanghai Mainland China 31.20200 121.4491 2020-01-26     7 confirmed
+    ## 168          Shanxi Mainland China 37.57770 112.2922 2020-01-26     3 confirmed
+    ## 169         Sichuan Mainland China 30.61710 102.7103 2020-01-26    16 confirmed
+    ## 172         Tianjin Mainland China 39.30540 117.3230 2020-01-26     4 confirmed
+    ## 175        Xinjiang Mainland China 41.11290  85.2401 2020-01-26     1 confirmed
+    ## 176          Yunnan Mainland China 24.97400 101.4870 2020-01-26     5 confirmed
+    ## 177        Zhejiang Mainland China 29.18320 120.0934 2020-01-26    42 confirmed
+    ## 178           Henan Mainland China 33.88202 113.6140 2020-01-26     1     death
+    ## 179           Hubei Mainland China 30.97560 112.2707 2020-01-26    12     death
+    ## 180        Shanghai Mainland China 31.20200 121.4491 2020-01-26     1     death
+    ## 183           Hubei Mainland China 30.97560 112.2707 2020-01-26    10 recovered
+    ## 189           Anhui Mainland China 31.82570 117.2264 2020-01-27    10 confirmed
+    ## 190         Beijing Mainland China 40.18240 116.4142 2020-01-27    12 confirmed
+    ## 191       Chongqing Mainland China 30.05720 107.8740 2020-01-27    35 confirmed
+    ## 192          Fujian Mainland China 26.07890 117.9874 2020-01-27    24 confirmed
+    ## 193           Gansu Mainland China 36.06110 103.8343 2020-01-27     7 confirmed
+    ## 194       Guangdong Mainland China 23.34170 113.4244 2020-01-27    40 confirmed
+    ## 195         Guangxi Mainland China 23.82980 108.7881 2020-01-27    10 confirmed
+    ## 196         Guizhou Mainland China 26.81540 106.8748 2020-01-27     2 confirmed
+    ## 197          Hainan Mainland China 19.19590 109.7453 2020-01-27    11 confirmed
+    ## 198           Hebei Mainland China 38.04280 114.5149 2020-01-27     5 confirmed
+    ## 199    Heilongjiang Mainland China 47.86200 127.7615 2020-01-27     6 confirmed
+    ## 200           Henan Mainland China 33.88202 113.6140 2020-01-27    45 confirmed
+    ## 201           Hubei Mainland China 30.97560 112.2707 2020-01-27   365 confirmed
+    ## 202           Hunan Mainland China 27.61040 111.7088 2020-01-27    31 confirmed
+    ## 203  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-27     4 confirmed
+    ## 204         Jiangsu Mainland China 32.97110 119.4550 2020-01-27    14 confirmed
+    ## 205         Jiangxi Mainland China 27.61400 115.7221 2020-01-27    36 confirmed
+    ## 206           Jilin Mainland China 43.66610 126.1923 2020-01-27     2 confirmed
+    ## 207        Liaoning Mainland China 41.29560 122.6085 2020-01-27     6 confirmed
+    ## 210         Ningxia Mainland China 37.26920 106.1655 2020-01-27     3 confirmed
+    ## 211         Qinghai Mainland China 35.74520  95.9956 2020-01-27     5 confirmed
+    ## 212         Shaanxi Mainland China 35.19170 108.8701 2020-01-27    13 confirmed
+    ## 213        Shandong Mainland China 36.34270 118.1498 2020-01-27    29 confirmed
+    ## 214        Shanghai Mainland China 31.20200 121.4491 2020-01-27    13 confirmed
+    ## 215          Shanxi Mainland China 37.57770 112.2922 2020-01-27     4 confirmed
+    ## 216         Sichuan Mainland China 30.61710 102.7103 2020-01-27    25 confirmed
+    ## 218         Tianjin Mainland China 39.30540 117.3230 2020-01-27     9 confirmed
+    ## 219        Xinjiang Mainland China 41.11290  85.2401 2020-01-27     1 confirmed
+    ## 220          Yunnan Mainland China 24.97400 101.4870 2020-01-27    10 confirmed
+    ## 221        Zhejiang Mainland China 29.18320 120.0934 2020-01-27    24 confirmed
+    ## 222         Beijing Mainland China 40.18240 116.4142 2020-01-27     1     death
+    ## 223          Hainan Mainland China 19.19590 109.7453 2020-01-27     1     death
+    ## 224           Hubei Mainland China 30.97560 112.2707 2020-01-27    24     death
+    ## 225       Guangdong Mainland China 23.34170 113.4244 2020-01-27     2 recovered
+    ## 226           Hubei Mainland China 30.97560 112.2707 2020-01-27     3 recovered
+    ## 227         Jiangxi Mainland China 27.61400 115.7221 2020-01-27     2 recovered
+    ## 228        Shanghai Mainland China 31.20200 121.4491 2020-01-27     2 recovered
+    ## 234           Anhui Mainland China 31.82570 117.2264 2020-01-28    36 confirmed
+    ## 235         Beijing Mainland China 40.18240 116.4142 2020-01-28    11 confirmed
+    ## 237       Chongqing Mainland China 30.05720 107.8740 2020-01-28    22 confirmed
+    ## 238          Fujian Mainland China 26.07890 117.9874 2020-01-28    21 confirmed
+    ## 239           Gansu Mainland China 36.06110 103.8343 2020-01-28     5 confirmed
+    ## 240       Guangdong Mainland China 23.34170 113.4244 2020-01-28    56 confirmed
+    ## 241         Guangxi Mainland China 23.82980 108.7881 2020-01-28     5 confirmed
+    ## 242         Guizhou Mainland China 26.81540 106.8748 2020-01-28     2 confirmed
+    ## 243          Hainan Mainland China 19.19590 109.7453 2020-01-28     7 confirmed
+    ## 244           Hebei Mainland China 38.04280 114.5149 2020-01-28    15 confirmed
+    ## 245    Heilongjiang Mainland China 47.86200 127.7615 2020-01-28    12 confirmed
+    ## 246           Henan Mainland China 33.88202 113.6140 2020-01-28    40 confirmed
+    ## 247           Hubei Mainland China 30.97560 112.2707 2020-01-28  2131 confirmed
+    ## 248           Hunan Mainland China 27.61040 111.7088 2020-01-28    43 confirmed
+    ## 249  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-28     4 confirmed
+    ## 250         Jiangsu Mainland China 32.97110 119.4550 2020-01-28    23 confirmed
+    ## 251         Jiangxi Mainland China 27.61400 115.7221 2020-01-28    37 confirmed
+    ## 252           Jilin Mainland China 43.66610 126.1923 2020-01-28     2 confirmed
+    ## 253        Liaoning Mainland China 41.29560 122.6085 2020-01-28     7 confirmed
+    ## 255         Ningxia Mainland China 37.26920 106.1655 2020-01-28     4 confirmed
+    ## 256         Shaanxi Mainland China 35.19170 108.8701 2020-01-28    11 confirmed
+    ## 257        Shandong Mainland China 36.34270 118.1498 2020-01-28    20 confirmed
+    ## 258        Shanghai Mainland China 31.20200 121.4491 2020-01-28    13 confirmed
+    ## 259          Shanxi Mainland China 37.57770 112.2922 2020-01-28    14 confirmed
+    ## 260         Sichuan Mainland China 30.61710 102.7103 2020-01-28    21 confirmed
+    ## 262         Tianjin Mainland China 39.30540 117.3230 2020-01-28     1 confirmed
+    ## 263        Xinjiang Mainland China 41.11290  85.2401 2020-01-28     5 confirmed
+    ## 264          Yunnan Mainland China 24.97400 101.4870 2020-01-28    18 confirmed
+    ## 265        Zhejiang Mainland China 29.18320 120.0934 2020-01-28    45 confirmed
+    ## 266           Hubei Mainland China 30.97560 112.2707 2020-01-28    49     death
+    ## 268         Beijing Mainland China 40.18240 116.4142 2020-01-28     2 recovered
+    ## 269         Guangxi Mainland China 23.82980 108.7881 2020-01-28     2 recovered
+    ## 270           Hubei Mainland China 30.97560 112.2707 2020-01-28    35 recovered
+    ## 271         Jiangxi Mainland China 27.61400 115.7221 2020-01-28     1 recovered
+    ## 272        Shanghai Mainland China 31.20200 121.4491 2020-01-28     1 recovered
+    ## 273        Zhejiang Mainland China 29.18320 120.0934 2020-01-28     2 recovered
+    ## 278           Anhui Mainland China 31.82570 117.2264 2020-01-29    46 confirmed
+    ## 279         Beijing Mainland China 40.18240 116.4142 2020-01-29    20 confirmed
+    ## 280       Chongqing Mainland China 30.05720 107.8740 2020-01-29    15 confirmed
+    ## 281          Fujian Mainland China 26.07890 117.9874 2020-01-29     4 confirmed
+    ## 282           Gansu Mainland China 36.06110 103.8343 2020-01-29     5 confirmed
+    ## 283       Guangdong Mainland China 23.34170 113.4244 2020-01-29    70 confirmed
+    ## 284         Guangxi Mainland China 23.82980 108.7881 2020-01-29     7 confirmed
+    ## 285          Hainan Mainland China 19.19590 109.7453 2020-01-29     3 confirmed
+    ## 286           Hebei Mainland China 38.04280 114.5149 2020-01-29    15 confirmed
+    ## 287    Heilongjiang Mainland China 47.86200 127.7615 2020-01-29     5 confirmed
+    ## 288           Henan Mainland China 33.88202 113.6140 2020-01-29    38 confirmed
+    ## 290           Hunan Mainland China 27.61040 111.7088 2020-01-29    78 confirmed
+    ## 291  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-29     1 confirmed
+    ## 292         Jiangsu Mainland China 32.97110 119.4550 2020-01-29    29 confirmed
+    ## 293           Jilin Mainland China 43.66610 126.1923 2020-01-29     1 confirmed
+    ## 294        Liaoning Mainland China 41.29560 122.6085 2020-01-29     5 confirmed
+    ## 295         Ningxia Mainland China 37.26920 106.1655 2020-01-29     1 confirmed
+    ## 297         Shaanxi Mainland China 35.19170 108.8701 2020-01-29    10 confirmed
+    ## 298        Shandong Mainland China 36.34270 118.1498 2020-01-29    35 confirmed
+    ## 299        Shanghai Mainland China 31.20200 121.4491 2020-01-29    30 confirmed
+    ## 300         Sichuan Mainland China 30.61710 102.7103 2020-01-29    18 confirmed
+    ## 301         Tianjin Mainland China 39.30540 117.3230 2020-01-29     3 confirmed
+    ## 302        Xinjiang Mainland China 41.11290  85.2401 2020-01-29     3 confirmed
+    ## 303          Yunnan Mainland China 24.97400 101.4870 2020-01-29    11 confirmed
+    ## 304        Zhejiang Mainland China 29.18320 120.0934 2020-01-29   123 confirmed
+    ## 305           Henan Mainland China 33.88202 113.6140 2020-01-29     1     death
+    ## 306         Sichuan Mainland China 30.61710 102.7103 2020-01-29     1     death
+    ## 307           Anhui Mainland China 31.82570 117.2264 2020-01-29     2 recovered
+    ## 308       Chongqing Mainland China 30.05720 107.8740 2020-01-29     1 recovered
+    ## 309       Guangdong Mainland China 23.34170 113.4244 2020-01-29     1 recovered
+    ## 310         Guizhou Mainland China 26.81540 106.8748 2020-01-29     1 recovered
+    ## 311           Henan Mainland China 33.88202 113.6140 2020-01-29     1 recovered
+    ## 312           Hubei Mainland China 30.97560 112.2707 2020-01-29     8 recovered
+    ## 313        Liaoning Mainland China 41.29560 122.6085 2020-01-29     1 recovered
+    ## 314        Shandong Mainland China 36.34270 118.1498 2020-01-29     1 recovered
+    ## 315        Shanghai Mainland China 31.20200 121.4491 2020-01-29     1 recovered
+    ## 316          Shanxi Mainland China 37.57770 112.2922 2020-01-29     1 recovered
+    ## 317         Sichuan Mainland China 30.61710 102.7103 2020-01-29     1 recovered
+    ## 323           Anhui Mainland China 31.82570 117.2264 2020-01-30    48 confirmed
+    ## 324         Beijing Mainland China 40.18240 116.4142 2020-01-30     3 confirmed
+    ## 325       Chongqing Mainland China 30.05720 107.8740 2020-01-30    35 confirmed
+    ## 326          Fujian Mainland China 26.07890 117.9874 2020-01-30    17 confirmed
+    ## 327           Gansu Mainland China 36.06110 103.8343 2020-01-30     2 confirmed
+    ## 328       Guangdong Mainland China 23.34170 113.4244 2020-01-30    77 confirmed
+    ## 329         Guangxi Mainland China 23.82980 108.7881 2020-01-30    20 confirmed
+    ## 330         Guizhou Mainland China 26.81540 106.8748 2020-01-30     3 confirmed
+    ## 331          Hainan Mainland China 19.19590 109.7453 2020-01-30     3 confirmed
+    ## 332           Hebei Mainland China 38.04280 114.5149 2020-01-30    17 confirmed
+    ## 333    Heilongjiang Mainland China 47.86200 127.7615 2020-01-30     6 confirmed
+    ## 334           Henan Mainland China 33.88202 113.6140 2020-01-30    72 confirmed
+    ## 335           Hubei Mainland China 30.97560 112.2707 2020-01-30  1349 confirmed
+    ## 336           Hunan Mainland China 27.61040 111.7088 2020-01-30    56 confirmed
+    ## 337  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-30     3 confirmed
+    ## 338         Jiangsu Mainland China 32.97110 119.4550 2020-01-30    30 confirmed
+    ## 339         Jiangxi Mainland China 27.61400 115.7221 2020-01-30    53 confirmed
+    ## 340           Jilin Mainland China 43.66610 126.1923 2020-01-30     5 confirmed
+    ## 341        Liaoning Mainland China 41.29560 122.6085 2020-01-30     2 confirmed
+    ## 342         Ningxia Mainland China 37.26920 106.1655 2020-01-30     5 confirmed
+    ## 343         Qinghai Mainland China 35.74520  95.9956 2020-01-30     2 confirmed
+    ## 345         Shaanxi Mainland China 35.19170 108.8701 2020-01-30     7 confirmed
+    ## 346        Shandong Mainland China 36.34270 118.1498 2020-01-30    28 confirmed
+    ## 347        Shanghai Mainland China 31.20200 121.4491 2020-01-30    16 confirmed
+    ## 348          Shanxi Mainland China 37.57770 112.2922 2020-01-30     8 confirmed
+    ## 349         Sichuan Mainland China 30.61710 102.7103 2020-01-30    34 confirmed
+    ## 351         Tianjin Mainland China 39.30540 117.3230 2020-01-30     4 confirmed
+    ## 352           Tibet Mainland China 31.69270  88.0924 2020-01-30     1 confirmed
+    ## 354        Xinjiang Mainland China 41.11290  85.2401 2020-01-30     1 confirmed
+    ## 355          Yunnan Mainland China 24.97400 101.4870 2020-01-30    15 confirmed
+    ## 356        Zhejiang Mainland China 29.18320 120.0934 2020-01-30   132 confirmed
+    ## 357    Heilongjiang Mainland China 47.86200 127.7615 2020-01-30     1     death
+    ## 358           Hubei Mainland China 30.97560 112.2707 2020-01-30    37     death
+    ## 359       Guangdong Mainland China 23.34170 113.4244 2020-01-30     5 recovered
+    ## 360          Hainan Mainland China 19.19590 109.7453 2020-01-30     1 recovered
+    ## 361           Henan Mainland China 33.88202 113.6140 2020-01-30     1 recovered
+    ## 362           Hubei Mainland China 30.97560 112.2707 2020-01-30     2 recovered
+    ## 363           Hunan Mainland China 27.61040 111.7088 2020-01-30     2 recovered
+    ## 364         Jiangxi Mainland China 27.61400 115.7221 2020-01-30     2 recovered
+    ## 365           Jilin Mainland China 43.66610 126.1923 2020-01-30     1 recovered
+    ## 367        Zhejiang Mainland China 29.18320 120.0934 2020-01-30     1 recovered
+    ## 377           Anhui Mainland China 31.82570 117.2264 2020-01-31    37 confirmed
+    ## 378         Beijing Mainland China 40.18240 116.4142 2020-01-31    25 confirmed
+    ## 379       Chongqing Mainland China 30.05720 107.8740 2020-01-31    29 confirmed
+    ## 381          Fujian Mainland China 26.07890 117.9874 2020-01-31    19 confirmed
+    ## 382           Gansu Mainland China 36.06110 103.8343 2020-01-31     3 confirmed
+    ## 383       Guangdong Mainland China 23.34170 113.4244 2020-01-31    82 confirmed
+    ## 384         Guangxi Mainland China 23.82980 108.7881 2020-01-31     9 confirmed
+    ## 385         Guizhou Mainland China 26.81540 106.8748 2020-01-31    17 confirmed
+    ## 386          Hainan Mainland China 19.19590 109.7453 2020-01-31     6 confirmed
+    ## 387           Hebei Mainland China 38.04280 114.5149 2020-01-31    17 confirmed
+    ## 388    Heilongjiang Mainland China 47.86200 127.7615 2020-01-31    15 confirmed
+    ## 389           Henan Mainland China 33.88202 113.6140 2020-01-31    74 confirmed
+    ## 391           Hubei Mainland China 30.97560 112.2707 2020-01-31   903 confirmed
+    ## 392           Hunan Mainland China 27.61040 111.7088 2020-01-31    55 confirmed
+    ## 393  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-31     1 confirmed
+    ## 394         Jiangsu Mainland China 32.97110 119.4550 2020-01-31    39 confirmed
+    ## 395         Jiangxi Mainland China 27.61400 115.7221 2020-01-31    78 confirmed
+    ## 396        Liaoning Mainland China 41.29560 122.6085 2020-01-31     7 confirmed
+    ## 398         Ningxia Mainland China 37.26920 106.1655 2020-01-31     4 confirmed
+    ## 401         Shaanxi Mainland China 35.19170 108.8701 2020-01-31    24 confirmed
+    ## 402        Shandong Mainland China 36.34270 118.1498 2020-01-31    26 confirmed
+    ## 403        Shanghai Mainland China 31.20200 121.4491 2020-01-31    23 confirmed
+    ## 404          Shanxi Mainland China 37.57770 112.2922 2020-01-31     4 confirmed
+    ## 405         Sichuan Mainland China 30.61710 102.7103 2020-01-31    35 confirmed
+    ## 407         Tianjin Mainland China 39.30540 117.3230 2020-01-31     1 confirmed
+    ## 410        Xinjiang Mainland China 41.11290  85.2401 2020-01-31     3 confirmed
+    ## 411          Yunnan Mainland China 24.97400 101.4870 2020-01-31    13 confirmed
+    ## 412        Zhejiang Mainland China 29.18320 120.0934 2020-01-31   110 confirmed
+    ## 413           Hubei Mainland China 30.97560 112.2707 2020-01-31    42     death
+    ## 414           Anhui Mainland China 31.82570 117.2264 2020-01-31     1 recovered
+    ## 415         Beijing Mainland China 40.18240 116.4142 2020-01-31     1 recovered
+    ## 416       Guangdong Mainland China 23.34170 113.4244 2020-01-31     1 recovered
+    ## 417         Guizhou Mainland China 26.81540 106.8748 2020-01-31     1 recovered
+    ## 418           Henan Mainland China 33.88202 113.6140 2020-01-31     1 recovered
+    ## 419           Hubei Mainland China 30.97560 112.2707 2020-01-31    51 recovered
+    ## 420  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-31     1 recovered
+    ## 421         Jiangsu Mainland China 32.97110 119.4550 2020-01-31     4 recovered
+    ## 422         Jiangxi Mainland China 27.61400 115.7221 2020-01-31     2 recovered
+    ## 423        Shandong Mainland China 36.34270 118.1498 2020-01-31     1 recovered
+    ## 424        Shanghai Mainland China 31.20200 121.4491 2020-01-31     4 recovered
+    ## 425          Yunnan Mainland China 24.97400 101.4870 2020-01-31     1 recovered
+    ## 426        Zhejiang Mainland China 29.18320 120.0934 2020-01-31    10 recovered
+    ## 434           Anhui Mainland China 31.82570 117.2264 2020-02-01    60 confirmed
+    ## 435         Beijing Mainland China 40.18240 116.4142 2020-02-01    29 confirmed
+    ## 437       Chongqing Mainland China 30.05720 107.8740 2020-02-01    36 confirmed
+    ## 438          Fujian Mainland China 26.07890 117.9874 2020-02-01    24 confirmed
+    ## 439           Gansu Mainland China 36.06110 103.8343 2020-02-01    11 confirmed
+    ## 440       Guangdong Mainland China 23.34170 113.4244 2020-02-01    99 confirmed
+    ## 441         Guangxi Mainland China 23.82980 108.7881 2020-02-01    13 confirmed
+    ## 442          Hainan Mainland China 19.19590 109.7453 2020-02-01    10 confirmed
+    ## 443           Hebei Mainland China 38.04280 114.5149 2020-02-01    14 confirmed
+    ## 444    Heilongjiang Mainland China 47.86200 127.7615 2020-02-01    21 confirmed
+    ## 445           Henan Mainland China 33.88202 113.6140 2020-02-01    70 confirmed
+    ## 447           Hubei Mainland China 30.97560 112.2707 2020-02-01  1347 confirmed
+    ## 448           Hunan Mainland China 27.61040 111.7088 2020-02-01    57 confirmed
+    ## 449  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-01     3 confirmed
+    ## 450         Jiangsu Mainland China 32.97110 119.4550 2020-02-01    34 confirmed
+    ## 451         Jiangxi Mainland China 27.61400 115.7221 2020-02-01    46 confirmed
+    ## 452           Jilin Mainland China 43.66610 126.1923 2020-02-01     3 confirmed
+    ## 453        Liaoning Mainland China 41.29560 122.6085 2020-02-01    16 confirmed
+    ## 454         Ningxia Mainland China 37.26920 106.1655 2020-02-01     5 confirmed
+    ## 455         Qinghai Mainland China 35.74520  95.9956 2020-02-01     1 confirmed
+    ## 457         Shaanxi Mainland China 35.19170 108.8701 2020-02-01    14 confirmed
+    ## 458        Shandong Mainland China 36.34270 118.1498 2020-02-01    22 confirmed
+    ## 459        Shanghai Mainland China 31.20200 121.4491 2020-02-01    34 confirmed
+    ## 460          Shanxi Mainland China 37.57770 112.2922 2020-02-01     8 confirmed
+    ## 461         Sichuan Mainland China 30.61710 102.7103 2020-02-01    30 confirmed
+    ## 463         Tianjin Mainland China 39.30540 117.3230 2020-02-01     9 confirmed
+    ## 465        Xinjiang Mainland China 41.11290  85.2401 2020-02-01     1 confirmed
+    ## 466          Yunnan Mainland China 24.97400 101.4870 2020-02-01    10 confirmed
+    ## 467        Zhejiang Mainland China 29.18320 120.0934 2020-02-01    61 confirmed
+    ## 468       Chongqing Mainland China 30.05720 107.8740 2020-02-01     1     death
+    ## 469           Hubei Mainland China 30.97560 112.2707 2020-02-01    45     death
+    ## 471           Anhui Mainland China 31.82570 117.2264 2020-02-01     2 recovered
+    ## 472         Beijing Mainland China 40.18240 116.4142 2020-02-01     4 recovered
+    ## 473       Chongqing Mainland China 30.05720 107.8740 2020-02-01     2 recovered
+    ## 474       Guangdong Mainland China 23.34170 113.4244 2020-02-01     3 recovered
+    ## 475    Heilongjiang Mainland China 47.86200 127.7615 2020-02-01     2 recovered
+    ## 476           Hubei Mainland China 30.97560 112.2707 2020-02-01    27 recovered
+    ## 477           Hunan Mainland China 27.61040 111.7088 2020-02-01     6 recovered
+    ## 478         Jiangsu Mainland China 32.97110 119.4550 2020-02-01     1 recovered
+    ## 479         Jiangxi Mainland China 27.61400 115.7221 2020-02-01     2 recovered
+    ## 480        Shandong Mainland China 36.34270 118.1498 2020-02-01     1 recovered
+    ## 481        Shanghai Mainland China 31.20200 121.4491 2020-02-01     1 recovered
+    ## 482         Sichuan Mainland China 30.61710 102.7103 2020-02-01     2 recovered
+    ## 483          Yunnan Mainland China 24.97400 101.4870 2020-02-01     1 recovered
+    ## 484        Zhejiang Mainland China 29.18320 120.0934 2020-02-01     7 recovered
+    ## 491           Anhui Mainland China 31.82570 117.2264 2020-02-02    43 confirmed
+    ## 492         Beijing Mainland China 40.18240 116.4142 2020-02-02    23 confirmed
+    ## 493       Chongqing Mainland China 30.05720 107.8740 2020-02-02    53 confirmed
+    ## 494          Fujian Mainland China 26.07890 117.9874 2020-02-02    15 confirmed
+    ## 495           Gansu Mainland China 36.06110 103.8343 2020-02-02    11 confirmed
+    ## 496       Guangdong Mainland China 23.34170 113.4244 2020-02-02    97 confirmed
+    ## 497         Guangxi Mainland China 23.82980 108.7881 2020-02-02    11 confirmed
+    ## 498         Guizhou Mainland China 26.81540 106.8748 2020-02-02     9 confirmed
+    ## 499          Hainan Mainland China 19.19590 109.7453 2020-02-02     2 confirmed
+    ## 500           Hebei Mainland China 38.04280 114.5149 2020-02-02     8 confirmed
+    ## 501    Heilongjiang Mainland China 47.86200 127.7615 2020-02-02    15 confirmed
+    ## 502           Henan Mainland China 33.88202 113.6140 2020-02-02    71 confirmed
+    ## 504           Hubei Mainland China 30.97560 112.2707 2020-02-02  4024 confirmed
+    ## 505           Hunan Mainland China 27.61040 111.7088 2020-02-02    74 confirmed
+    ## 506  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-02     4 confirmed
+    ## 507         Jiangsu Mainland China 32.97110 119.4550 2020-02-02    34 confirmed
+    ## 508         Jiangxi Mainland China 27.61400 115.7221 2020-02-02    47 confirmed
+    ## 509           Jilin Mainland China 43.66610 126.1923 2020-02-02     6 confirmed
+    ## 510        Liaoning Mainland China 41.29560 122.6085 2020-02-02     6 confirmed
+    ## 512         Ningxia Mainland China 37.26920 106.1655 2020-02-02     2 confirmed
+    ## 513         Qinghai Mainland China 35.74520  95.9956 2020-02-02     2 confirmed
+    ## 515         Shaanxi Mainland China 35.19170 108.8701 2020-02-02    15 confirmed
+    ## 516        Shandong Mainland China 36.34270 118.1498 2020-02-02    24 confirmed
+    ## 517        Shanghai Mainland China 31.20200 121.4491 2020-02-02    13 confirmed
+    ## 518          Shanxi Mainland China 37.57770 112.2922 2020-02-02    19 confirmed
+    ## 519         Sichuan Mainland China 30.61710 102.7103 2020-02-02    24 confirmed
+    ## 521         Tianjin Mainland China 39.30540 117.3230 2020-02-02     7 confirmed
+    ## 522        Xinjiang Mainland China 41.11290  85.2401 2020-02-02     3 confirmed
+    ## 523          Yunnan Mainland China 24.97400 101.4870 2020-02-02    12 confirmed
+    ## 524        Zhejiang Mainland China 29.18320 120.0934 2020-02-02    62 confirmed
+    ## 526       Chongqing Mainland China 30.05720 107.8740 2020-02-02     1     death
+    ## 527           Hubei Mainland China 30.97560 112.2707 2020-02-02   101     death
+    ## 528           Anhui Mainland China 31.82570 117.2264 2020-02-02     2 recovered
+    ## 529       Chongqing Mainland China 30.05720 107.8740 2020-02-02     4 recovered
+    ## 530           Gansu Mainland China 36.06110 103.8343 2020-02-02     3 recovered
+    ## 531       Guangdong Mainland China 23.34170 113.4244 2020-02-02     1 recovered
+    ## 532          Hainan Mainland China 19.19590 109.7453 2020-02-02     3 recovered
+    ## 533           Hebei Mainland China 38.04280 114.5149 2020-02-02     3 recovered
+    ## 534           Henan Mainland China 33.88202 113.6140 2020-02-02     7 recovered
+    ## 535           Hubei Mainland China 30.97560 112.2707 2020-02-02   127 recovered
+    ## 536           Hunan Mainland China 27.61040 111.7088 2020-02-02     8 recovered
+    ## 537         Jiangsu Mainland China 32.97110 119.4550 2020-02-02     1 recovered
+    ## 538         Jiangxi Mainland China 27.61400 115.7221 2020-02-02     3 recovered
+    ## 539        Shandong Mainland China 36.34270 118.1498 2020-02-02     3 recovered
+    ## 540          Shanxi Mainland China 37.57770 112.2922 2020-02-02     2 recovered
+    ## 541         Sichuan Mainland China 30.61710 102.7103 2020-02-02     8 recovered
+    ## 542         Tianjin Mainland China 39.30540 117.3230 2020-02-02     1 recovered
+    ## 543          Yunnan Mainland China 24.97400 101.4870 2020-02-02     1 recovered
+    ## 544        Zhejiang Mainland China 29.18320 120.0934 2020-02-02    11 recovered
+    ## 548           Anhui Mainland China 31.82570 117.2264 2020-02-03    68 confirmed
+    ## 549         Beijing Mainland China 40.18240 116.4142 2020-02-03    21 confirmed
+    ## 550       Chongqing Mainland China 30.05720 107.8740 2020-02-03    37 confirmed
+    ## 551          Fujian Mainland China 26.07890 117.9874 2020-02-03    20 confirmed
+    ## 552           Gansu Mainland China 36.06110 103.8343 2020-02-03     4 confirmed
+    ## 553       Guangdong Mainland China 23.34170 113.4244 2020-02-03    93 confirmed
+    ## 554         Guangxi Mainland China 23.82980 108.7881 2020-02-03    16 confirmed
+    ## 555         Guizhou Mainland China 26.81540 106.8748 2020-02-03     8 confirmed
+    ## 556          Hainan Mainland China 19.19590 109.7453 2020-02-03     8 confirmed
+    ## 557           Hebei Mainland China 38.04280 114.5149 2020-02-03     9 confirmed
+    ## 558    Heilongjiang Mainland China 47.86200 127.7615 2020-02-03    26 confirmed
+    ## 559           Henan Mainland China 33.88202 113.6140 2020-02-03    73 confirmed
+    ## 560           Hubei Mainland China 30.97560 112.2707 2020-02-03  2345 confirmed
+    ## 561           Hunan Mainland China 27.61040 111.7088 2020-02-03    58 confirmed
+    ## 562  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-03     7 confirmed
+    ## 563         Jiangsu Mainland China 32.97110 119.4550 2020-02-03    35 confirmed
+    ## 564         Jiangxi Mainland China 27.61400 115.7221 2020-02-03    58 confirmed
+    ## 565           Jilin Mainland China 43.66610 126.1923 2020-02-03     8 confirmed
+    ## 566        Liaoning Mainland China 41.29560 122.6085 2020-02-03     4 confirmed
+    ## 567         Ningxia Mainland China 37.26920 106.1655 2020-02-03     3 confirmed
+    ## 568         Qinghai Mainland China 35.74520  95.9956 2020-02-03     2 confirmed
+    ## 571         Shaanxi Mainland China 35.19170 108.8701 2020-02-03    12 confirmed
+    ## 572        Shandong Mainland China 36.34270 118.1498 2020-02-03    29 confirmed
+    ## 573        Shanghai Mainland China 31.20200 121.4491 2020-02-03    21 confirmed
+    ## 574          Shanxi Mainland China 37.57770 112.2922 2020-02-03     8 confirmed
+    ## 575         Sichuan Mainland China 30.61710 102.7103 2020-02-03    23 confirmed
+    ## 576         Tianjin Mainland China 39.30540 117.3230 2020-02-03    12 confirmed
+    ## 577        Xinjiang Mainland China 41.11290  85.2401 2020-02-03     3 confirmed
+    ## 578          Yunnan Mainland China 24.97400 101.4870 2020-02-03    12 confirmed
+    ## 579        Zhejiang Mainland China 29.18320 120.0934 2020-02-03    63 confirmed
+    ## 580           Hubei Mainland China 30.97560 112.2707 2020-02-03    64     death
+    ## 581           Anhui Mainland China 31.82570 117.2264 2020-02-03     7 recovered
+    ## 582         Beijing Mainland China 40.18240 116.4142 2020-02-03     3 recovered
+    ## 583       Chongqing Mainland China 30.05720 107.8740 2020-02-03     2 recovered
+    ## 584          Fujian Mainland China 26.07890 117.9874 2020-02-03     1 recovered
+    ## 585       Guangdong Mainland China 23.34170 113.4244 2020-02-03     6 recovered
+    ## 586         Guangxi Mainland China 23.82980 108.7881 2020-02-03     5 recovered
+    ## 587           Henan Mainland China 33.88202 113.6140 2020-02-03     6 recovered
+    ## 588           Hubei Mainland China 30.97560 112.2707 2020-02-03    91 recovered
+    ## 589           Hunan Mainland China 27.61040 111.7088 2020-02-03     6 recovered
+    ## 590         Jiangsu Mainland China 32.97110 119.4550 2020-02-03     1 recovered
+    ## 591         Jiangxi Mainland China 27.61400 115.7221 2020-02-03     6 recovered
+    ## 592         Ningxia Mainland China 37.26920 106.1655 2020-02-03     1 recovered
+    ## 593        Shandong Mainland China 36.34270 118.1498 2020-02-03     1 recovered
+    ## 594          Shanxi Mainland China 37.57770 112.2922 2020-02-03    -1 recovered
+    ## 595         Sichuan Mainland China 30.61710 102.7103 2020-02-03     3 recovered
+    ## 596          Yunnan Mainland China 24.97400 101.4870 2020-02-03     2 recovered
+    ## 597        Zhejiang Mainland China 29.18320 120.0934 2020-02-03    11 recovered
+    ## 604           Anhui Mainland China 31.82570 117.2264 2020-02-04    72 confirmed
+    ## 605         Beijing Mainland China 40.18240 116.4142 2020-02-04    16 confirmed
+    ## 606       Chongqing Mainland China 30.05720 107.8740 2020-02-04    29 confirmed
+    ## 607          Fujian Mainland China 26.07890 117.9874 2020-02-04    15 confirmed
+    ## 608           Gansu Mainland China 36.06110 103.8343 2020-02-04     2 confirmed
+    ## 609       Guangdong Mainland China 23.34170 113.4244 2020-02-04    88 confirmed
+    ## 610         Guangxi Mainland China 23.82980 108.7881 2020-02-04    12 confirmed
+    ## 611         Guizhou Mainland China 26.81540 106.8748 2020-02-04    12 confirmed
+    ## 612          Hainan Mainland China 19.19590 109.7453 2020-02-04     8 confirmed
+    ## 613           Hebei Mainland China 38.04280 114.5149 2020-02-04    13 confirmed
+    ## 614    Heilongjiang Mainland China 47.86200 127.7615 2020-02-04    34 confirmed
+    ## 615           Henan Mainland China 33.88202 113.6140 2020-02-04   109 confirmed
+    ## 617           Hubei Mainland China 30.97560 112.2707 2020-02-04  3156 confirmed
+    ## 618           Hunan Mainland China 27.61040 111.7088 2020-02-04    72 confirmed
+    ## 619  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-04     1 confirmed
+    ## 620         Jiangsu Mainland China 32.97110 119.4550 2020-02-04    37 confirmed
+    ## 621         Jiangxi Mainland China 27.61400 115.7221 2020-02-04    85 confirmed
+    ## 622           Jilin Mainland China 43.66610 126.1923 2020-02-04    11 confirmed
+    ## 623        Liaoning Mainland China 41.29560 122.6085 2020-02-04     7 confirmed
+    ## 625         Ningxia Mainland China 37.26920 106.1655 2020-02-04     3 confirmed
+    ## 626         Qinghai Mainland China 35.74520  95.9956 2020-02-04     2 confirmed
+    ## 628         Shaanxi Mainland China 35.19170 108.8701 2020-02-04    14 confirmed
+    ## 629        Shandong Mainland China 36.34270 118.1498 2020-02-04    16 confirmed
+    ## 630        Shanghai Mainland China 31.20200 121.4491 2020-02-04    16 confirmed
+    ## 631          Shanxi Mainland China 37.57770 112.2922 2020-02-04     7 confirmed
+    ## 632         Sichuan Mainland China 30.61710 102.7103 2020-02-04    28 confirmed
+    ## 634         Tianjin Mainland China 39.30540 117.3230 2020-02-04     7 confirmed
+    ## 635        Xinjiang Mainland China 41.11290  85.2401 2020-02-04     5 confirmed
+    ## 636          Yunnan Mainland China 24.97400 101.4870 2020-02-04     5 confirmed
+    ## 637        Zhejiang Mainland China 29.18320 120.0934 2020-02-04   105 confirmed
+    ## 639           Hubei Mainland China 30.97560 112.2707 2020-02-04    65     death
+    ## 640           Anhui Mainland China 31.82570 117.2264 2020-02-04     6 recovered
+    ## 641         Beijing Mainland China 40.18240 116.4142 2020-02-04    11 recovered
+    ## 642          Fujian Mainland China 26.07890 117.9874 2020-02-04     2 recovered
+    ## 643           Gansu Mainland China 36.06110 103.8343 2020-02-04     1 recovered
+    ## 644       Guangdong Mainland China 23.34170 113.4244 2020-02-04     9 recovered
+    ## 645         Guangxi Mainland China 23.82980 108.7881 2020-02-04     3 recovered
+    ## 646          Hainan Mainland China 19.19590 109.7453 2020-02-04     1 recovered
+    ## 647           Hebei Mainland China 38.04280 114.5149 2020-02-04     1 recovered
+    ## 648    Heilongjiang Mainland China 47.86200 127.7615 2020-02-04     2 recovered
+    ## 649           Henan Mainland China 33.88202 113.6140 2020-02-04    11 recovered
+    ## 650           Hubei Mainland China 30.97560 112.2707 2020-02-04   136 recovered
+    ## 651           Hunan Mainland China 27.61040 111.7088 2020-02-04     9 recovered
+    ## 652         Jiangsu Mainland China 32.97110 119.4550 2020-02-04     4 recovered
+    ## 653         Jiangxi Mainland China 27.61400 115.7221 2020-02-04     2 recovered
+    ## 654        Liaoning Mainland China 41.29560 122.6085 2020-02-04     1 recovered
+    ## 655         Shaanxi Mainland China 35.19170 108.8701 2020-02-04     2 recovered
+    ## 656        Shandong Mainland China 36.34270 118.1498 2020-02-04     4 recovered
+    ## 657        Shanghai Mainland China 31.20200 121.4491 2020-02-04     2 recovered
+    ## 658          Shanxi Mainland China 37.57770 112.2922 2020-02-04     2 recovered
+    ## 659         Tianjin Mainland China 39.30540 117.3230 2020-02-04     1 recovered
+    ## 660        Zhejiang Mainland China 29.18320 120.0934 2020-02-04    19 recovered
+    ## 664           Anhui Mainland China 31.82570 117.2264 2020-02-05    50 confirmed
+    ## 665         Beijing Mainland China 40.18240 116.4142 2020-02-05    25 confirmed
+    ## 667       Chongqing Mainland China 30.05720 107.8740 2020-02-05    23 confirmed
+    ## 668          Fujian Mainland China 26.07890 117.9874 2020-02-05    11 confirmed
+    ## 669           Gansu Mainland China 36.06110 103.8343 2020-02-05     5 confirmed
+    ## 670       Guangdong Mainland China 23.34170 113.4244 2020-02-05    82 confirmed
+    ## 671         Guangxi Mainland China 23.82980 108.7881 2020-02-05    11 confirmed
+    ## 672         Guizhou Mainland China 26.81540 106.8748 2020-02-05     6 confirmed
+    ## 673          Hainan Mainland China 19.19590 109.7453 2020-02-05    19 confirmed
+    ## 674           Hebei Mainland China 38.04280 114.5149 2020-02-05     9 confirmed
+    ## 675    Heilongjiang Mainland China 47.86200 127.7615 2020-02-05    35 confirmed
+    ## 676           Henan Mainland China 33.88202 113.6140 2020-02-05    89 confirmed
+    ## 678           Hubei Mainland China 30.97560 112.2707 2020-02-05  2987 confirmed
+    ## 679           Hunan Mainland China 27.61040 111.7088 2020-02-05    68 confirmed
+    ## 680  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-05     7 confirmed
+    ## 681         Jiangsu Mainland China 32.97110 119.4550 2020-02-05    33 confirmed
+    ## 682         Jiangxi Mainland China 27.61400 115.7221 2020-02-05    72 confirmed
+    ## 683           Jilin Mainland China 43.66610 126.1923 2020-02-05    12 confirmed
+    ## 684        Liaoning Mainland China 41.29560 122.6085 2020-02-05     8 confirmed
+    ## 686         Qinghai Mainland China 35.74520  95.9956 2020-02-05     2 confirmed
+    ## 687         Shaanxi Mainland China 35.19170 108.8701 2020-02-05    23 confirmed
+    ## 688        Shandong Mainland China 36.34270 118.1498 2020-02-05    32 confirmed
+    ## 689        Shanghai Mainland China 31.20200 121.4491 2020-02-05    24 confirmed
+    ## 690         Sichuan Mainland China 30.61710 102.7103 2020-02-05    19 confirmed
+    ## 691         Tianjin Mainland China 39.30540 117.3230 2020-02-05     2 confirmed
+    ## 692        Xinjiang Mainland China 41.11290  85.2401 2020-02-05     3 confirmed
+    ## 693          Yunnan Mainland China 24.97400 101.4870 2020-02-05     6 confirmed
+    ## 694        Zhejiang Mainland China 29.18320 120.0934 2020-02-05    66 confirmed
+    ## 695         Guizhou Mainland China 26.81540 106.8748 2020-02-05     1     death
+    ## 696           Hubei Mainland China 30.97560 112.2707 2020-02-05    70     death
+    ## 697         Tianjin Mainland China 39.30540 117.3230 2020-02-05     1     death
+    ## 698           Anhui Mainland China 31.82570 117.2264 2020-02-05     3 recovered
+    ## 699         Beijing Mainland China 40.18240 116.4142 2020-02-05     1 recovered
+    ## 700       Chongqing Mainland China 30.05720 107.8740 2020-02-05     6 recovered
+    ## 701          Fujian Mainland China 26.07890 117.9874 2020-02-05     8 recovered
+    ## 702           Gansu Mainland China 36.06110 103.8343 2020-02-05     2 recovered
+    ## 703       Guangdong Mainland China 23.34170 113.4244 2020-02-05    19 recovered
+    ## 704         Guangxi Mainland China 23.82980 108.7881 2020-02-05     3 recovered
+    ## 705         Guizhou Mainland China 26.81540 106.8748 2020-02-05     7 recovered
+    ## 706           Hebei Mainland China 38.04280 114.5149 2020-02-05     2 recovered
+    ## 707    Heilongjiang Mainland China 47.86200 127.7615 2020-02-05     3 recovered
+    ## 708           Henan Mainland China 33.88202 113.6140 2020-02-05    20 recovered
+    ## 709           Hubei Mainland China 30.97560 112.2707 2020-02-05   111 recovered
+    ## 710           Hunan Mainland China 27.61040 111.7088 2020-02-05    23 recovered
+    ## 711  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-05     2 recovered
+    ## 712         Jiangsu Mainland China 32.97110 119.4550 2020-02-05    11 recovered
+    ## 713         Jiangxi Mainland China 27.61400 115.7221 2020-02-05     7 recovered
+    ## 714           Jilin Mainland China 43.66610 126.1923 2020-02-05     1 recovered
+    ## 715        Liaoning Mainland China 41.29560 122.6085 2020-02-05     2 recovered
+    ## 716         Qinghai Mainland China 35.74520  95.9956 2020-02-05     3 recovered
+    ## 717         Shaanxi Mainland China 35.19170 108.8701 2020-02-05     4 recovered
+    ## 718        Shandong Mainland China 36.34270 118.1498 2020-02-05     4 recovered
+    ## 719        Shanghai Mainland China 31.20200 121.4491 2020-02-05     3 recovered
+    ## 720          Shanxi Mainland China 37.57770 112.2922 2020-02-05     1 recovered
+    ## 721         Sichuan Mainland China 30.61710 102.7103 2020-02-05    10 recovered
+    ## 722        Zhejiang Mainland China 29.18320 120.0934 2020-02-05    16 recovered
+    ## 726           Anhui Mainland China 31.82570 117.2264 2020-02-06    61 confirmed
+    ## 727         Beijing Mainland China 40.18240 116.4142 2020-02-06    21 confirmed
+    ## 728       Chongqing Mainland China 30.05720 107.8740 2020-02-06    22 confirmed
+    ## 729          Fujian Mainland China 26.07890 117.9874 2020-02-06    10 confirmed
+    ## 730       Guangdong Mainland China 23.34170 113.4244 2020-02-06    75 confirmed
+    ## 731         Guangxi Mainland China 23.82980 108.7881 2020-02-06    18 confirmed
+    ## 732         Guizhou Mainland China 26.81540 106.8748 2020-02-06     7 confirmed
+    ## 733          Hainan Mainland China 19.19590 109.7453 2020-02-06     7 confirmed
+    ## 734           Hebei Mainland China 38.04280 114.5149 2020-02-06    22 confirmed
+    ## 735    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06    37 confirmed
+    ## 736           Henan Mainland China 33.88202 113.6140 2020-02-06    87 confirmed
+    ## 738           Hubei Mainland China 30.97560 112.2707 2020-02-06  2447 confirmed
+    ## 739           Hunan Mainland China 27.61040 111.7088 2020-02-06    50 confirmed
+    ## 740  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-06     4 confirmed
+    ## 741         Jiangsu Mainland China 32.97110 119.4550 2020-02-06    32 confirmed
+    ## 742         Jiangxi Mainland China 27.61400 115.7221 2020-02-06    52 confirmed
+    ## 743           Jilin Mainland China 43.66610 126.1923 2020-02-06     5 confirmed
+    ## 744        Liaoning Mainland China 41.29560 122.6085 2020-02-06     5 confirmed
+    ## 745         Ningxia Mainland China 37.26920 106.1655 2020-02-06     6 confirmed
+    ## 746         Qinghai Mainland China 35.74520  95.9956 2020-02-06     1 confirmed
+    ## 748         Shaanxi Mainland China 35.19170 108.8701 2020-02-06     8 confirmed
+    ## 749        Shandong Mainland China 36.34270 118.1498 2020-02-06    40 confirmed
+    ## 750        Shanghai Mainland China 31.20200 121.4491 2020-02-06    14 confirmed
+    ## 751          Shanxi Mainland China 37.57770 112.2922 2020-02-06    15 confirmed
+    ## 752         Sichuan Mainland China 30.61710 102.7103 2020-02-06    20 confirmed
+    ## 754         Tianjin Mainland China 39.30540 117.3230 2020-02-06    10 confirmed
+    ## 755        Xinjiang Mainland China 41.11290  85.2401 2020-02-06     4 confirmed
+    ## 756          Yunnan Mainland China 24.97400 101.4870 2020-02-06     5 confirmed
+    ## 757        Zhejiang Mainland China 29.18320 120.0934 2020-02-06    59 confirmed
+    ## 758    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06     1     death
+    ## 759           Hubei Mainland China 30.97560 112.2707 2020-02-06    69     death
+    ## 760           Anhui Mainland China 31.82570 117.2264 2020-02-06    11 recovered
+    ## 761         Beijing Mainland China 40.18240 116.4142 2020-02-06     7 recovered
+    ## 762       Chongqing Mainland China 30.05720 107.8740 2020-02-06     9 recovered
+    ## 763          Fujian Mainland China 26.07890 117.9874 2020-02-06     3 recovered
+    ## 764       Guangdong Mainland China 23.34170 113.4244 2020-02-06    20 recovered
+    ## 765         Guangxi Mainland China 23.82980 108.7881 2020-02-06     1 recovered
+    ## 766         Guizhou Mainland China 26.81540 106.8748 2020-02-06    -3 recovered
+    ## 767          Hainan Mainland China 19.19590 109.7453 2020-02-06     3 recovered
+    ## 768           Hebei Mainland China 38.04280 114.5149 2020-02-06     7 recovered
+    ## 769    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06     1 recovered
+    ## 770           Henan Mainland China 33.88202 113.6140 2020-02-06     9 recovered
+    ## 771           Hubei Mainland China 30.97560 112.2707 2020-02-06   184 recovered
+    ## 772           Hunan Mainland China 27.61040 111.7088 2020-02-06    27 recovered
+    ## 773  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-06     1 recovered
+    ## 774         Jiangsu Mainland China 32.97110 119.4550 2020-02-06    11 recovered
+    ## 775         Jiangxi Mainland China 27.61400 115.7221 2020-02-06    10 recovered
+    ## 776           Jilin Mainland China 43.66610 126.1923 2020-02-06     2 recovered
+    ## 777        Liaoning Mainland China 41.29560 122.6085 2020-02-06     1 recovered
+    ## 779         Shaanxi Mainland China 35.19170 108.8701 2020-02-06     3 recovered
+    ## 780        Shandong Mainland China 36.34270 118.1498 2020-02-06    12 recovered
+    ## 781        Shanghai Mainland China 31.20200 121.4491 2020-02-06    10 recovered
+    ## 782          Shanxi Mainland China 37.57770 112.2922 2020-02-06     7 recovered
+    ## 783         Sichuan Mainland China 30.61710 102.7103 2020-02-06     7 recovered
+    ## 785          Yunnan Mainland China 24.97400 101.4870 2020-02-06     2 recovered
+    ## 786        Zhejiang Mainland China 29.18320 120.0934 2020-02-06    16 recovered
+    ## 794           Anhui Mainland China 31.82570 117.2264 2020-02-07    74 confirmed
+    ## 795         Beijing Mainland China 40.18240 116.4142 2020-02-07    23 confirmed
+    ## 797       Chongqing Mainland China 30.05720 107.8740 2020-02-07    15 confirmed
+    ## 799          Fujian Mainland China 26.07890 117.9874 2020-02-07     9 confirmed
+    ## 800           Gansu Mainland China 36.06110 103.8343 2020-02-07     5 confirmed
+    ## 801       Guangdong Mainland China 23.34170 113.4244 2020-02-07    64 confirmed
+    ## 802         Guangxi Mainland China 23.82980 108.7881 2020-02-07     4 confirmed
+    ## 803         Guizhou Mainland China 26.81540 106.8748 2020-02-07    10 confirmed
+    ## 804          Hainan Mainland China 19.19590 109.7453 2020-02-07    11 confirmed
+    ## 805           Hebei Mainland China 38.04280 114.5149 2020-02-07    15 confirmed
+    ## 806    Heilongjiang Mainland China 47.86200 127.7615 2020-02-07    50 confirmed
+    ## 807           Henan Mainland China 33.88202 113.6140 2020-02-07    63 confirmed
+    ## 809           Hubei Mainland China 30.97560 112.2707 2020-02-07  2841 confirmed
+    ## 810           Hunan Mainland China 27.61040 111.7088 2020-02-07    61 confirmed
+    ## 811  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-07     4 confirmed
+    ## 812         Jiangsu Mainland China 32.97110 119.4550 2020-02-07    35 confirmed
+    ## 813         Jiangxi Mainland China 27.61400 115.7221 2020-02-07    61 confirmed
+    ## 814           Jilin Mainland China 43.66610 126.1923 2020-02-07     6 confirmed
+    ## 815        Liaoning Mainland China 41.29560 122.6085 2020-02-07     5 confirmed
+    ## 816         Ningxia Mainland China 37.26920 106.1655 2020-02-07     3 confirmed
+    ## 818         Shaanxi Mainland China 35.19170 108.8701 2020-02-07    11 confirmed
+    ## 819        Shandong Mainland China 36.34270 118.1498 2020-02-07    39 confirmed
+    ## 820        Shanghai Mainland China 31.20200 121.4491 2020-02-07    20 confirmed
+    ## 821          Shanxi Mainland China 37.57770 112.2922 2020-02-07     8 confirmed
+    ## 822         Sichuan Mainland China 30.61710 102.7103 2020-02-07    23 confirmed
+    ## 823         Tianjin Mainland China 39.30540 117.3230 2020-02-07     2 confirmed
+    ## 824        Xinjiang Mainland China 41.11290  85.2401 2020-02-07     3 confirmed
+    ## 825          Yunnan Mainland China 24.97400 101.4870 2020-02-07     5 confirmed
+    ## 826        Zhejiang Mainland China 29.18320 120.0934 2020-02-07    52 confirmed
+    ## 827       Guangdong Mainland China 23.34170 113.4244 2020-02-07     1     death
+    ## 828          Hainan Mainland China 19.19590 109.7453 2020-02-07     1     death
+    ## 829           Henan Mainland China 33.88202 113.6140 2020-02-07     1     death
+    ## 830           Hubei Mainland China 30.97560 112.2707 2020-02-07    81     death
+    ## 831           Jilin Mainland China 43.66610 126.1923 2020-02-07     1     death
+    ## 834           Anhui Mainland China 31.82570 117.2264 2020-02-07    13 recovered
+    ## 835         Beijing Mainland China 40.18240 116.4142 2020-02-07     2 recovered
+    ## 836       Chongqing Mainland China 30.05720 107.8740 2020-02-07     7 recovered
+    ## 837          Fujian Mainland China 26.07890 117.9874 2020-02-07     6 recovered
+    ## 838           Gansu Mainland China 36.06110 103.8343 2020-02-07     3 recovered
+    ## 839       Guangdong Mainland China 23.34170 113.4244 2020-02-07    19 recovered
+    ## 840         Guangxi Mainland China 23.82980 108.7881 2020-02-07     3 recovered
+    ## 841          Hainan Mainland China 19.19590 109.7453 2020-02-07     2 recovered
+    ## 842           Hebei Mainland China 38.04280 114.5149 2020-02-07     9 recovered
+    ## 843    Heilongjiang Mainland China 47.86200 127.7615 2020-02-07     4 recovered
+    ## 844           Henan Mainland China 33.88202 113.6140 2020-02-07    30 recovered
+    ## 845           Hubei Mainland China 30.97560 112.2707 2020-02-07   298 recovered
+    ## 846           Hunan Mainland China 27.61040 111.7088 2020-02-07    31 recovered
+    ## 847  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-07     1 recovered
+    ## 848         Jiangsu Mainland China 32.97110 119.4550 2020-02-07     9 recovered
+    ## 849         Jiangxi Mainland China 27.61400 115.7221 2020-02-07     8 recovered
+    ## 850        Liaoning Mainland China 41.29560 122.6085 2020-02-07     2 recovered
+    ## 851         Ningxia Mainland China 37.26920 106.1655 2020-02-07     4 recovered
+    ## 852         Shaanxi Mainland China 35.19170 108.8701 2020-02-07     8 recovered
+    ## 853        Shandong Mainland China 36.34270 118.1498 2020-02-07    10 recovered
+    ## 854        Shanghai Mainland China 31.20200 121.4491 2020-02-07     5 recovered
+    ## 855          Shanxi Mainland China 37.57770 112.2922 2020-02-07     3 recovered
+    ## 856         Sichuan Mainland China 30.61710 102.7103 2020-02-07    11 recovered
+    ## 857          Yunnan Mainland China 24.97400 101.4870 2020-02-07     5 recovered
+    ## 858        Zhejiang Mainland China 29.18320 120.0934 2020-02-07    29 recovered
+    ## 865           Anhui Mainland China 31.82570 117.2264 2020-02-08    68 confirmed
+    ## 866         Beijing Mainland China 40.18240 116.4142 2020-02-08    18 confirmed
+    ## 867       Chongqing Mainland China 30.05720 107.8740 2020-02-08     2 confirmed
+    ## 868          Fujian Mainland China 26.07890 117.9874 2020-02-08    15 confirmed
+    ## 869           Gansu Mainland China 36.06110 103.8343 2020-02-08    12 confirmed
+    ## 870       Guangdong Mainland China 23.34170 113.4244 2020-02-08    61 confirmed
+    ## 871         Guangxi Mainland China 23.82980 108.7881 2020-02-08    11 confirmed
+    ## 872         Guizhou Mainland China 26.81540 106.8748 2020-02-08     8 confirmed
+    ## 873          Hainan Mainland China 19.19590 109.7453 2020-02-08     7 confirmed
+    ## 874           Hebei Mainland China 38.04280 114.5149 2020-02-08    23 confirmed
+    ## 875    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08    18 confirmed
+    ## 876           Henan Mainland China 33.88202 113.6140 2020-02-08    67 confirmed
+    ## 878           Hubei Mainland China 30.97560 112.2707 2020-02-08  2147 confirmed
+    ## 879           Hunan Mainland China 27.61040 111.7088 2020-02-08    31 confirmed
+    ## 880  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-08     2 confirmed
+    ## 881         Jiangsu Mainland China 32.97110 119.4550 2020-02-08    31 confirmed
+    ## 882         Jiangxi Mainland China 27.61400 115.7221 2020-02-08    37 confirmed
+    ## 883           Jilin Mainland China 43.66610 126.1923 2020-02-08     4 confirmed
+    ## 884        Liaoning Mainland China 41.29560 122.6085 2020-02-08     6 confirmed
+    ## 885         Ningxia Mainland China 37.26920 106.1655 2020-02-08     2 confirmed
+    ## 886         Shaanxi Mainland China 35.19170 108.8701 2020-02-08    11 confirmed
+    ## 887        Shandong Mainland China 36.34270 118.1498 2020-02-08    30 confirmed
+    ## 888        Shanghai Mainland China 31.20200 121.4491 2020-02-08     9 confirmed
+    ## 889          Shanxi Mainland China 37.57770 112.2922 2020-02-08    11 confirmed
+    ## 890         Sichuan Mainland China 30.61710 102.7103 2020-02-08    20 confirmed
+    ## 892         Tianjin Mainland China 39.30540 117.3230 2020-02-08     7 confirmed
+    ## 893        Xinjiang Mainland China 41.11290  85.2401 2020-02-08     3 confirmed
+    ## 894        Zhejiang Mainland China 29.18320 120.0934 2020-02-08    42 confirmed
+    ## 895         Beijing Mainland China 40.18240 116.4142 2020-02-08     1     death
+    ## 896           Gansu Mainland China 36.06110 103.8343 2020-02-08     1     death
+    ## 897    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08     2     death
+    ## 898           Henan Mainland China 33.88202 113.6140 2020-02-08     1     death
+    ## 899           Hubei Mainland China 30.97560 112.2707 2020-02-08    81     death
+    ## 900           Hunan Mainland China 27.61040 111.7088 2020-02-08     1     death
+    ## 904           Anhui Mainland China 31.82570 117.2264 2020-02-08    12 recovered
+    ## 905         Beijing Mainland China 40.18240 116.4142 2020-02-08     1 recovered
+    ## 906       Chongqing Mainland China 30.05720 107.8740 2020-02-08     8 recovered
+    ## 907          Fujian Mainland China 26.07890 117.9874 2020-02-08     4 recovered
+    ## 908           Gansu Mainland China 36.06110 103.8343 2020-02-08     3 recovered
+    ## 909       Guangdong Mainland China 23.34170 113.4244 2020-02-08    24 recovered
+    ## 910         Guizhou Mainland China 26.81540 106.8748 2020-02-08     1 recovered
+    ## 911          Hainan Mainland China 19.19590 109.7453 2020-02-08     4 recovered
+    ## 912           Hebei Mainland China 38.04280 114.5149 2020-02-08     8 recovered
+    ## 913    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08     1 recovered
+    ## 914           Henan Mainland China 33.88202 113.6140 2020-02-08    30 recovered
+    ## 915           Hubei Mainland China 30.97560 112.2707 2020-02-08   324 recovered
+    ## 916           Hunan Mainland China 27.61040 111.7088 2020-02-08    44 recovered
+    ## 917         Jiangsu Mainland China 32.97110 119.4550 2020-02-08     8 recovered
+    ## 918         Jiangxi Mainland China 27.61400 115.7221 2020-02-08    10 recovered
+    ## 919        Liaoning Mainland China 41.29560 122.6085 2020-02-08     1 recovered
+    ## 920         Ningxia Mainland China 37.26920 106.1655 2020-02-08    10 recovered
+    ## 921         Shaanxi Mainland China 35.19170 108.8701 2020-02-08     3 recovered
+    ## 922        Shandong Mainland China 36.34270 118.1498 2020-02-08     7 recovered
+    ## 923        Shanghai Mainland China 31.20200 121.4491 2020-02-08    11 recovered
+    ## 924          Shanxi Mainland China 37.57770 112.2922 2020-02-08     6 recovered
+    ## 925         Sichuan Mainland China 30.61710 102.7103 2020-02-08    18 recovered
+    ## 926         Tianjin Mainland China 39.30540 117.3230 2020-02-08     2 recovered
+    ## 927          Yunnan Mainland China 24.97400 101.4870 2020-02-08     5 recovered
+    ## 928        Zhejiang Mainland China 29.18320 120.0934 2020-02-08    52 recovered
+    ## 934           Anhui Mainland China 31.82570 117.2264 2020-02-09    46 confirmed
+    ## 935         Beijing Mainland China 40.18240 116.4142 2020-02-09    11 confirmed
+    ## 936       Chongqing Mainland China 30.05720 107.8740 2020-02-09    40 confirmed
+    ## 938          Fujian Mainland China 26.07890 117.9874 2020-02-09    11 confirmed
+    ## 939           Gansu Mainland China 36.06110 103.8343 2020-02-09     4 confirmed
+    ## 940       Guangdong Mainland China 23.34170 113.4244 2020-02-09    36 confirmed
+    ## 941         Guangxi Mainland China 23.82980 108.7881 2020-02-09    12 confirmed
+    ## 942         Guizhou Mainland China 26.81540 106.8748 2020-02-09    10 confirmed
+    ## 943          Hainan Mainland China 19.19590 109.7453 2020-02-09     7 confirmed
+    ## 944           Hebei Mainland China 38.04280 114.5149 2020-02-09    11 confirmed
+    ## 945    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09    12 confirmed
+    ## 946           Henan Mainland China 33.88202 113.6140 2020-02-09    52 confirmed
+    ## 948           Hubei Mainland China 30.97560 112.2707 2020-02-09  2531 confirmed
+    ## 949           Hunan Mainland China 27.61040 111.7088 2020-02-09    35 confirmed
+    ## 950  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-09     2 confirmed
+    ## 951         Jiangsu Mainland China 32.97110 119.4550 2020-02-09    29 confirmed
+    ## 952         Jiangxi Mainland China 27.61400 115.7221 2020-02-09    42 confirmed
+    ## 953           Jilin Mainland China 43.66610 126.1923 2020-02-09     9 confirmed
+    ## 954        Liaoning Mainland China 41.29560 122.6085 2020-02-09     2 confirmed
+    ## 955         Shaanxi Mainland China 35.19170 108.8701 2020-02-09    13 confirmed
+    ## 956        Shandong Mainland China 36.34270 118.1498 2020-02-09    28 confirmed
+    ## 957        Shanghai Mainland China 31.20200 121.4491 2020-02-09     7 confirmed
+    ## 958          Shanxi Mainland China 37.57770 112.2922 2020-02-09     4 confirmed
+    ## 959         Sichuan Mainland China 30.61710 102.7103 2020-02-09    22 confirmed
+    ## 961         Tianjin Mainland China 39.30540 117.3230 2020-02-09     3 confirmed
+    ## 962        Xinjiang Mainland China 41.11290  85.2401 2020-02-09     3 confirmed
+    ## 963          Yunnan Mainland China 24.97400 101.4870 2020-02-09     3 confirmed
+    ## 964        Zhejiang Mainland China 29.18320 120.0934 2020-02-09    27 confirmed
+    ## 965           Anhui Mainland China 31.82570 117.2264 2020-02-09     1     death
+    ## 966           Gansu Mainland China 36.06110 103.8343 2020-02-09     1     death
+    ## 967         Guangxi Mainland China 23.82980 108.7881 2020-02-09     1     death
+    ## 968          Hainan Mainland China 19.19590 109.7453 2020-02-09     1     death
+    ## 969           Hebei Mainland China 38.04280 114.5149 2020-02-09     1     death
+    ## 970    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09     1     death
+    ## 971           Henan Mainland China 33.88202 113.6140 2020-02-09     2     death
+    ## 972           Hubei Mainland China 30.97560 112.2707 2020-02-09    91     death
+    ## 973        Shandong Mainland China 36.34270 118.1498 2020-02-09     1     death
+    ## 975           Anhui Mainland China 31.82570 117.2264 2020-02-09    13 recovered
+    ## 976         Beijing Mainland China 40.18240 116.4142 2020-02-09     3 recovered
+    ## 977       Chongqing Mainland China 30.05720 107.8740 2020-02-09    12 recovered
+    ## 979          Fujian Mainland China 26.07890 117.9874 2020-02-09    11 recovered
+    ## 980           Gansu Mainland China 36.06110 103.8343 2020-02-09     4 recovered
+    ## 981       Guangdong Mainland China 23.34170 113.4244 2020-02-09    29 recovered
+    ## 982         Guangxi Mainland China 23.82980 108.7881 2020-02-09     1 recovered
+    ## 983          Hainan Mainland China 19.19590 109.7453 2020-02-09     5 recovered
+    ## 984           Hebei Mainland China 38.04280 114.5149 2020-02-09     4 recovered
+    ## 985    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09     1 recovered
+    ## 986           Henan Mainland China 33.88202 113.6140 2020-02-09    37 recovered
+    ## 987           Hubei Mainland China 30.97560 112.2707 2020-02-09   356 recovered
+    ## 988           Hunan Mainland China 27.61040 111.7088 2020-02-09    30 recovered
+    ## 989         Jiangsu Mainland China 32.97110 119.4550 2020-02-09    20 recovered
+    ## 990         Jiangxi Mainland China 27.61400 115.7221 2020-02-09    18 recovered
+    ## 991           Jilin Mainland China 43.66610 126.1923 2020-02-09     8 recovered
+    ## 993        Liaoning Mainland China 41.29560 122.6085 2020-02-09     4 recovered
+    ## 994         Ningxia Mainland China 37.26920 106.1655 2020-02-09    -2 recovered
+    ## 995         Shaanxi Mainland China 35.19170 108.8701 2020-02-09     5 recovered
+    ## 996        Shandong Mainland China 36.34270 118.1498 2020-02-09    19 recovered
+    ## 997        Shanghai Mainland China 31.20200 121.4491 2020-02-09     3 recovered
+    ## 998          Shanxi Mainland China 37.57770 112.2922 2020-02-09     4 recovered
+    ## 999         Sichuan Mainland China 30.61710 102.7103 2020-02-09    11 recovered
+    ## 1000         Yunnan Mainland China 24.97400 101.4870 2020-02-09     1 recovered
+    ## 1001       Zhejiang Mainland China 29.18320 120.0934 2020-02-09    26 recovered
+    ## 1008          Anhui Mainland China 31.82570 117.2264 2020-02-10    51 confirmed
+    ## 1009        Beijing Mainland China 40.18240 116.4142 2020-02-10    11 confirmed
+    ## 1010      Chongqing Mainland China 30.05720 107.8740 2020-02-10    18 confirmed
+    ## 1012         Fujian Mainland China 26.07890 117.9874 2020-02-10    11 confirmed
+    ## 1013      Guangdong Mainland China 23.34170 113.4244 2020-02-10    28 confirmed
+    ## 1014        Guangxi Mainland China 23.82980 108.7881 2020-02-10    15 confirmed
+    ## 1015        Guizhou Mainland China 26.81540 106.8748 2020-02-10    10 confirmed
+    ## 1016         Hainan Mainland China 19.19590 109.7453 2020-02-10     7 confirmed
+    ## 1017          Hebei Mainland China 38.04280 114.5149 2020-02-10    12 confirmed
+    ## 1018   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10    24 confirmed
+    ## 1019          Henan Mainland China 33.88202 113.6140 2020-02-10    40 confirmed
+    ## 1021          Hubei Mainland China 30.97560 112.2707 2020-02-10  2097 confirmed
+    ## 1022          Hunan Mainland China 27.61040 111.7088 2020-02-10    41 confirmed
+    ## 1023 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-10     4 confirmed
+    ## 1024        Jiangsu Mainland China 32.97110 119.4550 2020-02-10    24 confirmed
+    ## 1025        Jiangxi Mainland China 27.61400 115.7221 2020-02-10    31 confirmed
+    ## 1026          Jilin Mainland China 43.66610 126.1923 2020-02-10     2 confirmed
+    ## 1027       Liaoning Mainland China 41.29560 122.6085 2020-02-10     1 confirmed
+    ## 1028        Ningxia Mainland China 37.26920 106.1655 2020-02-10     4 confirmed
+    ## 1029        Shaanxi Mainland China 35.19170 108.8701 2020-02-10     5 confirmed
+    ## 1030       Shandong Mainland China 36.34270 118.1498 2020-02-10    22 confirmed
+    ## 1031       Shanghai Mainland China 31.20200 121.4491 2020-02-10     6 confirmed
+    ## 1032        Sichuan Mainland China 30.61710 102.7103 2020-02-10    19 confirmed
+    ## 1033        Tianjin Mainland China 39.30540 117.3230 2020-02-10     4 confirmed
+    ## 1034       Xinjiang Mainland China 41.11290  85.2401 2020-02-10     4 confirmed
+    ## 1035         Yunnan Mainland China 24.97400 101.4870 2020-02-10     8 confirmed
+    ## 1036       Zhejiang Mainland China 29.18320 120.0934 2020-02-10    17 confirmed
+    ## 1037          Anhui Mainland China 31.82570 117.2264 2020-02-10     2     death
+    ## 1038   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10     1     death
+    ## 1039          Hubei Mainland China 30.97560 112.2707 2020-02-10   103     death
+    ## 1040        Jiangxi Mainland China 27.61400 115.7221 2020-02-10     1     death
+    ## 1042          Anhui Mainland China 31.82570 117.2264 2020-02-10    16 recovered
+    ## 1043        Beijing Mainland China 40.18240 116.4142 2020-02-10     7 recovered
+    ## 1044      Chongqing Mainland China 30.05720 107.8740 2020-02-10    15 recovered
+    ## 1045         Fujian Mainland China 26.07890 117.9874 2020-02-10     4 recovered
+    ## 1046          Gansu Mainland China 36.06110 103.8343 2020-02-10     1 recovered
+    ## 1047      Guangdong Mainland China 23.34170 113.4244 2020-02-10    26 recovered
+    ## 1048        Guangxi Mainland China 23.82980 108.7881 2020-02-10     6 recovered
+    ## 1049        Guizhou Mainland China 26.81540 106.8748 2020-02-10     3 recovered
+    ## 1050          Hebei Mainland China 38.04280 114.5149 2020-02-10     7 recovered
+    ## 1051   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10    16 recovered
+    ## 1052          Henan Mainland China 33.88202 113.6140 2020-02-10    38 recovered
+    ## 1053          Hubei Mainland China 30.97560 112.2707 2020-02-10   427 recovered
+    ## 1054          Hunan Mainland China 27.61040 111.7088 2020-02-10    22 recovered
+    ## 1055        Jiangsu Mainland China 32.97110 119.4550 2020-02-10    10 recovered
+    ## 1056        Jiangxi Mainland China 27.61400 115.7221 2020-02-10    32 recovered
+    ## 1057          Jilin Mainland China 43.66610 126.1923 2020-02-10     1 recovered
+    ## 1058       Liaoning Mainland China 41.29560 122.6085 2020-02-10     1 recovered
+    ## 1059        Shaanxi Mainland China 35.19170 108.8701 2020-02-10     5 recovered
+    ## 1060       Shandong Mainland China 36.34270 118.1498 2020-02-10     3 recovered
+    ## 1061       Shanghai Mainland China 31.20200 121.4491 2020-02-10     4 recovered
+    ## 1062        Sichuan Mainland China 30.61710 102.7103 2020-02-10     9 recovered
+    ## 1063        Tianjin Mainland China 39.30540 117.3230 2020-02-10     4 recovered
+    ## 1064         Yunnan Mainland China 24.97400 101.4870 2020-02-10     1 recovered
+    ## 1065       Zhejiang Mainland China 29.18320 120.0934 2020-02-10    41 recovered
+    ## 1071          Anhui Mainland China 31.82570 117.2264 2020-02-11    30 confirmed
+    ## 1072        Beijing Mainland China 40.18240 116.4142 2020-02-11     5 confirmed
+    ## 1073      Chongqing Mainland China 30.05720 107.8740 2020-02-11    19 confirmed
+    ## 1074         Fujian Mainland China 26.07890 117.9874 2020-02-11     6 confirmed
+    ## 1075          Gansu Mainland China 36.06110 103.8343 2020-02-11     3 confirmed
+    ## 1076      Guangdong Mainland China 23.34170 113.4244 2020-02-11    18 confirmed
+    ## 1077        Guangxi Mainland China 23.82980 108.7881 2020-02-11     5 confirmed
+    ## 1078        Guizhou Mainland China 26.81540 106.8748 2020-02-11    18 confirmed
+    ## 1079         Hainan Mainland China 19.19590 109.7453 2020-02-11     6 confirmed
+    ## 1080          Hebei Mainland China 38.04280 114.5149 2020-02-11    21 confirmed
+    ## 1081   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11    29 confirmed
+    ## 1082          Henan Mainland China 33.88202 113.6140 2020-02-11    32 confirmed
+    ## 1084          Hubei Mainland China 30.97560 112.2707 2020-02-11  1638 confirmed
+    ## 1085          Hunan Mainland China 27.61040 111.7088 2020-02-11    33 confirmed
+    ## 1086        Jiangsu Mainland China 32.97110 119.4550 2020-02-11    23 confirmed
+    ## 1087        Jiangxi Mainland China 27.61400 115.7221 2020-02-11    33 confirmed
+    ## 1088          Jilin Mainland China 43.66610 126.1923 2020-02-11     1 confirmed
+    ## 1089       Liaoning Mainland China 41.29560 122.6085 2020-02-11     3 confirmed
+    ## 1090        Ningxia Mainland China 37.26920 106.1655 2020-02-11     4 confirmed
+    ## 1092        Shaanxi Mainland China 35.19170 108.8701 2020-02-11     6 confirmed
+    ## 1093       Shandong Mainland China 36.34270 118.1498 2020-02-11    21 confirmed
+    ## 1094       Shanghai Mainland China 31.20200 121.4491 2020-02-11     4 confirmed
+    ## 1095         Shanxi Mainland China 37.57770 112.2922 2020-02-11     5 confirmed
+    ## 1096        Sichuan Mainland China 30.61710 102.7103 2020-02-11    12 confirmed
+    ## 1097        Tianjin Mainland China 39.30540 117.3230 2020-02-11    11 confirmed
+    ## 1098       Xinjiang Mainland China 41.11290  85.2401 2020-02-11     6 confirmed
+    ## 1099         Yunnan Mainland China 24.97400 101.4870 2020-02-11     4 confirmed
+    ## 1100       Zhejiang Mainland China 29.18320 120.0934 2020-02-11    25 confirmed
+    ## 1101          Anhui Mainland China 31.82570 117.2264 2020-02-11     1     death
+    ## 1102        Beijing Mainland China 40.18240 116.4142 2020-02-11     1     death
+    ## 1103      Chongqing Mainland China 30.05720 107.8740 2020-02-11     1     death
+    ## 1104   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11     1     death
+    ## 1105          Henan Mainland China 33.88202 113.6140 2020-02-11     1     death
+    ## 1106          Hubei Mainland China 30.97560 112.2707 2020-02-11    94     death
+    ## 1107        Tianjin Mainland China 39.30540 117.3230 2020-02-11     1     death
+    ## 1112          Anhui Mainland China 31.82570 117.2264 2020-02-11    17 recovered
+    ## 1113        Beijing Mainland China 40.18240 116.4142 2020-02-11     4 recovered
+    ## 1114      Chongqing Mainland China 30.05720 107.8740 2020-02-11    13 recovered
+    ## 1115         Fujian Mainland China 26.07890 117.9874 2020-02-11     6 recovered
+    ## 1116          Gansu Mainland China 36.06110 103.8343 2020-02-11     7 recovered
+    ## 1117      Guangdong Mainland China 23.34170 113.4244 2020-02-11    45 recovered
+    ## 1118        Guangxi Mainland China 23.82980 108.7881 2020-02-11     9 recovered
+    ## 1119        Guizhou Mainland China 26.81540 106.8748 2020-02-11     7 recovered
+    ## 1120         Hainan Mainland China 19.19590 109.7453 2020-02-11     1 recovered
+    ## 1121          Hebei Mainland China 38.04280 114.5149 2020-02-11     7 recovered
+    ## 1122   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11    -2 recovered
+    ## 1123          Henan Mainland China 33.88202 113.6140 2020-02-11    27 recovered
+    ## 1124          Hubei Mainland China 30.97560 112.2707 2020-02-11   417 recovered
+    ## 1125          Hunan Mainland China 27.61040 111.7088 2020-02-11    39 recovered
+    ## 1126        Jiangsu Mainland China 32.97110 119.4550 2020-02-11    12 recovered
+    ## 1127        Jiangxi Mainland China 27.61400 115.7221 2020-02-11    23 recovered
+    ## 1128          Jilin Mainland China 43.66610 126.1923 2020-02-11     5 recovered
+    ## 1129       Liaoning Mainland China 41.29560 122.6085 2020-02-11     6 recovered
+    ## 1130        Ningxia Mainland China 37.26920 106.1655 2020-02-11     9 recovered
+    ## 1131        Qinghai Mainland China 35.74520  95.9956 2020-02-11     2 recovered
+    ## 1132        Shaanxi Mainland China 35.19170 108.8701 2020-02-11     2 recovered
+    ## 1133       Shandong Mainland China 36.34270 118.1498 2020-02-11    14 recovered
+    ## 1134       Shanghai Mainland China 31.20200 121.4491 2020-02-11     4 recovered
+    ## 1135         Shanxi Mainland China 37.57770 112.2922 2020-02-11     5 recovered
+    ## 1136        Sichuan Mainland China 30.61710 102.7103 2020-02-11     5 recovered
+    ## 1137        Tianjin Mainland China 39.30540 117.3230 2020-02-11     2 recovered
+    ## 1138       Xinjiang Mainland China 41.11290  85.2401 2020-02-11     3 recovered
+    ## 1139         Yunnan Mainland China 24.97400 101.4870 2020-02-11     1 recovered
+    ## 1140       Zhejiang Mainland China 29.18320 120.0934 2020-02-11    28 recovered
+    ## 1144          Anhui Mainland China 31.82570 117.2264 2020-02-12    29 confirmed
+    ## 1145        Beijing Mainland China 40.18240 116.4142 2020-02-12    10 confirmed
+    ## 1146      Chongqing Mainland China 30.05720 107.8740 2020-02-12    13 confirmed
+    ## 1148         Fujian Mainland China 26.07890 117.9874 2020-02-12     5 confirmed
+    ## 1149          Gansu Mainland China 36.06110 103.8343 2020-02-12     1 confirmed
+    ## 1150      Guangdong Mainland China 23.34170 113.4244 2020-02-12    42 confirmed
+    ## 1151        Guangxi Mainland China 23.82980 108.7881 2020-02-12     7 confirmed
+    ## 1152        Guizhou Mainland China 26.81540 106.8748 2020-02-12     6 confirmed
+    ## 1153         Hainan Mainland China 19.19590 109.7453 2020-02-12    13 confirmed
+    ## 1154          Hebei Mainland China 38.04280 114.5149 2020-02-12    12 confirmed
+    ## 1155   Heilongjiang Mainland China 47.86200 127.7615 2020-02-12    18 confirmed
+    ## 1156          Henan Mainland China 33.88202 113.6140 2020-02-12    30 confirmed
+    ## 1158          Hunan Mainland China 27.61040 111.7088 2020-02-12    34 confirmed
+    ## 1159 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-12     2 confirmed
+    ## 1160        Jiangsu Mainland China 32.97110 119.4550 2020-02-12    28 confirmed
+    ## 1161        Jiangxi Mainland China 27.61400 115.7221 2020-02-12    40 confirmed
+    ## 1162          Jilin Mainland China 43.66610 126.1923 2020-02-12     2 confirmed
+    ## 1163       Liaoning Mainland China 41.29560 122.6085 2020-02-12     5 confirmed
+    ## 1164        Ningxia Mainland China 37.26920 106.1655 2020-02-12     5 confirmed
+    ## 1165        Shaanxi Mainland China 35.19170 108.8701 2020-02-12     6 confirmed
+    ## 1166       Shandong Mainland China 36.34270 118.1498 2020-02-12    10 confirmed
+    ## 1167       Shanghai Mainland China 31.20200 121.4491 2020-02-12     8 confirmed
+    ## 1168         Shanxi Mainland China 37.57770 112.2922 2020-02-12     2 confirmed
+    ## 1169        Sichuan Mainland China 30.61710 102.7103 2020-02-12    19 confirmed
+    ## 1170        Tianjin Mainland China 39.30540 117.3230 2020-02-12     6 confirmed
+    ## 1171       Xinjiang Mainland China 41.11290  85.2401 2020-02-12     4 confirmed
+    ## 1172         Yunnan Mainland China 24.97400 101.4870 2020-02-12     1 confirmed
+    ## 1173       Zhejiang Mainland China 29.18320 120.0934 2020-02-12    14 confirmed
+    ## 1174         Hainan Mainland China 19.19590 109.7453 2020-02-12     1     death
+    ## 1175          Henan Mainland China 33.88202 113.6140 2020-02-12     1     death
+    ## 1176          Hunan Mainland China 27.61040 111.7088 2020-02-12     1     death
+    ## 1177       Liaoning Mainland China 41.29560 122.6085 2020-02-12     1     death
+    ## 1178       Shandong Mainland China 36.34270 118.1498 2020-02-12     1     death
+    ## 1189          Anhui Mainland China 31.82570 117.2264 2020-02-12    22 recovered
+    ## 1190        Beijing Mainland China 40.18240 116.4142 2020-02-12     8 recovered
+    ## 1191      Chongqing Mainland China 30.05720 107.8740 2020-02-12    23 recovered
+    ## 1192         Fujian Mainland China 26.07890 117.9874 2020-02-12     8 recovered
+    ## 1193          Gansu Mainland China 36.06110 103.8343 2020-02-12     7 recovered
+    ## 1194      Guangdong Mainland China 23.34170 113.4244 2020-02-12    63 recovered
+    ## 1195        Guangxi Mainland China 23.82980 108.7881 2020-02-12    -1 recovered
+    ## 1196        Guizhou Mainland China 26.81540 106.8748 2020-02-12     1 recovered
+    ## 1197         Hainan Mainland China 19.19590 109.7453 2020-02-12     7 recovered
+    ## 1198          Hebei Mainland China 38.04280 114.5149 2020-02-12     6 recovered
+    ## 1199   Heilongjiang Mainland China 47.86200 127.7615 2020-02-12     3 recovered
+    ## 1200          Henan Mainland China 33.88202 113.6140 2020-02-12    28 recovered
+    ## 1202          Hubei Mainland China 30.97560 112.2707 2020-02-12    47 recovered
+    ## 1203          Hunan Mainland China 27.61040 111.7088 2020-02-12    57 recovered
+    ## 1204 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-12     1 recovered
+    ## 1205        Jiangsu Mainland China 32.97110 119.4550 2020-02-12    32 recovered
+    ## 1206        Jiangxi Mainland China 27.61400 115.7221 2020-02-12    24 recovered
+    ## 1207          Jilin Mainland China 43.66610 126.1923 2020-02-12     4 recovered
+    ## 1208       Liaoning Mainland China 41.29560 122.6085 2020-02-12     1 recovered
+    ## 1211        Ningxia Mainland China 37.26920 106.1655 2020-02-12     2 recovered
+    ## 1212        Qinghai Mainland China 35.74520  95.9956 2020-02-12     4 recovered
+    ## 1213        Shaanxi Mainland China 35.19170 108.8701 2020-02-12    11 recovered
+    ## 1214       Shandong Mainland China 36.34270 118.1498 2020-02-12    12 recovered
+    ## 1215       Shanghai Mainland China 31.20200 121.4491 2020-02-12     5 recovered
+    ## 1216         Shanxi Mainland China 37.57770 112.2922 2020-02-12     3 recovered
+    ## 1217        Sichuan Mainland China 30.61710 102.7103 2020-02-12     7 recovered
+    ## 1218        Tianjin Mainland China 39.30540 117.3230 2020-02-12     1 recovered
+    ## 1219          Tibet Mainland China 31.69270  88.0924 2020-02-12     1 recovered
+    ## 1220         Yunnan Mainland China 24.97400 101.4870 2020-02-12     6 recovered
+    ## 1221       Zhejiang Mainland China 29.18320 120.0934 2020-02-12    51 recovered
+    ## 1225          Anhui Mainland China 31.82570 117.2264 2020-02-13    21 confirmed
+    ## 1226        Beijing Mainland China 40.18240 116.4142 2020-02-13    14 confirmed
+    ## 1227      Chongqing Mainland China 30.05720 107.8740 2020-02-13    11 confirmed
+    ## 1228         Fujian Mainland China 26.07890 117.9874 2020-02-13     7 confirmed
+    ## 1229          Gansu Mainland China 36.06110 103.8343 2020-02-13     3 confirmed
+    ## 1230      Guangdong Mainland China 23.34170 113.4244 2020-02-13    22 confirmed
+    ## 1231        Guizhou Mainland China 26.81540 106.8748 2020-02-13     2 confirmed
+    ## 1232          Hebei Mainland China 38.04280 114.5149 2020-02-13    14 confirmed
+    ## 1233   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13    17 confirmed
+    ## 1234          Henan Mainland China 33.88202 113.6140 2020-02-13    34 confirmed
+    ## 1236          Hubei Mainland China 30.97560 112.2707 2020-02-13 14840 confirmed
+    ## 1237          Hunan Mainland China 27.61040 111.7088 2020-02-13    22 confirmed
+    ## 1238 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-13     1 confirmed
+    ## 1239        Jiangsu Mainland China 32.97110 119.4550 2020-02-13    27 confirmed
+    ## 1240        Jiangxi Mainland China 27.61400 115.7221 2020-02-13    28 confirmed
+    ## 1241          Jilin Mainland China 43.66610 126.1923 2020-02-13     1 confirmed
+    ## 1242       Liaoning Mainland China 41.29560 122.6085 2020-02-13     1 confirmed
+    ## 1243        Ningxia Mainland China 37.26920 106.1655 2020-02-13     6 confirmed
+    ## 1246        Shaanxi Mainland China 35.19170 108.8701 2020-02-13     4 confirmed
+    ## 1247       Shandong Mainland China 36.34270 118.1498 2020-02-13    12 confirmed
+    ## 1248       Shanghai Mainland China 31.20200 121.4491 2020-02-13     4 confirmed
+    ## 1249        Sichuan Mainland China 30.61710 102.7103 2020-02-13    15 confirmed
+    ## 1250        Tianjin Mainland China 39.30540 117.3230 2020-02-13     7 confirmed
+    ## 1251       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     4 confirmed
+    ## 1252         Yunnan Mainland China 24.97400 101.4870 2020-02-13     2 confirmed
+    ## 1253       Zhejiang Mainland China 29.18320 120.0934 2020-02-13    14 confirmed
+    ## 1255          Anhui Mainland China 31.82570 117.2264 2020-02-13     1     death
+    ## 1256      Chongqing Mainland China 30.05720 107.8740 2020-02-13     1     death
+    ## 1257      Guangdong Mainland China 23.34170 113.4244 2020-02-13     1     death
+    ## 1258        Guangxi Mainland China 23.82980 108.7881 2020-02-13     1     death
+    ## 1259          Hebei Mainland China 38.04280 114.5149 2020-02-13     1     death
+    ## 1260   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13     1     death
+    ## 1261          Henan Mainland China 33.88202 113.6140 2020-02-13     2     death
+    ## 1262          Hubei Mainland China 30.97560 112.2707 2020-02-13   242     death
+    ## 1263        Tianjin Mainland China 39.30540 117.3230 2020-02-13     1     death
+    ## 1264       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     1     death
+    ## 1268          Anhui Mainland China 31.82570 117.2264 2020-02-13    30 recovered
+    ## 1269        Beijing Mainland China 40.18240 116.4142 2020-02-13    13 recovered
+    ## 1270      Chongqing Mainland China 30.05720 107.8740 2020-02-13    26 recovered
+    ## 1271         Fujian Mainland China 26.07890 117.9874 2020-02-13     4 recovered
+    ## 1272          Gansu Mainland China 36.06110 103.8343 2020-02-13     8 recovered
+    ## 1273      Guangdong Mainland China 23.34170 113.4244 2020-02-13    39 recovered
+    ## 1274        Guangxi Mainland China 23.82980 108.7881 2020-02-13     1 recovered
+    ## 1275        Guizhou Mainland China 26.81540 106.8748 2020-02-13     9 recovered
+    ## 1276         Hainan Mainland China 19.19590 109.7453 2020-02-13     3 recovered
+    ## 1277          Hebei Mainland China 38.04280 114.5149 2020-02-13    14 recovered
+    ## 1278   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13     2 recovered
+    ## 1279          Henan Mainland China 33.88202 113.6140 2020-02-13    50 recovered
+    ## 1280          Hubei Mainland China 30.97560 112.2707 2020-02-13   773 recovered
+    ## 1281          Hunan Mainland China 27.61040 111.7088 2020-02-13    35 recovered
+    ## 1282        Jiangsu Mainland China 32.97110 119.4550 2020-02-13    14 recovered
+    ## 1283        Jiangxi Mainland China 27.61400 115.7221 2020-02-13    18 recovered
+    ## 1284          Jilin Mainland China 43.66610 126.1923 2020-02-13     2 recovered
+    ## 1285       Liaoning Mainland China 41.29560 122.6085 2020-02-13     2 recovered
+    ## 1288        Qinghai Mainland China 35.74520  95.9956 2020-02-13     2 recovered
+    ## 1289        Shaanxi Mainland China 35.19170 108.8701 2020-02-13     3 recovered
+    ## 1290       Shandong Mainland China 36.34270 118.1498 2020-02-13    13 recovered
+    ## 1291       Shanghai Mainland China 31.20200 121.4491 2020-02-13     5 recovered
+    ## 1292         Shanxi Mainland China 37.57770 112.2922 2020-02-13     3 recovered
+    ## 1293        Sichuan Mainland China 30.61710 102.7103 2020-02-13    12 recovered
+    ## 1294        Tianjin Mainland China 39.30540 117.3230 2020-02-13    10 recovered
+    ## 1296       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     3 recovered
+    ## 1297         Yunnan Mainland China 24.97400 101.4870 2020-02-13     1 recovered
+    ## 1298       Zhejiang Mainland China 29.18320 120.0934 2020-02-13    39 recovered
+    ## 1302          Anhui Mainland China 31.82570 117.2264 2020-02-14    24 confirmed
+    ## 1303        Beijing Mainland China 40.18240 116.4142 2020-02-14     6 confirmed
+    ## 1304      Chongqing Mainland China 30.05720 107.8740 2020-02-14     8 confirmed
+    ## 1306         Fujian Mainland China 26.07890 117.9874 2020-02-14     2 confirmed
+    ## 1307      Guangdong Mainland China 23.34170 113.4244 2020-02-14    20 confirmed
+    ## 1308        Guangxi Mainland China 23.82980 108.7881 2020-02-14     4 confirmed
+    ## 1309        Guizhou Mainland China 26.81540 106.8748 2020-02-14     5 confirmed
+    ## 1310         Hainan Mainland China 19.19590 109.7453 2020-02-14     2 confirmed
+    ## 1311          Hebei Mainland China 38.04280 114.5149 2020-02-14    18 confirmed
+    ## 1312   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14    24 confirmed
+    ## 1313          Henan Mainland China 33.88202 113.6140 2020-02-14    15 confirmed
+    ## 1315          Hubei Mainland China 30.97560 112.2707 2020-02-14  6200 confirmed
+    ## 1316          Hunan Mainland China 27.61040 111.7088 2020-02-14    20 confirmed
+    ## 1317 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-14     4 confirmed
+    ## 1318        Jiangsu Mainland China 32.97110 119.4550 2020-02-14    23 confirmed
+    ## 1319        Jiangxi Mainland China 27.61400 115.7221 2020-02-14    28 confirmed
+    ## 1320          Jilin Mainland China 43.66610 126.1923 2020-02-14     2 confirmed
+    ## 1321       Liaoning Mainland China 41.29560 122.6085 2020-02-14     2 confirmed
+    ## 1322        Ningxia Mainland China 37.26920 106.1655 2020-02-14     3 confirmed
+    ## 1323        Shaanxi Mainland China 35.19170 108.8701 2020-02-14     1 confirmed
+    ## 1324       Shandong Mainland China 36.34270 118.1498 2020-02-14    14 confirmed
+    ## 1325       Shanghai Mainland China 31.20200 121.4491 2020-02-14     3 confirmed
+    ## 1326         Shanxi Mainland China 37.57770 112.2922 2020-02-14     1 confirmed
+    ## 1327        Sichuan Mainland China 30.61710 102.7103 2020-02-14    12 confirmed
+    ## 1328        Tianjin Mainland China 39.30540 117.3230 2020-02-14     1 confirmed
+    ## 1329       Xinjiang Mainland China 41.11290  85.2401 2020-02-14     2 confirmed
+    ## 1330         Yunnan Mainland China 24.97400 101.4870 2020-02-14     6 confirmed
+    ## 1331       Zhejiang Mainland China 29.18320 120.0934 2020-02-14    10 confirmed
+    ## 1332          Anhui Mainland China 31.82570 117.2264 2020-02-14     1     death
+    ## 1333      Chongqing Mainland China 30.05720 107.8740 2020-02-14     1     death
+    ## 1334   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14     2     death
+    ## 1335          Henan Mainland China 33.88202 113.6140 2020-02-14     1     death
+    ## 1336          Hubei Mainland China 30.97560 112.2707 2020-02-14   147     death
+    ## 1338          Anhui Mainland China 31.82570 117.2264 2020-02-14    36 recovered
+    ## 1339        Beijing Mainland China 40.18240 116.4142 2020-02-14    11 recovered
+    ## 1340      Chongqing Mainland China 30.05720 107.8740 2020-02-14    24 recovered
+    ## 1341         Fujian Mainland China 26.07890 117.9874 2020-02-14     6 recovered
+    ## 1342      Guangdong Mainland China 23.34170 113.4244 2020-02-14    48 recovered
+    ## 1343        Guangxi Mainland China 23.82980 108.7881 2020-02-14     3 recovered
+    ## 1344        Guizhou Mainland China 26.81540 106.8748 2020-02-14     1 recovered
+    ## 1345         Hainan Mainland China 19.19590 109.7453 2020-02-14    13 recovered
+    ## 1346          Hebei Mainland China 38.04280 114.5149 2020-02-14    19 recovered
+    ## 1347   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14    14 recovered
+    ## 1348          Henan Mainland China 33.88202 113.6140 2020-02-14    61 recovered
+    ## 1349          Hubei Mainland China 30.97560 112.2707 2020-02-14  1315 recovered
+    ## 1350          Hunan Mainland China 27.61040 111.7088 2020-02-14    25 recovered
+    ## 1351        Jiangsu Mainland China 32.97110 119.4550 2020-02-14    18 recovered
+    ## 1352        Jiangxi Mainland China 27.61400 115.7221 2020-02-14    17 recovered
+    ## 1353          Jilin Mainland China 43.66610 126.1923 2020-02-14     1 recovered
+    ## 1354       Liaoning Mainland China 41.29560 122.6085 2020-02-14     7 recovered
+    ## 1355        Shaanxi Mainland China 35.19170 108.8701 2020-02-14     8 recovered
+    ## 1356       Shandong Mainland China 36.34270 118.1498 2020-02-14    31 recovered
+    ## 1357       Shanghai Mainland China 31.20200 121.4491 2020-02-14    28 recovered
+    ## 1358         Shanxi Mainland China 37.57770 112.2922 2020-02-14     2 recovered
+    ## 1359        Sichuan Mainland China 30.61710 102.7103 2020-02-14    10 recovered
+    ## 1361        Tianjin Mainland China 39.30540 117.3230 2020-02-14    10 recovered
+    ## 1362         Yunnan Mainland China 24.97400 101.4870 2020-02-14     9 recovered
+    ## 1363       Zhejiang Mainland China 29.18320 120.0934 2020-02-14    43 recovered
+    ## 1368          Anhui Mainland China 31.82570 117.2264 2020-02-15    16 confirmed
+    ## 1369        Beijing Mainland China 40.18240 116.4142 2020-02-15     3 confirmed
+    ## 1370      Chongqing Mainland China 30.05720 107.8740 2020-02-15     7 confirmed
+    ## 1372         Fujian Mainland China 26.07890 117.9874 2020-02-15     4 confirmed
+    ## 1373      Guangdong Mainland China 23.34170 113.4244 2020-02-15    33 confirmed
+    ## 1374        Guangxi Mainland China 23.82980 108.7881 2020-02-15     9 confirmed
+    ## 1375        Guizhou Mainland China 26.81540 106.8748 2020-02-15     3 confirmed
+    ## 1376         Hainan Mainland China 19.19590 109.7453 2020-02-15     3 confirmed
+    ## 1377          Hebei Mainland China 38.04280 114.5149 2020-02-15     8 confirmed
+    ## 1378   Heilongjiang Mainland China 47.86200 127.7615 2020-02-15     6 confirmed
+    ## 1379          Henan Mainland China 33.88202 113.6140 2020-02-15    28 confirmed
+    ## 1380          Hubei Mainland China 30.97560 112.2707 2020-02-15  1843 confirmed
+    ## 1381          Hunan Mainland China 27.61040 111.7088 2020-02-15    13 confirmed
+    ## 1382 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-15     3 confirmed
+    ## 1383        Jiangsu Mainland China 32.97110 119.4550 2020-02-15    11 confirmed
+    ## 1384        Jiangxi Mainland China 27.61400 115.7221 2020-02-15    13 confirmed
+    ## 1385          Jilin Mainland China 43.66610 126.1923 2020-02-15     2 confirmed
+    ## 1386        Ningxia Mainland China 37.26920 106.1655 2020-02-15     3 confirmed
+    ## 1387        Shaanxi Mainland China 35.19170 108.8701 2020-02-15     2 confirmed
+    ## 1388       Shandong Mainland China 36.34270 118.1498 2020-02-15     9 confirmed
+    ## 1389       Shanghai Mainland China 31.20200 121.4491 2020-02-15     8 confirmed
+    ## 1390         Shanxi Mainland China 37.57770 112.2922 2020-02-15     1 confirmed
+    ## 1391        Sichuan Mainland China 30.61710 102.7103 2020-02-15     7 confirmed
+    ## 1392        Tianjin Mainland China 39.30540 117.3230 2020-02-15     2 confirmed
+    ## 1393       Xinjiang Mainland China 41.11290  85.2401 2020-02-15     5 confirmed
+    ## 1394         Yunnan Mainland China 24.97400 101.4870 2020-02-15     6 confirmed
+    ## 1395       Zhejiang Mainland China 29.18320 120.0934 2020-02-15     7 confirmed
+    ## 1397        Beijing Mainland China 40.18240 116.4142 2020-02-15     1     death
+    ## 1398          Henan Mainland China 33.88202 113.6140 2020-02-15     2     death
+    ## 1399          Hubei Mainland China 30.97560 112.2707 2020-02-15   139     death
+    ## 1407          Anhui Mainland China 31.82570 117.2264 2020-02-15    28 recovered
+    ## 1408        Beijing Mainland China 40.18240 116.4142 2020-02-15    18 recovered
+    ## 1409      Chongqing Mainland China 30.05720 107.8740 2020-02-15    32 recovered
+    ## 1410         Fujian Mainland China 26.07890 117.9874 2020-02-15     8 recovered
+    ## 1411          Gansu Mainland China 36.06110 103.8343 2020-02-15    10 recovered
+    ## 1412      Guangdong Mainland China 23.34170 113.4244 2020-02-15    48 recovered
+    ## 1413        Guangxi Mainland China 23.82980 108.7881 2020-02-15     8 recovered
+    ## 1414        Guizhou Mainland China 26.81540 106.8748 2020-02-15    13 recovered
+    ## 1415         Hainan Mainland China 19.19590 109.7453 2020-02-15    -4 recovered
+    ## 1416          Hebei Mainland China 38.04280 114.5149 2020-02-15    14 recovered
+    ## 1417   Heilongjiang Mainland China 47.86200 127.7615 2020-02-15    21 recovered
+    ## 1418          Henan Mainland China 33.88202 113.6140 2020-02-15    34 recovered
+    ## 1419          Hubei Mainland China 30.97560 112.2707 2020-02-15   849 recovered
+    ## 1420          Hunan Mainland China 27.61040 111.7088 2020-02-15    61 recovered
+    ## 1421 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-15     1 recovered
+    ## 1422        Jiangsu Mainland China 32.97110 119.4550 2020-02-15    29 recovered
+    ## 1423        Jiangxi Mainland China 27.61400 115.7221 2020-02-15    23 recovered
+    ## 1424          Jilin Mainland China 43.66610 126.1923 2020-02-15     1 recovered
+    ## 1425       Liaoning Mainland China 41.29560 122.6085 2020-02-15     2 recovered
+    ## 1426        Ningxia Mainland China 37.26920 106.1655 2020-02-15     9 recovered
+    ## 1427        Qinghai Mainland China 35.74520  95.9956 2020-02-15     2 recovered
+    ## 1428        Shaanxi Mainland China 35.19170 108.8701 2020-02-15     6 recovered
+    ## 1429       Shandong Mainland China 36.34270 118.1498 2020-02-15    20 recovered
+    ## 1430       Shanghai Mainland China 31.20200 121.4491 2020-02-15    34 recovered
+    ## 1431         Shanxi Mainland China 37.57770 112.2922 2020-02-15     8 recovered
+    ## 1432        Sichuan Mainland China 30.61710 102.7103 2020-02-15     5 recovered
+    ## 1433        Tianjin Mainland China 39.30540 117.3230 2020-02-15     6 recovered
+    ## 1434       Xinjiang Mainland China 41.11290  85.2401 2020-02-15     4 recovered
+    ## 1435         Yunnan Mainland China 24.97400 101.4870 2020-02-15     6 recovered
+    ## 1436       Zhejiang Mainland China 29.18320 120.0934 2020-02-15    25 recovered
+    ## 1442          Anhui Mainland China 31.82570 117.2264 2020-02-16    12 confirmed
+    ## 1443        Beijing Mainland China 40.18240 116.4142 2020-02-16     5 confirmed
+    ## 1444      Chongqing Mainland China 30.05720 107.8740 2020-02-16     7 confirmed
+    ## 1446         Fujian Mainland China 26.07890 117.9874 2020-02-16     2 confirmed
+    ## 1447      Guangdong Mainland China 23.34170 113.4244 2020-02-16    22 confirmed
+    ## 1448        Guangxi Mainland China 23.82980 108.7881 2020-02-16     2 confirmed
+    ## 1449        Guizhou Mainland China 26.81540 106.8748 2020-02-16     1 confirmed
+    ## 1450          Hebei Mainland China 38.04280 114.5149 2020-02-16     9 confirmed
+    ## 1451   Heilongjiang Mainland China 47.86200 127.7615 2020-02-16    20 confirmed
+    ## 1452          Henan Mainland China 33.88202 113.6140 2020-02-16    19 confirmed
+    ## 1454          Hubei Mainland China 30.97560 112.2707 2020-02-16  1933 confirmed
+    ## 1455          Hunan Mainland China 27.61040 111.7088 2020-02-16     3 confirmed
+    ## 1456 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-16     2 confirmed
+    ## 1457        Jiangsu Mainland China 32.97110 119.4550 2020-02-16    13 confirmed
+    ## 1458        Jiangxi Mainland China 27.61400 115.7221 2020-02-16    12 confirmed
+    ## 1459          Jilin Mainland China 43.66610 126.1923 2020-02-16     1 confirmed
+    ## 1460       Liaoning Mainland China 41.29560 122.6085 2020-02-16     2 confirmed
+    ## 1461        Shaanxi Mainland China 35.19170 108.8701 2020-02-16     4 confirmed
+    ## 1462       Shandong Mainland China 36.34270 118.1498 2020-02-16     5 confirmed
+    ## 1463       Shanghai Mainland China 31.20200 121.4491 2020-02-16     2 confirmed
+    ## 1464         Shanxi Mainland China 37.57770 112.2922 2020-02-16     1 confirmed
+    ## 1465        Sichuan Mainland China 30.61710 102.7103 2020-02-16    11 confirmed
+    ## 1467        Tianjin Mainland China 39.30540 117.3230 2020-02-16     2 confirmed
+    ## 1468       Xinjiang Mainland China 41.11290  85.2401 2020-02-16     1 confirmed
+    ## 1469         Yunnan Mainland China 24.97400 101.4870 2020-02-16     3 confirmed
+    ## 1470       Zhejiang Mainland China 29.18320 120.0934 2020-02-16     5 confirmed
+    ## 1471          Hubei Mainland China 30.97560 112.2707 2020-02-16   100     death
+    ## 1472          Hunan Mainland China 27.61040 111.7088 2020-02-16     1     death
+    ## 1473        Sichuan Mainland China 30.61710 102.7103 2020-02-16     2     death
+    ## 1479          Anhui Mainland China 31.82570 117.2264 2020-02-16    34 recovered
+    ## 1480        Beijing Mainland China 40.18240 116.4142 2020-02-16    10 recovered
+    ## 1481      Chongqing Mainland China 30.05720 107.8740 2020-02-16    23 recovered
+    ## 1482         Fujian Mainland China 26.07890 117.9874 2020-02-16    11 recovered
+    ## 1483          Gansu Mainland China 36.06110 103.8343 2020-02-16     5 recovered
+    ## 1484      Guangdong Mainland China 23.34170 113.4244 2020-02-16    55 recovered
+    ## 1485        Guangxi Mainland China 23.82980 108.7881 2020-02-16     5 recovered
+    ## 1486        Guizhou Mainland China 26.81540 106.8748 2020-02-16     5 recovered
+    ## 1487         Hainan Mainland China 19.19590 109.7453 2020-02-16    13 recovered
+    ## 1488          Hebei Mainland China 38.04280 114.5149 2020-02-16     4 recovered
+    ## 1489   Heilongjiang Mainland China 47.86200 127.7615 2020-02-16    11 recovered
+    ## 1490          Henan Mainland China 33.88202 113.6140 2020-02-16    49 recovered
+    ## 1492          Hubei Mainland China 30.97560 112.2707 2020-02-16  1016 recovered
+    ## 1493          Hunan Mainland China 27.61040 111.7088 2020-02-16    39 recovered
+    ## 1494 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-16     1 recovered
+    ## 1495        Jiangsu Mainland China 32.97110 119.4550 2020-02-16    32 recovered
+    ## 1496        Jiangxi Mainland China 27.61400 115.7221 2020-02-16    30 recovered
+    ## 1497          Jilin Mainland China 43.66610 126.1923 2020-02-16     4 recovered
+    ## 1498       Liaoning Mainland China 41.29560 122.6085 2020-02-16     9 recovered
+    ## 1500        Shaanxi Mainland China 35.19170 108.8701 2020-02-16    11 recovered
+    ## 1501       Shandong Mainland China 36.34270 118.1498 2020-02-16    17 recovered
+    ## 1502       Shanghai Mainland China 31.20200 121.4491 2020-02-16    16 recovered
+    ## 1503         Shanxi Mainland China 37.57770 112.2922 2020-02-16     4 recovered
+    ## 1504        Sichuan Mainland China 30.61710 102.7103 2020-02-16    12 recovered
+    ## 1505        Tianjin Mainland China 39.30540 117.3230 2020-02-16     8 recovered
+    ## 1506       Xinjiang Mainland China 41.11290  85.2401 2020-02-16     2 recovered
+    ## 1507       Zhejiang Mainland China 29.18320 120.0934 2020-02-16    28 recovered
+    ## 1512          Anhui Mainland China 31.82570 117.2264 2020-02-17    11 confirmed
+    ## 1513        Beijing Mainland China 40.18240 116.4142 2020-02-17     1 confirmed
+    ## 1515      Chongqing Mainland China 30.05720 107.8740 2020-02-17     2 confirmed
+    ## 1517         Fujian Mainland China 26.07890 117.9874 2020-02-17     3 confirmed
+    ## 1518          Gansu Mainland China 36.06110 103.8343 2020-02-17     1 confirmed
+    ## 1519      Guangdong Mainland China 23.34170 113.4244 2020-02-17     6 confirmed
+    ## 1520        Guangxi Mainland China 23.82980 108.7881 2020-02-17     1 confirmed
+    ## 1521        Guizhou Mainland China 26.81540 106.8748 2020-02-17     2 confirmed
+    ## 1522         Hainan Mainland China 19.19590 109.7453 2020-02-17     1 confirmed
+    ## 1523          Hebei Mainland China 38.04280 114.5149 2020-02-17     1 confirmed
+    ## 1524   Heilongjiang Mainland China 47.86200 127.7615 2020-02-17    12 confirmed
+    ## 1525          Henan Mainland China 33.88202 113.6140 2020-02-17    15 confirmed
+    ## 1527          Hubei Mainland China 30.97560 112.2707 2020-02-17  1807 confirmed
+    ## 1528          Hunan Mainland China 27.61040 111.7088 2020-02-17     2 confirmed
+    ## 1529 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-17     2 confirmed
+    ## 1530        Jiangsu Mainland China 32.97110 119.4550 2020-02-17     9 confirmed
+    ## 1531        Jiangxi Mainland China 27.61400 115.7221 2020-02-17     5 confirmed
+    ## 1532        Shaanxi Mainland China 35.19170 108.8701 2020-02-17     4 confirmed
+    ## 1533       Shandong Mainland China 36.34270 118.1498 2020-02-17     4 confirmed
+    ## 1534       Shanghai Mainland China 31.20200 121.4491 2020-02-17     5 confirmed
+    ## 1535         Shanxi Mainland China 37.57770 112.2922 2020-02-17     1 confirmed
+    ## 1536        Sichuan Mainland China 30.61710 102.7103 2020-02-17    14 confirmed
+    ## 1538        Tianjin Mainland China 39.30540 117.3230 2020-02-17     1 confirmed
+    ## 1539       Xinjiang Mainland China 41.11290  85.2401 2020-02-17     4 confirmed
+    ## 1540       Zhejiang Mainland China 29.18320 120.0934 2020-02-17     4 confirmed
+    ## 1541      Guangdong Mainland China 23.34170 113.4244 2020-02-17     2     death
+    ## 1542          Henan Mainland China 33.88202 113.6140 2020-02-17     3     death
+    ## 1543          Hubei Mainland China 30.97560 112.2707 2020-02-17    93     death
+    ## 1548          Anhui Mainland China 31.82570 117.2264 2020-02-17    25 recovered
+    ## 1549        Beijing Mainland China 40.18240 116.4142 2020-02-17     6 recovered
+    ## 1550      Chongqing Mainland China 30.05720 107.8740 2020-02-17    18 recovered
+    ## 1551         Fujian Mainland China 26.07890 117.9874 2020-02-17     8 recovered
+    ## 1552          Gansu Mainland China 36.06110 103.8343 2020-02-17     4 recovered
+    ## 1553      Guangdong Mainland China 23.34170 113.4244 2020-02-17    59 recovered
+    ## 1554        Guangxi Mainland China 23.82980 108.7881 2020-02-17     4 recovered
+    ## 1555        Guizhou Mainland China 26.81540 106.8748 2020-02-17    11 recovered
+    ## 1556         Hainan Mainland China 19.19590 109.7453 2020-02-17     7 recovered
+    ## 1557          Hebei Mainland China 38.04280 114.5149 2020-02-17    17 recovered
+    ## 1558   Heilongjiang Mainland China 47.86200 127.7615 2020-02-17     6 recovered
+    ## 1559          Henan Mainland China 33.88202 113.6140 2020-02-17    69 recovered
+    ## 1560          Hubei Mainland China 30.97560 112.2707 2020-02-17  1223 recovered
+    ## 1561          Hunan Mainland China 27.61040 111.7088 2020-02-17    34 recovered
+    ## 1562        Jiangsu Mainland China 32.97110 119.4550 2020-02-17    40 recovered
+    ## 1563        Jiangxi Mainland China 27.61400 115.7221 2020-02-17    35 recovered
+    ## 1564          Jilin Mainland China 43.66610 126.1923 2020-02-17     4 recovered
+    ## 1565       Liaoning Mainland China 41.29560 122.6085 2020-02-17     3 recovered
+    ## 1566        Ningxia Mainland China 37.26920 106.1655 2020-02-17     2 recovered
+    ## 1567        Shaanxi Mainland China 35.19170 108.8701 2020-02-17     8 recovered
+    ## 1568       Shandong Mainland China 36.34270 118.1498 2020-02-17    18 recovered
+    ## 1569       Shanghai Mainland China 31.20200 121.4491 2020-02-17    21 recovered
+    ## 1570         Shanxi Mainland China 37.57770 112.2922 2020-02-17     3 recovered
+    ## 1571        Sichuan Mainland China 30.61710 102.7103 2020-02-17    25 recovered
+    ## 1573        Tianjin Mainland China 39.30540 117.3230 2020-02-17     1 recovered
+    ## 1574         Yunnan Mainland China 24.97400 101.4870 2020-02-17     5 recovered
+    ## 1575       Zhejiang Mainland China 29.18320 120.0934 2020-02-17    51 recovered
+    ## 1579          Anhui Mainland China 31.82570 117.2264 2020-02-18     9 confirmed
+    ## 1580        Beijing Mainland China 40.18240 116.4142 2020-02-18     6 confirmed
+    ## 1581      Chongqing Mainland China 30.05720 107.8740 2020-02-18     2 confirmed
+    ## 1583         Fujian Mainland China 26.07890 117.9874 2020-02-18     2 confirmed
+    ## 1584      Guangdong Mainland China 23.34170 113.4244 2020-02-18     6 confirmed
+    ## 1585        Guangxi Mainland China 23.82980 108.7881 2020-02-18     4 confirmed
+    ## 1586          Hebei Mainland China 38.04280 114.5149 2020-02-18     5 confirmed
+    ## 1587   Heilongjiang Mainland China 47.86200 127.7615 2020-02-18     7 confirmed
+    ## 1588          Henan Mainland China 33.88202 113.6140 2020-02-18    11 confirmed
+    ## 1590          Hubei Mainland China 30.97560 112.2707 2020-02-18  1693 confirmed
+    ## 1591          Hunan Mainland China 27.61040 111.7088 2020-02-18     1 confirmed
+    ## 1592 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-18     1 confirmed
+    ## 1593        Jiangsu Mainland China 32.97110 119.4550 2020-02-18     3 confirmed
+    ## 1594        Jiangxi Mainland China 27.61400 115.7221 2020-02-18     3 confirmed
+    ## 1595       Shandong Mainland China 36.34270 118.1498 2020-02-18     2 confirmed
+    ## 1596         Shanxi Mainland China 37.57770 112.2922 2020-02-18     1 confirmed
+    ## 1597        Sichuan Mainland China 30.61710 102.7103 2020-02-18    13 confirmed
+    ## 1598        Tianjin Mainland China 39.30540 117.3230 2020-02-18     3 confirmed
+    ## 1599       Xinjiang Mainland China 41.11290  85.2401 2020-02-18     1 confirmed
+    ## 1600         Yunnan Mainland China 24.97400 101.4870 2020-02-18     1 confirmed
+    ## 1601       Zhejiang Mainland China 29.18320 120.0934 2020-02-18     1 confirmed
+    ## 1602        Guizhou Mainland China 26.81540 106.8748 2020-02-18     1     death
+    ## 1603          Hebei Mainland China 38.04280 114.5149 2020-02-18     1     death
+    ## 1604          Henan Mainland China 33.88202 113.6140 2020-02-18     3     death
+    ## 1605          Hubei Mainland China 30.97560 112.2707 2020-02-18   132     death
+    ## 1606          Hunan Mainland China 27.61040 111.7088 2020-02-18     1     death
+    ## 1607       Shandong Mainland China 36.34270 118.1498 2020-02-18     1     death
+    ## 1613          Anhui Mainland China 31.82570 117.2264 2020-02-18    81 recovered
+    ## 1614        Beijing Mainland China 40.18240 116.4142 2020-02-18     8 recovered
+    ## 1615      Chongqing Mainland China 30.05720 107.8740 2020-02-18    29 recovered
+    ## 1616         Fujian Mainland China 26.07890 117.9874 2020-02-18     3 recovered
+    ## 1617          Gansu Mainland China 36.06110 103.8343 2020-02-18     4 recovered
+    ## 1618      Guangdong Mainland China 23.34170 113.4244 2020-02-18    41 recovered
+    ## 1619        Guangxi Mainland China 23.82980 108.7881 2020-02-18    16 recovered
+    ## 1620        Guizhou Mainland China 26.81540 106.8748 2020-02-18     9 recovered
+    ## 1621         Hainan Mainland China 19.19590 109.7453 2020-02-18    20 recovered
+    ## 1622          Hebei Mainland China 38.04280 114.5149 2020-02-18    14 recovered
+    ## 1623   Heilongjiang Mainland China 47.86200 127.7615 2020-02-18    26 recovered
+    ## 1624          Henan Mainland China 33.88202 113.6140 2020-02-18    13 recovered
+    ## 1625          Hubei Mainland China 30.97560 112.2707 2020-02-18  1266 recovered
+    ## 1626          Hunan Mainland China 27.61040 111.7088 2020-02-18    29 recovered
+    ## 1627        Jiangsu Mainland China 32.97110 119.4550 2020-02-18    22 recovered
+    ## 1628        Jiangxi Mainland China 27.61400 115.7221 2020-02-18    35 recovered
+    ## 1629          Jilin Mainland China 43.66610 126.1923 2020-02-18     2 recovered
+    ## 1630       Liaoning Mainland China 41.29560 122.6085 2020-02-18    10 recovered
+    ## 1631        Ningxia Mainland China 37.26920 106.1655 2020-02-18     7 recovered
+    ## 1632        Qinghai Mainland China 35.74520  95.9956 2020-02-18     2 recovered
+    ## 1633        Shaanxi Mainland China 35.19170 108.8701 2020-02-18    10 recovered
+    ## 1634       Shandong Mainland China 36.34270 118.1498 2020-02-18    20 recovered
+    ## 1635       Shanghai Mainland China 31.20200 121.4491 2020-02-18    16 recovered
+    ## 1636         Shanxi Mainland China 37.57770 112.2922 2020-02-18     8 recovered
+    ## 1637        Sichuan Mainland China 30.61710 102.7103 2020-02-18    13 recovered
+    ## 1638        Tianjin Mainland China 39.30540 117.3230 2020-02-18     2 recovered
+    ## 1639         Yunnan Mainland China 24.97400 101.4870 2020-02-18    10 recovered
+    ## 1640       Zhejiang Mainland China 29.18320 120.0934 2020-02-18    28 recovered
+    ## 1644          Anhui Mainland China 31.82570 117.2264 2020-02-19     4 confirmed
+    ## 1645        Beijing Mainland China 40.18240 116.4142 2020-02-19     6 confirmed
+    ## 1646      Chongqing Mainland China 30.05720 107.8740 2020-02-19     5 confirmed
+    ## 1648         Fujian Mainland China 26.07890 117.9874 2020-02-19     1 confirmed
+    ## 1649      Guangdong Mainland China 23.34170 113.4244 2020-02-19     3 confirmed
+    ## 1650        Guangxi Mainland China 23.82980 108.7881 2020-02-19     2 confirmed
+    ## 1651         Hainan Mainland China 19.19590 109.7453 2020-02-19     5 confirmed
+    ## 1652   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     6 confirmed
+    ## 1653          Henan Mainland China 33.88202 113.6140 2020-02-19     5 confirmed
+    ## 1655          Hubei Mainland China 30.97560 112.2707 2020-02-19   349 confirmed
+    ## 1656          Hunan Mainland China 27.61040 111.7088 2020-02-19     1 confirmed
+    ## 1657 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-19     2 confirmed
+    ## 1658        Jiangsu Mainland China 32.97110 119.4550 2020-02-19     2 confirmed
+    ## 1659        Jiangxi Mainland China 27.61400 115.7221 2020-02-19     1 confirmed
+    ## 1660          Jilin Mainland China 43.66610 126.1923 2020-02-19     1 confirmed
+    ## 1661        Ningxia Mainland China 37.26920 106.1655 2020-02-19     1 confirmed
+    ## 1662        Shaanxi Mainland China 35.19170 108.8701 2020-02-19     2 confirmed
+    ## 1663       Shandong Mainland China 36.34270 118.1498 2020-02-19     1 confirmed
+    ## 1664        Sichuan Mainland China 30.61710 102.7103 2020-02-19     6 confirmed
+    ## 1666        Tianjin Mainland China 39.30540 117.3230 2020-02-19     2 confirmed
+    ## 1667       Zhejiang Mainland China 29.18320 120.0934 2020-02-19     2 confirmed
+    ## 1669      Guangdong Mainland China 23.34170 113.4244 2020-02-19     1     death
+    ## 1670   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     1     death
+    ## 1672          Hubei Mainland China 30.97560 112.2707 2020-02-19   108     death
+    ## 1673       Shanghai Mainland China 31.20200 121.4491 2020-02-19     1     death
+    ## 1674         Yunnan Mainland China 24.97400 101.4870 2020-02-19     1     death
+    ## 1678          Anhui Mainland China 31.82570 117.2264 2020-02-19    52 recovered
+    ## 1679        Beijing Mainland China 40.18240 116.4142 2020-02-19    23 recovered
+    ## 1680      Chongqing Mainland China 30.05720 107.8740 2020-02-19    20 recovered
+    ## 1682         Fujian Mainland China 26.07890 117.9874 2020-02-19    19 recovered
+    ## 1683          Gansu Mainland China 36.06110 103.8343 2020-02-19     3 recovered
+    ## 1684      Guangdong Mainland China 23.34170 113.4244 2020-02-19    41 recovered
+    ## 1685        Guangxi Mainland China 23.82980 108.7881 2020-02-19    17 recovered
+    ## 1686        Guizhou Mainland China 26.81540 106.8748 2020-02-19     4 recovered
+    ## 1687         Hainan Mainland China 19.19590 109.7453 2020-02-19     5 recovered
+    ## 1688          Hebei Mainland China 38.04280 114.5149 2020-02-19    16 recovered
+    ## 1689   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     9 recovered
+    ## 1690          Henan Mainland China 33.88202 113.6140 2020-02-19    51 recovered
+    ## 1692          Hubei Mainland China 30.97560 112.2707 2020-02-19  1209 recovered
+    ## 1693          Hunan Mainland China 27.61040 111.7088 2020-02-19    34 recovered
+    ## 1694 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-19     2 recovered
+    ## 1695        Jiangsu Mainland China 32.97110 119.4550 2020-02-19    38 recovered
+    ## 1696        Jiangxi Mainland China 27.61400 115.7221 2020-02-19    52 recovered
+    ## 1697          Jilin Mainland China 43.66610 126.1923 2020-02-19     1 recovered
+    ## 1698       Liaoning Mainland China 41.29560 122.6085 2020-02-19     2 recovered
+    ## 1699        Qinghai Mainland China 35.74520  95.9956 2020-02-19     1 recovered
+    ## 1700        Shaanxi Mainland China 35.19170 108.8701 2020-02-19    13 recovered
+    ## 1701       Shandong Mainland China 36.34270 118.1498 2020-02-19    20 recovered
+    ## 1702       Shanghai Mainland China 31.20200 121.4491 2020-02-19     9 recovered
+    ## 1703         Shanxi Mainland China 37.57770 112.2922 2020-02-19     7 recovered
+    ## 1704        Sichuan Mainland China 30.61710 102.7103 2020-02-19    19 recovered
+    ## 1705        Tianjin Mainland China 39.30540 117.3230 2020-02-19     6 recovered
+    ## 1706       Xinjiang Mainland China 41.11290  85.2401 2020-02-19     8 recovered
+    ## 1707         Yunnan Mainland China 24.97400 101.4870 2020-02-19     3 recovered
+    ## 1708       Zhejiang Mainland China 29.18320 120.0934 2020-02-19    69 recovered
+    ## 1712          Anhui Mainland China 31.82570 117.2264 2020-02-20     1 confirmed
+    ## 1713        Beijing Mainland China 40.18240 116.4142 2020-02-20     2 confirmed
+    ## 1714      Chongqing Mainland China 30.05720 107.8740 2020-02-20     7 confirmed
+    ## 1716      Guangdong Mainland China 23.34170 113.4244 2020-02-20     1 confirmed
+    ## 1717        Guangxi Mainland China 23.82980 108.7881 2020-02-20     1 confirmed
+    ## 1718          Hebei Mainland China 38.04280 114.5149 2020-02-20     1 confirmed
+    ## 1719   Heilongjiang Mainland China 47.86200 127.7615 2020-02-20     6 confirmed
+    ## 1720          Henan Mainland China 33.88202 113.6140 2020-02-20     3 confirmed
+    ## 1722          Hubei Mainland China 30.97560 112.2707 2020-02-20   411 confirmed
+    ## 1723          Hunan Mainland China 27.61040 111.7088 2020-02-20     2 confirmed
+    ## 1724          Jilin Mainland China 43.66610 126.1923 2020-02-20     1 confirmed
+    ## 1725        Shaanxi Mainland China 35.19170 108.8701 2020-02-20     3 confirmed
+    ## 1726       Shandong Mainland China 36.34270 118.1498 2020-02-20     2 confirmed
+    ## 1727       Shanghai Mainland China 31.20200 121.4491 2020-02-20     1 confirmed
+    ## 1728         Shanxi Mainland China 37.57770 112.2922 2020-02-20     1 confirmed
+    ## 1729        Sichuan Mainland China 30.61710 102.7103 2020-02-20     6 confirmed
+    ## 1731        Tianjin Mainland China 39.30540 117.3230 2020-02-20     1 confirmed
+    ## 1732         Yunnan Mainland China 24.97400 101.4870 2020-02-20     2 confirmed
+    ## 1733       Zhejiang Mainland China 29.18320 120.0934 2020-02-20     1 confirmed
+    ## 1735      Chongqing Mainland China 30.05720 107.8740 2020-02-20     1     death
+    ## 1737         Fujian Mainland China 26.07890 117.9874 2020-02-20     1     death
+    ## 1738          Hebei Mainland China 38.04280 114.5149 2020-02-20     1     death
+    ## 1739          Hubei Mainland China 30.97560 112.2707 2020-02-20   115     death
+    ## 1740        Shaanxi Mainland China 35.19170 108.8701 2020-02-20     1     death
+    ## 1741       Shandong Mainland China 36.34270 118.1498 2020-02-20     1     death
+    ## 1742         Yunnan Mainland China 24.97400 101.4870 2020-02-20     1     death
+    ## 1743       Zhejiang Mainland China 29.18320 120.0934 2020-02-20     1     death
+    ## 1745          Anhui Mainland China 31.82570 117.2264 2020-02-20    61 recovered
+    ## 1746        Beijing Mainland China 40.18240 116.4142 2020-02-20     8 recovered
+    ## 1747      Chongqing Mainland China 30.05720 107.8740 2020-02-20    25 recovered
+    ## 1748         Fujian Mainland China 26.07890 117.9874 2020-02-20    14 recovered
+    ## 1749          Gansu Mainland China 36.06110 103.8343 2020-02-20     6 recovered
+    ## 1750      Guangdong Mainland China 23.34170 113.4244 2020-02-20    36 recovered
+    ## 1751        Guangxi Mainland China 23.82980 108.7881 2020-02-20     4 recovered
+    ## 1752        Guizhou Mainland China 26.81540 106.8748 2020-02-20     2 recovered
+    ## 1753         Hainan Mainland China 19.19590 109.7453 2020-02-20     2 recovered
+    ## 1754          Hebei Mainland China 38.04280 114.5149 2020-02-20    17 recovered
+    ## 1755   Heilongjiang Mainland China 47.86200 127.7615 2020-02-20    16 recovered
+    ## 1756          Henan Mainland China 33.88202 113.6140 2020-02-20    64 recovered
+    ## 1758          Hubei Mainland China 30.97560 112.2707 2020-02-20  1451 recovered
+    ## 1759          Hunan Mainland China 27.61040 111.7088 2020-02-20    73 recovered
+    ## 1760 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-20     6 recovered
+    ## 1761        Jiangsu Mainland China 32.97110 119.4550 2020-02-20    38 recovered
+    ## 1762        Jiangxi Mainland China 27.61400 115.7221 2020-02-20    71 recovered
+    ## 1763          Jilin Mainland China 43.66610 126.1923 2020-02-20     6 recovered
+    ## 1764       Liaoning Mainland China 41.29560 122.6085 2020-02-20     4 recovered
+    ## 1766        Ningxia Mainland China 37.26920 106.1655 2020-02-20     2 recovered
+    ## 1767        Shaanxi Mainland China 35.19170 108.8701 2020-02-20    16 recovered
+    ## 1768       Shandong Mainland China 36.34270 118.1498 2020-02-20    23 recovered
+    ## 1769       Shanghai Mainland China 31.20200 121.4491 2020-02-20    13 recovered
+    ## 1770         Shanxi Mainland China 37.57770 112.2922 2020-02-20     8 recovered
+    ## 1771        Sichuan Mainland China 30.61710 102.7103 2020-02-20    29 recovered
+    ## 1772        Tianjin Mainland China 39.30540 117.3230 2020-02-20     5 recovered
+    ## 1773       Xinjiang Mainland China 41.11290  85.2401 2020-02-20     2 recovered
+    ## 1774         Yunnan Mainland China 24.97400 101.4870 2020-02-20    19 recovered
+    ## 1775       Zhejiang Mainland China 29.18320 120.0934 2020-02-20    29 recovered
+    ## 1783          Anhui Mainland China 31.82570 117.2264 2020-02-21     1 confirmed
+    ## 1784        Beijing Mainland China 40.18240 116.4142 2020-02-21     1 confirmed
+    ## 1786      Chongqing Mainland China 30.05720 107.8740 2020-02-21     5 confirmed
+    ## 1788      Guangdong Mainland China 23.34170 113.4244 2020-02-21     1 confirmed
+    ## 1789        Guangxi Mainland China 23.82980 108.7881 2020-02-21     1 confirmed
+    ## 1790          Hebei Mainland China 38.04280 114.5149 2020-02-21     1 confirmed
+    ## 1791   Heilongjiang Mainland China 47.86200 127.7615 2020-02-21     3 confirmed
+    ## 1792          Henan Mainland China 33.88202 113.6140 2020-02-21     2 confirmed
+    ## 1793          Hubei Mainland China 30.97560 112.2707 2020-02-21   220 confirmed
+    ## 1795          Hunan Mainland China 27.61040 111.7088 2020-02-21     1 confirmed
+    ## 1799       Shandong Mainland China 36.34270 118.1498 2020-02-21   203 confirmed
+    ## 1800        Sichuan Mainland China 30.61710 102.7103 2020-02-21     5 confirmed
+    ## 1802        Tianjin Mainland China 39.30540 117.3230 2020-02-21     1 confirmed
+    ## 1804       Zhejiang Mainland China 29.18320 120.0934 2020-02-21    28 confirmed
+    ## 1813          Anhui Mainland China 31.82570 117.2264 2020-02-21    65 recovered
+    ## 1814        Beijing Mainland China 40.18240 116.4142 2020-02-21    16 recovered
+    ## 1815      Chongqing Mainland China 30.05720 107.8740 2020-02-21    17 recovered
+    ## 1816         Fujian Mainland China 26.07890 117.9874 2020-02-21    23 recovered
+    ## 1817          Gansu Mainland China 36.06110 103.8343 2020-02-21     5 recovered
+    ## 1818      Guangdong Mainland China 23.34170 113.4244 2020-02-21    48 recovered
+    ## 1819        Guangxi Mainland China 23.82980 108.7881 2020-02-21     7 recovered
+    ## 1820        Guizhou Mainland China 26.81540 106.8748 2020-02-21     5 recovered
+    ## 1821         Hainan Mainland China 19.19590 109.7453 2020-02-21     9 recovered
+    ## 1822          Hebei Mainland China 38.04280 114.5149 2020-02-21    15 recovered
+    ## 1823   Heilongjiang Mainland China 47.86200 127.7615 2020-02-21    39 recovered
+    ## 1824          Henan Mainland China 33.88202 113.6140 2020-02-21    99 recovered
+    ## 1826          Hubei Mainland China 30.97560 112.2707 2020-02-21    93 recovered
+    ## 1827          Hunan Mainland China 27.61040 111.7088 2020-02-21    27 recovered
+    ## 1828 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-21     1 recovered
+    ## 1829        Jiangsu Mainland China 32.97110 119.4550 2020-02-21    17 recovered
+    ## 1830        Jiangxi Mainland China 27.61400 115.7221 2020-02-21    56 recovered
+    ## 1831          Jilin Mainland China 43.66610 126.1923 2020-02-21     2 recovered
+    ## 1832       Liaoning Mainland China 41.29560 122.6085 2020-02-21     2 recovered
+    ## 1833        Ningxia Mainland China 37.26920 106.1655 2020-02-21     4 recovered
+    ## 1834        Qinghai Mainland China 35.74520  95.9956 2020-02-21     2 recovered
+    ## 1838        Shaanxi Mainland China 35.19170 108.8701 2020-02-21    16 recovered
+    ## 1839       Shandong Mainland China 36.34270 118.1498 2020-02-21    27 recovered
+    ## 1840       Shanghai Mainland China 31.20200 121.4491 2020-02-21    12 recovered
+    ## 1841         Shanxi Mainland China 37.57770 112.2922 2020-02-21     2 recovered
+    ## 1842        Sichuan Mainland China 30.61710 102.7103 2020-02-21    14 recovered
+    ## 1843        Tianjin Mainland China 39.30540 117.3230 2020-02-21     3 recovered
+    ## 1845       Xinjiang Mainland China 41.11290  85.2401 2020-02-21     2 recovered
+    ## 1846         Yunnan Mainland China 24.97400 101.4870 2020-02-21    17 recovered
+    ## 1847       Zhejiang Mainland China 29.18320 120.0934 2020-02-21    46 recovered
+    ## 1853          Anhui Mainland China 31.82570 117.2264 2020-02-22     1 confirmed
+    ## 1854        Beijing Mainland China 40.18240 116.4142 2020-02-22     3 confirmed
+    ## 1855      Chongqing Mainland China 30.05720 107.8740 2020-02-22     1 confirmed
+    ## 1857      Guangdong Mainland China 23.34170 113.4244 2020-02-22     6 confirmed
+    ## 1858        Guangxi Mainland China 23.82980 108.7881 2020-02-22     3 confirmed
+    ## 1859          Hebei Mainland China 38.04280 114.5149 2020-02-22     1 confirmed
+    ## 1860          Henan Mainland China 33.88202 113.6140 2020-02-22     3 confirmed
+    ## 1862          Hubei Mainland China 30.97560 112.2707 2020-02-22  1422 confirmed
+    ## 1863          Hunan Mainland China 27.61040 111.7088 2020-02-22     2 confirmed
+    ## 1864       Shandong Mainland China 36.34270 118.1498 2020-02-22     1 confirmed
+    ## 1865       Shanghai Mainland China 31.20200 121.4491 2020-02-22     1 confirmed
+    ## 1866        Sichuan Mainland China 30.61710 102.7103 2020-02-22     1 confirmed
+    ## 1867        Tianjin Mainland China 39.30540 117.3230 2020-02-22     3 confirmed
+    ## 1868       Zhejiang Mainland China 29.18320 120.0934 2020-02-22     2 confirmed
+    ## 1871          Hebei Mainland China 38.04280 114.5149 2020-02-22     1     death
+    ## 1872          Hubei Mainland China 30.97560 112.2707 2020-02-22   202     death
+    ## 1873       Shanghai Mainland China 31.20200 121.4491 2020-02-22     1     death
+    ## 1874       Xinjiang Mainland China 41.11290  85.2401 2020-02-22     1     death
+    ## 1876          Anhui Mainland China 31.82570 117.2264 2020-02-22    58 recovered
+    ## 1877        Beijing Mainland China 40.18240 116.4142 2020-02-22     9 recovered
+    ## 1878      Chongqing Mainland China 30.05720 107.8740 2020-02-22    12 recovered
+    ## 1879         Fujian Mainland China 26.07890 117.9874 2020-02-22    13 recovered
+    ## 1880      Guangdong Mainland China 23.34170 113.4244 2020-02-22    38 recovered
+    ## 1881        Guangxi Mainland China 23.82980 108.7881 2020-02-22     7 recovered
+    ## 1882        Guizhou Mainland China 26.81540 106.8748 2020-02-22    13 recovered
+    ## 1883         Hainan Mainland China 19.19590 109.7453 2020-02-22     9 recovered
+    ## 1884          Hebei Mainland China 38.04280 114.5149 2020-02-22    19 recovered
+    ## 1885   Heilongjiang Mainland China 47.86200 127.7615 2020-02-22    29 recovered
+    ## 1886          Henan Mainland China 33.88202 113.6140 2020-02-22    94 recovered
+    ## 1888          Hubei Mainland China 30.97560 112.2707 2020-02-22  3418 recovered
+    ## 1889          Hunan Mainland China 27.61040 111.7088 2020-02-22    31 recovered
+    ## 1890 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-22     9 recovered
+    ## 1891        Jiangsu Mainland China 32.97110 119.4550 2020-02-22    28 recovered
+    ## 1892        Jiangxi Mainland China 27.61400 115.7221 2020-02-22    66 recovered
+    ## 1893          Jilin Mainland China 43.66610 126.1923 2020-02-22     7 recovered
+    ## 1894       Liaoning Mainland China 41.29560 122.6085 2020-02-22     5 recovered
+    ## 1895        Shaanxi Mainland China 35.19170 108.8701 2020-02-22    15 recovered
+    ## 1896       Shandong Mainland China 36.34270 118.1498 2020-02-22    21 recovered
+    ## 1897       Shanghai Mainland China 31.20200 121.4491 2020-02-22    16 recovered
+    ## 1898         Shanxi Mainland China 37.57770 112.2922 2020-02-22     3 recovered
+    ## 1899        Sichuan Mainland China 30.61710 102.7103 2020-02-22    19 recovered
+    ## 1900        Tianjin Mainland China 39.30540 117.3230 2020-02-22     3 recovered
+    ## 1901       Xinjiang Mainland China 41.11290  85.2401 2020-02-22     1 recovered
+    ## 1902         Yunnan Mainland China 24.97400 101.4870 2020-02-22    11 recovered
+    ## 1903       Zhejiang Mainland China 29.18320 120.0934 2020-02-22    40 recovered
+    ## 1909      Chongqing Mainland China 30.05720 107.8740 2020-02-23     2 confirmed
+    ## 1911      Guangdong Mainland China 23.34170 113.4244 2020-02-23     3 confirmed
+    ## 1912          Hebei Mainland China 38.04280 114.5149 2020-02-23     2 confirmed
+    ## 1913   Heilongjiang Mainland China 47.86200 127.7615 2020-02-23     1 confirmed
+    ## 1914          Henan Mainland China 33.88202 113.6140 2020-02-23     1 confirmed
+    ## 1916          Hunan Mainland China 27.61040 111.7088 2020-02-23     3 confirmed
+    ## 1917       Shandong Mainland China 36.34270 118.1498 2020-02-23     4 confirmed
+    ## 1923      Guangdong Mainland China 23.34170 113.4244 2020-02-23     1     death
+    ## 1924         Hainan Mainland China 19.19590 109.7453 2020-02-23     1     death
+    ## 1929          Anhui Mainland China 31.82570 117.2264 2020-02-23    40 recovered
+    ## 1930        Beijing Mainland China 40.18240 116.4142 2020-02-23    11 recovered
+    ## 1931      Chongqing Mainland China 30.05720 107.8740 2020-02-23     7 recovered
+    ## 1933         Fujian Mainland China 26.07890 117.9874 2020-02-23     8 recovered
+    ## 1934          Gansu Mainland China 36.06110 103.8343 2020-02-23     2 recovered
+    ## 1935      Guangdong Mainland China 23.34170 113.4244 2020-02-23    27 recovered
+    ## 1936        Guangxi Mainland China 23.82980 108.7881 2020-02-23     2 recovered
+    ## 1937        Guizhou Mainland China 26.81540 106.8748 2020-02-23    12 recovered
+    ## 1938         Hainan Mainland China 19.19590 109.7453 2020-02-23     2 recovered
+    ## 1939          Hebei Mainland China 38.04280 114.5149 2020-02-23    16 recovered
+    ## 1940   Heilongjiang Mainland China 47.86200 127.7615 2020-02-23    18 recovered
+    ## 1941          Henan Mainland China 33.88202 113.6140 2020-02-23    38 recovered
+    ## 1943          Hubei Mainland China 30.97560 112.2707 2020-02-23    44 recovered
+    ## 1944          Hunan Mainland China 27.61040 111.7088 2020-02-23    22 recovered
+    ## 1945 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-23     1 recovered
+    ## 1946        Jiangsu Mainland China 32.97110 119.4550 2020-02-23    17 recovered
+    ## 1947        Jiangxi Mainland China 27.61400 115.7221 2020-02-23    58 recovered
+    ## 1948          Jilin Mainland China 43.66610 126.1923 2020-02-23     2 recovered
+    ## 1949       Liaoning Mainland China 41.29560 122.6085 2020-02-23     7 recovered
+    ## 1950        Ningxia Mainland China 37.26920 106.1655 2020-02-23     8 recovered
+    ## 1951        Shaanxi Mainland China 35.19170 108.8701 2020-02-23    14 recovered
+    ## 1952       Shandong Mainland China 36.34270 118.1498 2020-02-23    19 recovered
+    ## 1953       Shanghai Mainland China 31.20200 121.4491 2020-02-23    22 recovered
+    ## 1954         Shanxi Mainland China 37.57770 112.2922 2020-02-23     7 recovered
+    ## 1955        Sichuan Mainland China 30.61710 102.7103 2020-02-23    11 recovered
+    ## 1956        Tianjin Mainland China 39.30540 117.3230 2020-02-23    16 recovered
+    ## 1957       Xinjiang Mainland China 41.11290  85.2401 2020-02-23     3 recovered
+    ## 1958         Yunnan Mainland China 24.97400 101.4870 2020-02-23     8 recovered
+    ## 1959       Zhejiang Mainland China 29.18320 120.0934 2020-02-23    41 recovered
+    ## 1970      Chongqing Mainland China 30.05720 107.8740 2020-02-24     1 confirmed
+    ## 1971      Guangdong Mainland China 23.34170 113.4244 2020-02-24     3 confirmed
+    ## 1972        Guangxi Mainland China 23.82980 108.7881 2020-02-24     2 confirmed
+    ## 1974          Hubei Mainland China 30.97560 112.2707 2020-02-24   203 confirmed
+    ## 1975          Jilin Mainland China 43.66610 126.1923 2020-02-24     2 confirmed
+    ## 1978       Shandong Mainland China 36.34270 118.1498 2020-02-24     1 confirmed
+    ## 1979         Shanxi Mainland China 37.57770 112.2922 2020-02-24     1 confirmed
+    ## 1980        Sichuan Mainland China 30.61710 102.7103 2020-02-24     1 confirmed
+    ## 1988          Hubei Mainland China 30.97560 112.2707 2020-02-24   149     death
+    ## 1989       Shandong Mainland China 36.34270 118.1498 2020-02-24     1     death
+    ## 1992          Anhui Mainland China 31.82570 117.2264 2020-02-24    26 recovered
+    ## 1993        Beijing Mainland China 40.18240 116.4142 2020-02-24     9 recovered
+    ## 1994      Chongqing Mainland China 30.05720 107.8740 2020-02-24    14 recovered
+    ## 1995         Fujian Mainland China 26.07890 117.9874 2020-02-24    13 recovered
+    ## 1996          Gansu Mainland China 36.06110 103.8343 2020-02-24     2 recovered
+    ## 1997      Guangdong Mainland China 23.34170 113.4244 2020-02-24    31 recovered
+    ## 1998        Guangxi Mainland China 23.82980 108.7881 2020-02-24     6 recovered
+    ## 1999         Hainan Mainland China 19.19590 109.7453 2020-02-24    10 recovered
+    ## 2000          Hebei Mainland China 38.04280 114.5149 2020-02-24    15 recovered
+    ## 2001   Heilongjiang Mainland China 47.86200 127.7615 2020-02-24     5 recovered
+    ## 2002          Henan Mainland China 33.88202 113.6140 2020-02-24    75 recovered
+    ## 2004          Hubei Mainland China 30.97560 112.2707 2020-02-24  1405 recovered
+    ## 2005          Hunan Mainland China 27.61040 111.7088 2020-02-24    17 recovered
+    ## 2006 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-24     7 recovered
+    ## 2007        Jiangsu Mainland China 32.97110 119.4550 2020-02-24    34 recovered
+    ## 2008        Jiangxi Mainland China 27.61400 115.7221 2020-02-24    32 recovered
+    ## 2009          Jilin Mainland China 43.66610 126.1923 2020-02-24     6 recovered
+    ## 2010       Liaoning Mainland China 41.29560 122.6085 2020-02-24     7 recovered
+    ## 2011        Ningxia Mainland China 37.26920 106.1655 2020-02-24     2 recovered
+    ## 2012        Shaanxi Mainland China 35.19170 108.8701 2020-02-24    10 recovered
+    ## 2013       Shandong Mainland China 36.34270 118.1498 2020-02-24    22 recovered
+    ## 2014       Shanghai Mainland China 31.20200 121.4491 2020-02-24    12 recovered
+    ## 2015         Shanxi Mainland China 37.57770 112.2922 2020-02-24     6 recovered
+    ## 2016        Sichuan Mainland China 30.61710 102.7103 2020-02-24    15 recovered
+    ## 2018        Tianjin Mainland China 39.30540 117.3230 2020-02-24     6 recovered
+    ## 2019       Xinjiang Mainland China 41.11290  85.2401 2020-02-24     2 recovered
+    ## 2020         Yunnan Mainland China 24.97400 101.4870 2020-02-24     9 recovered
+    ## 2021       Zhejiang Mainland China 29.18320 120.0934 2020-02-24    22 recovered
+    ## 2037        Beijing Mainland China 40.18240 116.4142 2020-02-25     1 confirmed
+    ## 2039         Fujian Mainland China 26.07890 117.9874 2020-02-25     1 confirmed
+    ## 2040      Guangdong Mainland China 23.34170 113.4244 2020-02-25     2 confirmed
+    ## 2041        Guangxi Mainland China 23.82980 108.7881 2020-02-25     1 confirmed
+    ## 2043          Hubei Mainland China 30.97560 112.2707 2020-02-25   499 confirmed
+    ## 2044       Shandong Mainland China 36.34270 118.1498 2020-02-25     1 confirmed
+    ## 2045       Shanghai Mainland China 31.20200 121.4491 2020-02-25     1 confirmed
+    ## 2046        Sichuan Mainland China 30.61710 102.7103 2020-02-25     2 confirmed
+    ## 2051      Guangdong Mainland China 23.34170 113.4244 2020-02-25     1     death
+    ## 2052          Hubei Mainland China 30.97560 112.2707 2020-02-25    68     death
+    ## 2053       Shandong Mainland China 36.34270 118.1498 2020-02-25     1     death
+    ## 2059          Anhui Mainland China 31.82570 117.2264 2020-02-25    49 recovered
+    ## 2060        Beijing Mainland China 40.18240 116.4142 2020-02-25    17 recovered
+    ## 2061      Chongqing Mainland China 30.05720 107.8740 2020-02-25    23 recovered
+    ## 2062         Fujian Mainland China 26.07890 117.9874 2020-02-25    16 recovered
+    ## 2063      Guangdong Mainland China 23.34170 113.4244 2020-02-25    36 recovered
+    ## 2064        Guangxi Mainland China 23.82980 108.7881 2020-02-25    22 recovered
+    ## 2065        Guizhou Mainland China 26.81540 106.8748 2020-02-25     2 recovered
+    ## 2066         Hainan Mainland China 19.19590 109.7453 2020-02-25     8 recovered
+    ## 2067          Hebei Mainland China 38.04280 114.5149 2020-02-25    14 recovered
+    ## 2068   Heilongjiang Mainland China 47.86200 127.7615 2020-02-25    16 recovered
+    ## 2069          Henan Mainland China 33.88202 113.6140 2020-02-25    59 recovered
+    ## 2070          Hubei Mainland China 30.97560 112.2707 2020-02-25  2223 recovered
+    ## 2071          Hunan Mainland China 27.61040 111.7088 2020-02-25    37 recovered
+    ## 2072 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-25     1 recovered
+    ## 2073        Jiangsu Mainland China 32.97110 119.4550 2020-02-25     6 recovered
+    ## 2074        Jiangxi Mainland China 27.61400 115.7221 2020-02-25    38 recovered
+    ## 2075          Jilin Mainland China 43.66610 126.1923 2020-02-25     3 recovered
+    ## 2076       Liaoning Mainland China 41.29560 122.6085 2020-02-25     3 recovered
+    ## 2078        Ningxia Mainland China 37.26920 106.1655 2020-02-25     3 recovered
+    ## 2079        Shaanxi Mainland China 35.19170 108.8701 2020-02-25    13 recovered
+    ## 2080       Shandong Mainland China 36.34270 118.1498 2020-02-25    12 recovered
+    ## 2081       Shanghai Mainland China 31.20200 121.4491 2020-02-25     7 recovered
+    ## 2082         Shanxi Mainland China 37.57770 112.2922 2020-02-25     4 recovered
+    ## 2083        Sichuan Mainland China 30.61710 102.7103 2020-02-25    13 recovered
+    ## 2085        Tianjin Mainland China 39.30540 117.3230 2020-02-25     4 recovered
+    ## 2086         Yunnan Mainland China 24.97400 101.4870 2020-02-25     5 recovered
+    ## 2087       Zhejiang Mainland China 29.18320 120.0934 2020-02-25    26 recovered
+    ## 2114          Hebei Mainland China 38.04280 114.5149 2020-02-26     1 confirmed
+    ## 2116          Hubei Mainland China 30.97560 112.2707 2020-02-26   401 confirmed
+    ## 2117       Shanghai Mainland China 31.20200 121.4491 2020-02-26     1 confirmed
+    ## 2118        Sichuan Mainland China 30.61710 102.7103 2020-02-26     2 confirmed
+    ## 2127          Hubei Mainland China 30.97560 112.2707 2020-02-26    52     death
+    ## 2132          Anhui Mainland China 31.82570 117.2264 2020-02-26    32 recovered
+    ## 2133        Beijing Mainland China 40.18240 116.4142 2020-02-26    20 recovered
+    ## 2134      Chongqing Mainland China 30.05720 107.8740 2020-02-26    12 recovered
+    ## 2136         Fujian Mainland China 26.07890 117.9874 2020-02-26    19 recovered
+    ## 2137          Gansu Mainland China 36.06110 103.8343 2020-02-26     1 recovered
+    ## 2138      Guangdong Mainland China 23.34170 113.4244 2020-02-26    29 recovered
+    ## 2139        Guangxi Mainland China 23.82980 108.7881 2020-02-26    13 recovered
+    ## 2140         Hainan Mainland China 19.19590 109.7453 2020-02-26     5 recovered
+    ## 2141          Hebei Mainland China 38.04280 114.5149 2020-02-26    13 recovered
+    ## 2142   Heilongjiang Mainland China 47.86200 127.7615 2020-02-26     6 recovered
+    ## 2143          Henan Mainland China 33.88202 113.6140 2020-02-26    31 recovered
+    ## 2145          Hubei Mainland China 30.97560 112.2707 2020-02-26  1998 recovered
+    ## 2146          Hunan Mainland China 27.61040 111.7088 2020-02-26    15 recovered
+    ## 2147 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-26     3 recovered
+    ## 2148        Jiangsu Mainland China 32.97110 119.4550 2020-02-26    20 recovered
+    ## 2149        Jiangxi Mainland China 27.61400 115.7221 2020-02-26    36 recovered
+    ## 2150          Jilin Mainland China 43.66610 126.1923 2020-02-26     2 recovered
+    ## 2151       Liaoning Mainland China 41.29560 122.6085 2020-02-26     5 recovered
+    ## 2152        Ningxia Mainland China 37.26920 106.1655 2020-02-26     4 recovered
+    ## 2153        Shaanxi Mainland China 35.19170 108.8701 2020-02-26     6 recovered
+    ## 2154       Shandong Mainland China 36.34270 118.1498 2020-02-26    22 recovered
+    ## 2155       Shanghai Mainland China 31.20200 121.4491 2020-02-26     4 recovered
+    ## 2156         Shanxi Mainland China 37.57770 112.2922 2020-02-26     6 recovered
+    ## 2157        Sichuan Mainland China 30.61710 102.7103 2020-02-26    18 recovered
+    ## 2158        Tianjin Mainland China 39.30540 117.3230 2020-02-26     5 recovered
+    ## 2159       Xinjiang Mainland China 41.11290  85.2401 2020-02-26     4 recovered
+    ## 2160         Yunnan Mainland China 24.97400 101.4870 2020-02-26    15 recovered
+    ## 2161       Zhejiang Mainland China 29.18320 120.0934 2020-02-26    59 recovered
+    ## 2182        Beijing Mainland China 40.18240 116.4142 2020-02-27    10 confirmed
+    ## 2184         Fujian Mainland China 26.07890 117.9874 2020-02-27     2 confirmed
+    ## 2185          Hebei Mainland China 38.04280 114.5149 2020-02-27     5 confirmed
+    ## 2186          Henan Mainland China 33.88202 113.6140 2020-02-27     1 confirmed
+    ## 2188          Hubei Mainland China 30.97560 112.2707 2020-02-27   409 confirmed
+    ## 2189          Hunan Mainland China 27.61040 111.7088 2020-02-27     1 confirmed
+    ## 2190        Ningxia Mainland China 37.26920 106.1655 2020-02-27     1 confirmed
+    ## 2192        Sichuan Mainland China 30.61710 102.7103 2020-02-27     3 confirmed
+    ## 2193        Tianjin Mainland China 39.30540 117.3230 2020-02-27     1 confirmed
+    ## 2199        Beijing Mainland China 40.18240 116.4142 2020-02-27     1     death
+    ## 2200   Heilongjiang Mainland China 47.86200 127.7615 2020-02-27     1     death
+    ## 2201          Henan Mainland China 33.88202 113.6140 2020-02-27     1     death
+    ## 2202          Hubei Mainland China 30.97560 112.2707 2020-02-27    26     death
+    ## 2206          Anhui Mainland China 31.82570 117.2264 2020-02-27    48 recovered
+    ## 2207        Beijing Mainland China 40.18240 116.4142 2020-02-27    13 recovered
+    ## 2209      Chongqing Mainland China 30.05720 107.8740 2020-02-27    17 recovered
+    ## 2210         Fujian Mainland China 26.07890 117.9874 2020-02-27    10 recovered
+    ## 2211      Guangdong Mainland China 23.34170 113.4244 2020-02-27    39 recovered
+    ## 2212        Guangxi Mainland China 23.82980 108.7881 2020-02-27    14 recovered
+    ## 2213        Guizhou Mainland China 26.81540 106.8748 2020-02-27     8 recovered
+    ## 2214         Hainan Mainland China 19.19590 109.7453 2020-02-27     2 recovered
+    ## 2215          Hebei Mainland China 38.04280 114.5149 2020-02-27    13 recovered
+    ## 2216   Heilongjiang Mainland China 47.86200 127.7615 2020-02-27    21 recovered
+    ## 2217          Henan Mainland China 33.88202 113.6140 2020-02-27    35 recovered
+    ## 2218          Hubei Mainland China 30.97560 112.2707 2020-02-27  2414 recovered
+    ## 2219          Hunan Mainland China 27.61040 111.7088 2020-02-27    21 recovered
+    ## 2220 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-27     5 recovered
+    ## 2221        Jiangsu Mainland China 32.97110 119.4550 2020-02-27    20 recovered
+    ## 2222        Jiangxi Mainland China 27.61400 115.7221 2020-02-27    35 recovered
+    ## 2223          Jilin Mainland China 43.66610 126.1923 2020-02-27     2 recovered
+    ## 2224       Liaoning Mainland China 41.29560 122.6085 2020-02-27     5 recovered
+    ## 2226        Ningxia Mainland China 37.26920 106.1655 2020-02-27     3 recovered
+    ## 2227        Shaanxi Mainland China 35.19170 108.8701 2020-02-27     3 recovered
+    ## 2228       Shandong Mainland China 36.34270 118.1498 2020-02-27    10 recovered
+    ## 2229       Shanghai Mainland China 31.20200 121.4491 2020-02-27     4 recovered
+    ## 2230         Shanxi Mainland China 37.57770 112.2922 2020-02-27     3 recovered
+    ## 2231        Sichuan Mainland China 30.61710 102.7103 2020-02-27    14 recovered
+    ## 2232        Tianjin Mainland China 39.30540 117.3230 2020-02-27     6 recovered
+    ## 2233       Xinjiang Mainland China 41.11290  85.2401 2020-02-27     9 recovered
+    ## 2234         Yunnan Mainland China 24.97400 101.4870 2020-02-27     6 recovered
+    ## 2235       Zhejiang Mainland China 29.18320 120.0934 2020-02-27    65 recovered
+    ## 2260          Anhui Mainland China 31.82570 117.2264 2020-02-28     1 confirmed
+    ## 2261      Guangdong Mainland China 23.34170 113.4244 2020-02-28     1 confirmed
+    ## 2262          Hebei Mainland China 38.04280 114.5149 2020-02-28     1 confirmed
+    ## 2264          Hubei Mainland China 30.97560 112.2707 2020-02-28   318 confirmed
+    ## 2265        Jiangxi Mainland China 27.61400 115.7221 2020-02-28     1 confirmed
+    ## 2266        Sichuan Mainland China 30.61710 102.7103 2020-02-28     4 confirmed
+    ## 2271        Beijing Mainland China 40.18240 116.4142 2020-02-28     2     death
+    ## 2273          Hubei Mainland China 30.97560 112.2707 2020-02-28    41     death
+    ## 2274       Xinjiang Mainland China 41.11290  85.2401 2020-02-28     1     death
+    ## 2280          Anhui Mainland China 31.82570 117.2264 2020-02-28    29 recovered
+    ## 2281        Beijing Mainland China 40.18240 116.4142 2020-02-28     9 recovered
+    ## 2283      Chongqing Mainland China 30.05720 107.8740 2020-02-28    21 recovered
+    ## 2284         Fujian Mainland China 26.07890 117.9874 2020-02-28     7 recovered
+    ## 2285          Gansu Mainland China 36.06110 103.8343 2020-02-28     1 recovered
+    ## 2286      Guangdong Mainland China 23.34170 113.4244 2020-02-28    45 recovered
+    ## 2287        Guangxi Mainland China 23.82980 108.7881 2020-02-28     7 recovered
+    ## 2288         Hainan Mainland China 19.19590 109.7453 2020-02-28     2 recovered
+    ## 2289          Hebei Mainland China 38.04280 114.5149 2020-02-28     3 recovered
+    ## 2290   Heilongjiang Mainland China 47.86200 127.7615 2020-02-28    13 recovered
+    ## 2291          Henan Mainland China 33.88202 113.6140 2020-02-28    44 recovered
+    ## 2293          Hubei Mainland China 30.97560 112.2707 2020-02-28  3020 recovered
+    ## 2294          Hunan Mainland China 27.61040 111.7088 2020-02-28    26 recovered
+    ## 2295 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-28     2 recovered
+    ## 2296        Jiangsu Mainland China 32.97110 119.4550 2020-02-28    17 recovered
+    ## 2297        Jiangxi Mainland China 27.61400 115.7221 2020-02-28    36 recovered
+    ## 2298          Jilin Mainland China 43.66610 126.1923 2020-02-28     6 recovered
+    ## 2299        Shaanxi Mainland China 35.19170 108.8701 2020-02-28     4 recovered
+    ## 2300       Shandong Mainland China 36.34270 118.1498 2020-02-28    18 recovered
+    ## 2301       Shanghai Mainland China 31.20200 121.4491 2020-02-28     3 recovered
+    ## 2302         Shanxi Mainland China 37.57770 112.2922 2020-02-28     5 recovered
+    ## 2303        Sichuan Mainland China 30.61710 102.7103 2020-02-28    17 recovered
+    ## 2305       Xinjiang Mainland China 41.11290  85.2401 2020-02-28     9 recovered
+    ## 2306         Yunnan Mainland China 24.97400 101.4870 2020-02-28     6 recovered
+    ## 2307       Zhejiang Mainland China 29.18320 120.0934 2020-02-28    43 recovered
+    ## 2340        Beijing Mainland China 40.18240 116.4142 2020-02-29     1 confirmed
+    ## 2343      Guangdong Mainland China 23.34170 113.4244 2020-02-29     1 confirmed
+    ## 2345          Hubei Mainland China 30.97560 112.2707 2020-02-29   423 confirmed
+    ## 2346          Hunan Mainland China 27.61040 111.7088 2020-02-29     1 confirmed
+    ## 2348        Ningxia Mainland China 37.26920 106.1655 2020-02-29     1 confirmed
+    ## 2362        Beijing Mainland China 40.18240 116.4142 2020-02-29     1     death
+    ## 2363          Henan Mainland China 33.88202 113.6140 2020-02-29     1     death
+    ## 2364          Hubei Mainland China 30.97560 112.2707 2020-02-29    45     death
+    ## 2372          Anhui Mainland China 31.82570 117.2264 2020-02-29    47 recovered
+    ## 2373        Beijing Mainland China 40.18240 116.4142 2020-02-29    14 recovered
+    ## 2374      Chongqing Mainland China 30.05720 107.8740 2020-02-29    16 recovered
+    ## 2375         Fujian Mainland China 26.07890 117.9874 2020-02-29     8 recovered
+    ## 2376      Guangdong Mainland China 23.34170 113.4244 2020-02-29    48 recovered
+    ## 2377        Guangxi Mainland China 23.82980 108.7881 2020-02-29     8 recovered
+    ## 2378         Hainan Mainland China 19.19590 109.7453 2020-02-29    15 recovered
+    ## 2379          Hebei Mainland China 38.04280 114.5149 2020-02-29     5 recovered
+    ## 2380   Heilongjiang Mainland China 47.86200 127.7615 2020-02-29    18 recovered
+    ## 2381          Henan Mainland China 33.88202 113.6140 2020-02-29    58 recovered
+    ## 2383          Hubei Mainland China 30.97560 112.2707 2020-02-29  2590 recovered
+    ## 2384          Hunan Mainland China 27.61040 111.7088 2020-02-29    16 recovered
+    ## 2385 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-29     4 recovered
+    ## 2386        Jiangsu Mainland China 32.97110 119.4550 2020-02-29     8 recovered
+    ## 2387        Jiangxi Mainland China 27.61400 115.7221 2020-02-29    21 recovered
+    ## 2388          Jilin Mainland China 43.66610 126.1923 2020-02-29     2 recovered
+    ## 2389       Liaoning Mainland China 41.29560 122.6085 2020-02-29     3 recovered
+    ## 2390        Ningxia Mainland China 37.26920 106.1655 2020-02-29     1 recovered
+    ## 2391        Shaanxi Mainland China 35.19170 108.8701 2020-02-29     8 recovered
+    ## 2392       Shandong Mainland China 36.34270 118.1498 2020-02-29    16 recovered
+    ## 2393       Shanghai Mainland China 31.20200 121.4491 2020-02-29     8 recovered
+    ## 2394         Shanxi Mainland China 37.57770 112.2922 2020-02-29     2 recovered
+    ## 2395        Sichuan Mainland China 30.61710 102.7103 2020-02-29    13 recovered
+    ## 2397        Tianjin Mainland China 39.30540 117.3230 2020-02-29     7 recovered
+    ## 2398       Xinjiang Mainland China 41.11290  85.2401 2020-02-29    10 recovered
+    ## 2399         Yunnan Mainland China 24.97400 101.4870 2020-02-29     1 recovered
+    ## 2400       Zhejiang Mainland China 29.18320 120.0934 2020-02-29    41 recovered
+    ## 2435        Beijing Mainland China 40.18240 116.4142 2020-03-01     2 confirmed
+    ## 2438          Hubei Mainland China 30.97560 112.2707 2020-03-01   570 confirmed
+    ## 2440       Liaoning Mainland China 41.29560 122.6085 2020-03-01     1 confirmed
+    ## 2443       Shandong Mainland China 36.34270 118.1498 2020-03-01     2 confirmed
+    ## 2452          Henan Mainland China 33.88202 113.6140 2020-03-01     1     death
+    ## 2453          Hubei Mainland China 30.97560 112.2707 2020-03-01    34     death
+    ## 2458          Anhui Mainland China 31.82570 117.2264 2020-03-01     5 recovered
+    ## 2459        Beijing Mainland China 40.18240 116.4142 2020-03-01     5 recovered
+    ## 2460      Chongqing Mainland China 30.05720 107.8740 2020-03-01    12 recovered
+    ## 2461         Fujian Mainland China 26.07890 117.9874 2020-03-01     4 recovered
+    ## 2462          Gansu Mainland China 36.06110 103.8343 2020-03-01     2 recovered
+    ## 2463      Guangdong Mainland China 23.34170 113.4244 2020-03-01    33 recovered
+    ## 2464        Guangxi Mainland China 23.82980 108.7881 2020-03-01     5 recovered
+    ## 2465         Hainan Mainland China 19.19590 109.7453 2020-03-01     1 recovered
+    ## 2466          Hebei Mainland China 38.04280 114.5149 2020-03-01    12 recovered
+    ## 2467   Heilongjiang Mainland China 47.86200 127.7615 2020-03-01    41 recovered
+    ## 2468          Henan Mainland China 33.88202 113.6140 2020-03-01    28 recovered
+    ## 2470          Hubei Mainland China 30.97560 112.2707 2020-03-01  2543 recovered
+    ## 2471          Hunan Mainland China 27.61040 111.7088 2020-03-01    20 recovered
+    ## 2472 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-01     3 recovered
+    ## 2473        Jiangsu Mainland China 32.97110 119.4550 2020-03-01    13 recovered
+    ## 2474        Jiangxi Mainland China 27.61400 115.7221 2020-03-01    20 recovered
+    ## 2475          Jilin Mainland China 43.66610 126.1923 2020-03-01     3 recovered
+    ## 2476       Liaoning Mainland China 41.29560 122.6085 2020-03-01     7 recovered
+    ## 2477        Shaanxi Mainland China 35.19170 108.8701 2020-03-01     1 recovered
+    ## 2478       Shandong Mainland China 36.34270 118.1498 2020-03-01    22 recovered
+    ## 2479       Shanghai Mainland China 31.20200 121.4491 2020-03-01     3 recovered
+    ## 2480         Shanxi Mainland China 37.57770 112.2922 2020-03-01     2 recovered
+    ## 2481        Sichuan Mainland China 30.61710 102.7103 2020-03-01    14 recovered
+    ## 2482        Tianjin Mainland China 39.30540 117.3230 2020-03-01     2 recovered
+    ## 2483       Xinjiang Mainland China 41.11290  85.2401 2020-03-01     2 recovered
+    ## 2484         Yunnan Mainland China 24.97400 101.4870 2020-03-01     6 recovered
+    ## 2485       Zhejiang Mainland China 29.18320 120.0934 2020-03-01    30 recovered
+    ## 2518        Beijing Mainland China 40.18240 116.4142 2020-03-02     1 confirmed
+    ## 2521      Guangdong Mainland China 23.34170 113.4244 2020-03-02     1 confirmed
+    ## 2524          Hubei Mainland China 30.97560 112.2707 2020-03-02   196 confirmed
+    ## 2527        Ningxia Mainland China 37.26920 106.1655 2020-03-02     1 confirmed
+    ## 2542       Zhejiang Mainland China 29.18320 120.0934 2020-03-02     1 confirmed
+    ## 2547          Hubei Mainland China 30.97560 112.2707 2020-03-02    42     death
+    ## 2554          Anhui Mainland China 31.82570 117.2264 2020-03-02    44 recovered
+    ## 2555        Beijing Mainland China 40.18240 116.4142 2020-03-02     6 recovered
+    ## 2556      Chongqing Mainland China 30.05720 107.8740 2020-03-02    19 recovered
+    ## 2557         Fujian Mainland China 26.07890 117.9874 2020-03-02     8 recovered
+    ## 2558          Gansu Mainland China 36.06110 103.8343 2020-03-02     1 recovered
+    ## 2559      Guangdong Mainland China 23.34170 113.4244 2020-03-02    43 recovered
+    ## 2560        Guangxi Mainland China 23.82980 108.7881 2020-03-02    11 recovered
+    ## 2561        Guizhou Mainland China 26.81540 106.8748 2020-03-02     2 recovered
+    ## 2562         Hainan Mainland China 19.19590 109.7453 2020-03-02     2 recovered
+    ## 2563          Hebei Mainland China 38.04280 114.5149 2020-03-02     2 recovered
+    ## 2564   Heilongjiang Mainland China 47.86200 127.7615 2020-03-02    14 recovered
+    ## 2565          Henan Mainland China 33.88202 113.6140 2020-03-02     7 recovered
+    ## 2566          Hubei Mainland China 30.97560 112.2707 2020-03-02  2398 recovered
+    ## 2567          Hunan Mainland China 27.61040 111.7088 2020-03-02    21 recovered
+    ## 2568 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-02     2 recovered
+    ## 2569        Jiangsu Mainland China 32.97110 119.4550 2020-03-02     7 recovered
+    ## 2570        Jiangxi Mainland China 27.61400 115.7221 2020-03-02    19 recovered
+    ## 2571          Jilin Mainland China 43.66610 126.1923 2020-03-02     5 recovered
+    ## 2572        Shaanxi Mainland China 35.19170 108.8701 2020-03-02     8 recovered
+    ## 2573       Shandong Mainland China 36.34270 118.1498 2020-03-02    17 recovered
+    ## 2574       Shanghai Mainland China 31.20200 121.4491 2020-03-02     2 recovered
+    ## 2575         Shanxi Mainland China 37.57770 112.2922 2020-03-02     3 recovered
+    ## 2576        Sichuan Mainland China 30.61710 102.7103 2020-03-02    21 recovered
+    ## 2578       Xinjiang Mainland China 41.11290  85.2401 2020-03-02     2 recovered
+    ## 2579         Yunnan Mainland China 24.97400 101.4870 2020-03-02     5 recovered
+    ## 2580       Zhejiang Mainland China 29.18320 120.0934 2020-03-02    23 recovered
+    ## 2624          Hubei Mainland China 30.97560 112.2707 2020-03-03   114 confirmed
+    ## 2626       Liaoning Mainland China 41.29560 122.6085 2020-03-03     3 confirmed
+    ## 2632       Shanghai Mainland China 31.20200 121.4491 2020-03-03     1 confirmed
+    ## 2638       Zhejiang Mainland China 29.18320 120.0934 2020-03-03     7 confirmed
+    ## 2644          Hubei Mainland China 30.97560 112.2707 2020-03-03    32     death
+    ## 2645 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-03     1     death
+    ## 2653          Anhui Mainland China 31.82570 117.2264 2020-03-03    19 recovered
+    ## 2654        Beijing Mainland China 40.18240 116.4142 2020-03-03     6 recovered
+    ## 2655      Chongqing Mainland China 30.05720 107.8740 2020-03-03    21 recovered
+    ## 2656         Fujian Mainland China 26.07890 117.9874 2020-03-03     5 recovered
+    ## 2657          Gansu Mainland China 36.06110 103.8343 2020-03-03     1 recovered
+    ## 2658      Guangdong Mainland China 23.34170 113.4244 2020-03-03    42 recovered
+    ## 2659        Guangxi Mainland China 23.82980 108.7881 2020-03-03    10 recovered
+    ## 2660         Hainan Mainland China 19.19590 109.7453 2020-03-03     4 recovered
+    ## 2661          Hebei Mainland China 38.04280 114.5149 2020-03-03     4 recovered
+    ## 2662   Heilongjiang Mainland China 47.86200 127.7615 2020-03-03    10 recovered
+    ## 2663          Henan Mainland China 33.88202 113.6140 2020-03-03    26 recovered
+    ## 2665          Hubei Mainland China 30.97560 112.2707 2020-03-03  2274 recovered
+    ## 2666          Hunan Mainland China 27.61040 111.7088 2020-03-03    19 recovered
+    ## 2667 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-03     5 recovered
+    ## 2668        Jiangsu Mainland China 32.97110 119.4550 2020-03-03    19 recovered
+    ## 2669        Jiangxi Mainland China 27.61400 115.7221 2020-03-03    20 recovered
+    ## 2670       Liaoning Mainland China 41.29560 122.6085 2020-03-03     3 recovered
+    ## 2673       Shandong Mainland China 36.34270 118.1498 2020-03-03    51 recovered
+    ## 2674       Shanghai Mainland China 31.20200 121.4491 2020-03-03     2 recovered
+    ## 2675         Shanxi Mainland China 37.57770 112.2922 2020-03-03     5 recovered
+    ## 2676        Sichuan Mainland China 30.61710 102.7103 2020-03-03     8 recovered
+    ## 2677        Tianjin Mainland China 39.30540 117.3230 2020-03-03    13 recovered
+    ## 2678       Xinjiang Mainland China 41.11290  85.2401 2020-03-03     2 recovered
+    ## 2679         Yunnan Mainland China 24.97400 101.4870 2020-03-03     1 recovered
+    ## 2680       Zhejiang Mainland China 29.18320 120.0934 2020-03-03    24 recovered
+    ## 2724        Beijing Mainland China 40.18240 116.4142 2020-03-04     4 confirmed
+    ## 2728          Hubei Mainland China 30.97560 112.2707 2020-03-04   115 confirmed
+    ## 2732        Ningxia Mainland China 37.26920 106.1655 2020-03-04     1 confirmed
+    ## 2745          Hubei Mainland China 30.97560 112.2707 2020-03-04    36     death
+    ## 2755          Anhui Mainland China 31.82570 117.2264 2020-03-04    20 recovered
+    ## 2756        Beijing Mainland China 40.18240 116.4142 2020-03-04     9 recovered
+    ## 2757      Chongqing Mainland China 30.05720 107.8740 2020-03-04    12 recovered
+    ## 2758         Fujian Mainland China 26.07890 117.9874 2020-03-04    10 recovered
+    ## 2759          Gansu Mainland China 36.06110 103.8343 2020-03-04     1 recovered
+    ## 2760      Guangdong Mainland China 23.34170 113.4244 2020-03-04    32 recovered
+    ## 2761        Guangxi Mainland China 23.82980 108.7881 2020-03-04     8 recovered
+    ## 2762         Hainan Mainland China 19.19590 109.7453 2020-03-04     3 recovered
+    ## 2763          Hebei Mainland China 38.04280 114.5149 2020-03-04     1 recovered
+    ## 2764   Heilongjiang Mainland China 47.86200 127.7615 2020-03-04     7 recovered
+    ## 2765          Henan Mainland China 33.88202 113.6140 2020-03-04     3 recovered
+    ## 2766          Hubei Mainland China 30.97560 112.2707 2020-03-04  2349 recovered
+    ## 2767          Hunan Mainland China 27.61040 111.7088 2020-03-04    10 recovered
+    ## 2768 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-04     4 recovered
+    ## 2769        Jiangsu Mainland China 32.97110 119.4550 2020-03-04    15 recovered
+    ## 2770        Jiangxi Mainland China 27.61400 115.7221 2020-03-04    14 recovered
+    ## 2771          Jilin Mainland China 43.66610 126.1923 2020-03-04     3 recovered
+    ## 2772        Shaanxi Mainland China 35.19170 108.8701 2020-03-04     7 recovered
+    ## 2773       Shandong Mainland China 36.34270 118.1498 2020-03-04     5 recovered
+    ## 2774       Shanghai Mainland China 31.20200 121.4491 2020-03-04     4 recovered
+    ## 2775        Sichuan Mainland China 30.61710 102.7103 2020-03-04    12 recovered
+    ## 2776       Xinjiang Mainland China 41.11290  85.2401 2020-03-04     1 recovered
+    ## 2777       Zhejiang Mainland China 29.18320 120.0934 2020-03-04    21 recovered
+
+``` r
+mainland_2 <-  virus[virus$Country.Region == "Mainland China",]
+mainland_2
+```
+
+    ##      Province.State Country.Region      Lat     Long       date cases      type
+    ## 4             Anhui Mainland China 31.82570 117.2264 2020-01-22     1 confirmed
+    ## 5           Beijing Mainland China 40.18240 116.4142 2020-01-22    14 confirmed
+    ## 6         Chongqing Mainland China 30.05720 107.8740 2020-01-22     6 confirmed
+    ## 7            Fujian Mainland China 26.07890 117.9874 2020-01-22     1 confirmed
+    ## 8         Guangdong Mainland China 23.34170 113.4244 2020-01-22    26 confirmed
+    ## 9           Guangxi Mainland China 23.82980 108.7881 2020-01-22     2 confirmed
+    ## 10          Guizhou Mainland China 26.81540 106.8748 2020-01-22     1 confirmed
+    ## 11           Hainan Mainland China 19.19590 109.7453 2020-01-22     4 confirmed
+    ## 12            Hebei Mainland China 38.04280 114.5149 2020-01-22     1 confirmed
+    ## 13            Henan Mainland China 33.88202 113.6140 2020-01-22     5 confirmed
+    ## 14            Hubei Mainland China 30.97560 112.2707 2020-01-22   444 confirmed
+    ## 15            Hunan Mainland China 27.61040 111.7088 2020-01-22     4 confirmed
+    ## 16          Jiangsu Mainland China 32.97110 119.4550 2020-01-22     1 confirmed
+    ## 17          Jiangxi Mainland China 27.61400 115.7221 2020-01-22     2 confirmed
+    ## 19         Liaoning Mainland China 41.29560 122.6085 2020-01-22     2 confirmed
+    ## 21          Ningxia Mainland China 37.26920 106.1655 2020-01-22     1 confirmed
+    ## 22         Shandong Mainland China 36.34270 118.1498 2020-01-22     2 confirmed
+    ## 23         Shanghai Mainland China 31.20200 121.4491 2020-01-22     9 confirmed
+    ## 24           Shanxi Mainland China 37.57770 112.2922 2020-01-22     1 confirmed
+    ## 25          Sichuan Mainland China 30.61710 102.7103 2020-01-22     5 confirmed
+    ## 27          Tianjin Mainland China 39.30540 117.3230 2020-01-22     4 confirmed
+    ## 28           Yunnan Mainland China 24.97400 101.4870 2020-01-22     1 confirmed
+    ## 29         Zhejiang Mainland China 29.18320 120.0934 2020-01-22    10 confirmed
+    ## 30            Hubei Mainland China 30.97560 112.2707 2020-01-22    17     death
+    ## 31            Hubei Mainland China 30.97560 112.2707 2020-01-22    28 recovered
+    ## 36            Anhui Mainland China 31.82570 117.2264 2020-01-23     8 confirmed
+    ## 37          Beijing Mainland China 40.18240 116.4142 2020-01-23     8 confirmed
+    ## 38        Chongqing Mainland China 30.05720 107.8740 2020-01-23     3 confirmed
+    ## 39           Fujian Mainland China 26.07890 117.9874 2020-01-23     4 confirmed
+    ## 40            Gansu Mainland China 36.06110 103.8343 2020-01-23     2 confirmed
+    ## 41        Guangdong Mainland China 23.34170 113.4244 2020-01-23     6 confirmed
+    ## 42          Guangxi Mainland China 23.82980 108.7881 2020-01-23     3 confirmed
+    ## 43          Guizhou Mainland China 26.81540 106.8748 2020-01-23     2 confirmed
+    ## 44           Hainan Mainland China 19.19590 109.7453 2020-01-23     1 confirmed
+    ## 45     Heilongjiang Mainland China 47.86200 127.7615 2020-01-23     2 confirmed
+    ## 47            Hunan Mainland China 27.61040 111.7088 2020-01-23     5 confirmed
+    ## 48          Jiangsu Mainland China 32.97110 119.4550 2020-01-23     4 confirmed
+    ## 49          Jiangxi Mainland China 27.61400 115.7221 2020-01-23     5 confirmed
+    ## 50            Jilin Mainland China 43.66610 126.1923 2020-01-23     1 confirmed
+    ## 51         Liaoning Mainland China 41.29560 122.6085 2020-01-23     1 confirmed
+    ## 53          Shaanxi Mainland China 35.19170 108.8701 2020-01-23     3 confirmed
+    ## 54         Shandong Mainland China 36.34270 118.1498 2020-01-23     4 confirmed
+    ## 55         Shanghai Mainland China 31.20200 121.4491 2020-01-23     7 confirmed
+    ## 56          Sichuan Mainland China 30.61710 102.7103 2020-01-23     3 confirmed
+    ## 57         Xinjiang Mainland China 41.11290  85.2401 2020-01-23     2 confirmed
+    ## 58           Yunnan Mainland China 24.97400 101.4870 2020-01-23     1 confirmed
+    ## 59         Zhejiang Mainland China 29.18320 120.0934 2020-01-23    17 confirmed
+    ## 60            Hebei Mainland China 38.04280 114.5149 2020-01-23     1     death
+    ## 61        Guangdong Mainland China 23.34170 113.4244 2020-01-23     2 recovered
+    ## 67            Anhui Mainland China 31.82570 117.2264 2020-01-24     6 confirmed
+    ## 68          Beijing Mainland China 40.18240 116.4142 2020-01-24    14 confirmed
+    ## 69        Chongqing Mainland China 30.05720 107.8740 2020-01-24    18 confirmed
+    ## 71           Fujian Mainland China 26.07890 117.9874 2020-01-24     5 confirmed
+    ## 72        Guangdong Mainland China 23.34170 113.4244 2020-01-24    21 confirmed
+    ## 73          Guangxi Mainland China 23.82980 108.7881 2020-01-24    18 confirmed
+    ## 74           Hainan Mainland China 19.19590 109.7453 2020-01-24     3 confirmed
+    ## 75            Hebei Mainland China 38.04280 114.5149 2020-01-24     1 confirmed
+    ## 76     Heilongjiang Mainland China 47.86200 127.7615 2020-01-24     2 confirmed
+    ## 77            Henan Mainland China 33.88202 113.6140 2020-01-24     4 confirmed
+    ## 78            Hubei Mainland China 30.97560 112.2707 2020-01-24   105 confirmed
+    ## 79            Hunan Mainland China 27.61040 111.7088 2020-01-24    15 confirmed
+    ## 80   Inner Mongolia Mainland China 44.09350 113.9448 2020-01-24     1 confirmed
+    ## 81          Jiangsu Mainland China 32.97110 119.4550 2020-01-24     4 confirmed
+    ## 82          Jiangxi Mainland China 27.61400 115.7221 2020-01-24    11 confirmed
+    ## 83            Jilin Mainland China 43.66610 126.1923 2020-01-24     2 confirmed
+    ## 84         Liaoning Mainland China 41.29560 122.6085 2020-01-24     1 confirmed
+    ## 85          Ningxia Mainland China 37.26920 106.1655 2020-01-24     1 confirmed
+    ## 86          Shaanxi Mainland China 35.19170 108.8701 2020-01-24     2 confirmed
+    ## 87         Shandong Mainland China 36.34270 118.1498 2020-01-24     9 confirmed
+    ## 88         Shanghai Mainland China 31.20200 121.4491 2020-01-24     4 confirmed
+    ## 89          Sichuan Mainland China 30.61710 102.7103 2020-01-24     7 confirmed
+    ## 91          Tianjin Mainland China 39.30540 117.3230 2020-01-24     4 confirmed
+    ## 92           Yunnan Mainland China 24.97400 101.4870 2020-01-24     3 confirmed
+    ## 93         Zhejiang Mainland China 29.18320 120.0934 2020-01-24    16 confirmed
+    ## 94     Heilongjiang Mainland China 47.86200 127.7615 2020-01-24     1     death
+    ## 95            Hubei Mainland China 30.97560 112.2707 2020-01-24     7     death
+    ## 96          Beijing Mainland China 40.18240 116.4142 2020-01-24     1 recovered
+    ## 97            Hubei Mainland China 30.97560 112.2707 2020-01-24     3 recovered
+    ## 98         Shanghai Mainland China 31.20200 121.4491 2020-01-24     1 recovered
+    ## 99         Zhejiang Mainland China 29.18320 120.0934 2020-01-24     1 recovered
+    ## 104           Anhui Mainland China 31.82570 117.2264 2020-01-25    24 confirmed
+    ## 105         Beijing Mainland China 40.18240 116.4142 2020-01-25     5 confirmed
+    ## 106       Chongqing Mainland China 30.05720 107.8740 2020-01-25    30 confirmed
+    ## 107          Fujian Mainland China 26.07890 117.9874 2020-01-25     8 confirmed
+    ## 108           Gansu Mainland China 36.06110 103.8343 2020-01-25     2 confirmed
+    ## 109       Guangdong Mainland China 23.34170 113.4244 2020-01-25    25 confirmed
+    ## 110         Guizhou Mainland China 26.81540 106.8748 2020-01-25     1 confirmed
+    ## 111          Hainan Mainland China 19.19590 109.7453 2020-01-25    11 confirmed
+    ## 112           Hebei Mainland China 38.04280 114.5149 2020-01-25     6 confirmed
+    ## 113    Heilongjiang Mainland China 47.86200 127.7615 2020-01-25     5 confirmed
+    ## 114           Henan Mainland China 33.88202 113.6140 2020-01-25    23 confirmed
+    ## 116           Hubei Mainland China 30.97560 112.2707 2020-01-25   212 confirmed
+    ## 117           Hunan Mainland China 27.61040 111.7088 2020-01-25    19 confirmed
+    ## 118  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-25     6 confirmed
+    ## 119         Jiangsu Mainland China 32.97110 119.4550 2020-01-25     9 confirmed
+    ## 120           Jilin Mainland China 43.66610 126.1923 2020-01-25     1 confirmed
+    ## 121        Liaoning Mainland China 41.29560 122.6085 2020-01-25    13 confirmed
+    ## 122         Ningxia Mainland China 37.26920 106.1655 2020-01-25     1 confirmed
+    ## 123         Qinghai Mainland China 35.74520  95.9956 2020-01-25     1 confirmed
+    ## 124         Shaanxi Mainland China 35.19170 108.8701 2020-01-25    10 confirmed
+    ## 125        Shandong Mainland China 36.34270 118.1498 2020-01-25    12 confirmed
+    ## 126        Shanghai Mainland China 31.20200 121.4491 2020-01-25    13 confirmed
+    ## 127          Shanxi Mainland China 37.57770 112.2922 2020-01-25     5 confirmed
+    ## 128         Sichuan Mainland China 30.61710 102.7103 2020-01-25    13 confirmed
+    ## 129         Tianjin Mainland China 39.30540 117.3230 2020-01-25     2 confirmed
+    ## 130        Xinjiang Mainland China 41.11290  85.2401 2020-01-25     1 confirmed
+    ## 131          Yunnan Mainland China 24.97400 101.4870 2020-01-25     6 confirmed
+    ## 132        Zhejiang Mainland China 29.18320 120.0934 2020-01-25    19 confirmed
+    ## 133           Hubei Mainland China 30.97560 112.2707 2020-01-25    16     death
+    ## 134         Beijing Mainland China 40.18240 116.4142 2020-01-25     1 recovered
+    ## 135           Hubei Mainland China 30.97560 112.2707 2020-01-25     1 recovered
+    ## 136         Jiangsu Mainland China 32.97110 119.4550 2020-01-25     1 recovered
+    ## 142           Anhui Mainland China 31.82570 117.2264 2020-01-26    21 confirmed
+    ## 143         Beijing Mainland China 40.18240 116.4142 2020-01-26    27 confirmed
+    ## 144       Chongqing Mainland China 30.05720 107.8740 2020-01-26    18 confirmed
+    ## 145          Fujian Mainland China 26.07890 117.9874 2020-01-26    17 confirmed
+    ## 146           Gansu Mainland China 36.06110 103.8343 2020-01-26     3 confirmed
+    ## 147       Guangdong Mainland China 23.34170 113.4244 2020-01-26    33 confirmed
+    ## 148         Guangxi Mainland China 23.82980 108.7881 2020-01-26    13 confirmed
+    ## 149         Guizhou Mainland China 26.81540 106.8748 2020-01-26     1 confirmed
+    ## 150          Hainan Mainland China 19.19590 109.7453 2020-01-26     3 confirmed
+    ## 151           Hebei Mainland China 38.04280 114.5149 2020-01-26     5 confirmed
+    ## 152    Heilongjiang Mainland China 47.86200 127.7615 2020-01-26     6 confirmed
+    ## 153           Henan Mainland China 33.88202 113.6140 2020-01-26    51 confirmed
+    ## 155           Hubei Mainland China 30.97560 112.2707 2020-01-26   297 confirmed
+    ## 156           Hunan Mainland China 27.61040 111.7088 2020-01-26    26 confirmed
+    ## 157         Jiangsu Mainland China 32.97110 119.4550 2020-01-26    15 confirmed
+    ## 158         Jiangxi Mainland China 27.61400 115.7221 2020-01-26    18 confirmed
+    ## 159        Liaoning Mainland China 41.29560 122.6085 2020-01-26     4 confirmed
+    ## 163         Ningxia Mainland China 37.26920 106.1655 2020-01-26     1 confirmed
+    ## 165         Shaanxi Mainland China 35.19170 108.8701 2020-01-26     7 confirmed
+    ## 166        Shandong Mainland China 36.34270 118.1498 2020-01-26    19 confirmed
+    ## 167        Shanghai Mainland China 31.20200 121.4491 2020-01-26     7 confirmed
+    ## 168          Shanxi Mainland China 37.57770 112.2922 2020-01-26     3 confirmed
+    ## 169         Sichuan Mainland China 30.61710 102.7103 2020-01-26    16 confirmed
+    ## 172         Tianjin Mainland China 39.30540 117.3230 2020-01-26     4 confirmed
+    ## 175        Xinjiang Mainland China 41.11290  85.2401 2020-01-26     1 confirmed
+    ## 176          Yunnan Mainland China 24.97400 101.4870 2020-01-26     5 confirmed
+    ## 177        Zhejiang Mainland China 29.18320 120.0934 2020-01-26    42 confirmed
+    ## 178           Henan Mainland China 33.88202 113.6140 2020-01-26     1     death
+    ## 179           Hubei Mainland China 30.97560 112.2707 2020-01-26    12     death
+    ## 180        Shanghai Mainland China 31.20200 121.4491 2020-01-26     1     death
+    ## 183           Hubei Mainland China 30.97560 112.2707 2020-01-26    10 recovered
+    ## 189           Anhui Mainland China 31.82570 117.2264 2020-01-27    10 confirmed
+    ## 190         Beijing Mainland China 40.18240 116.4142 2020-01-27    12 confirmed
+    ## 191       Chongqing Mainland China 30.05720 107.8740 2020-01-27    35 confirmed
+    ## 192          Fujian Mainland China 26.07890 117.9874 2020-01-27    24 confirmed
+    ## 193           Gansu Mainland China 36.06110 103.8343 2020-01-27     7 confirmed
+    ## 194       Guangdong Mainland China 23.34170 113.4244 2020-01-27    40 confirmed
+    ## 195         Guangxi Mainland China 23.82980 108.7881 2020-01-27    10 confirmed
+    ## 196         Guizhou Mainland China 26.81540 106.8748 2020-01-27     2 confirmed
+    ## 197          Hainan Mainland China 19.19590 109.7453 2020-01-27    11 confirmed
+    ## 198           Hebei Mainland China 38.04280 114.5149 2020-01-27     5 confirmed
+    ## 199    Heilongjiang Mainland China 47.86200 127.7615 2020-01-27     6 confirmed
+    ## 200           Henan Mainland China 33.88202 113.6140 2020-01-27    45 confirmed
+    ## 201           Hubei Mainland China 30.97560 112.2707 2020-01-27   365 confirmed
+    ## 202           Hunan Mainland China 27.61040 111.7088 2020-01-27    31 confirmed
+    ## 203  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-27     4 confirmed
+    ## 204         Jiangsu Mainland China 32.97110 119.4550 2020-01-27    14 confirmed
+    ## 205         Jiangxi Mainland China 27.61400 115.7221 2020-01-27    36 confirmed
+    ## 206           Jilin Mainland China 43.66610 126.1923 2020-01-27     2 confirmed
+    ## 207        Liaoning Mainland China 41.29560 122.6085 2020-01-27     6 confirmed
+    ## 210         Ningxia Mainland China 37.26920 106.1655 2020-01-27     3 confirmed
+    ## 211         Qinghai Mainland China 35.74520  95.9956 2020-01-27     5 confirmed
+    ## 212         Shaanxi Mainland China 35.19170 108.8701 2020-01-27    13 confirmed
+    ## 213        Shandong Mainland China 36.34270 118.1498 2020-01-27    29 confirmed
+    ## 214        Shanghai Mainland China 31.20200 121.4491 2020-01-27    13 confirmed
+    ## 215          Shanxi Mainland China 37.57770 112.2922 2020-01-27     4 confirmed
+    ## 216         Sichuan Mainland China 30.61710 102.7103 2020-01-27    25 confirmed
+    ## 218         Tianjin Mainland China 39.30540 117.3230 2020-01-27     9 confirmed
+    ## 219        Xinjiang Mainland China 41.11290  85.2401 2020-01-27     1 confirmed
+    ## 220          Yunnan Mainland China 24.97400 101.4870 2020-01-27    10 confirmed
+    ## 221        Zhejiang Mainland China 29.18320 120.0934 2020-01-27    24 confirmed
+    ## 222         Beijing Mainland China 40.18240 116.4142 2020-01-27     1     death
+    ## 223          Hainan Mainland China 19.19590 109.7453 2020-01-27     1     death
+    ## 224           Hubei Mainland China 30.97560 112.2707 2020-01-27    24     death
+    ## 225       Guangdong Mainland China 23.34170 113.4244 2020-01-27     2 recovered
+    ## 226           Hubei Mainland China 30.97560 112.2707 2020-01-27     3 recovered
+    ## 227         Jiangxi Mainland China 27.61400 115.7221 2020-01-27     2 recovered
+    ## 228        Shanghai Mainland China 31.20200 121.4491 2020-01-27     2 recovered
+    ## 234           Anhui Mainland China 31.82570 117.2264 2020-01-28    36 confirmed
+    ## 235         Beijing Mainland China 40.18240 116.4142 2020-01-28    11 confirmed
+    ## 237       Chongqing Mainland China 30.05720 107.8740 2020-01-28    22 confirmed
+    ## 238          Fujian Mainland China 26.07890 117.9874 2020-01-28    21 confirmed
+    ## 239           Gansu Mainland China 36.06110 103.8343 2020-01-28     5 confirmed
+    ## 240       Guangdong Mainland China 23.34170 113.4244 2020-01-28    56 confirmed
+    ## 241         Guangxi Mainland China 23.82980 108.7881 2020-01-28     5 confirmed
+    ## 242         Guizhou Mainland China 26.81540 106.8748 2020-01-28     2 confirmed
+    ## 243          Hainan Mainland China 19.19590 109.7453 2020-01-28     7 confirmed
+    ## 244           Hebei Mainland China 38.04280 114.5149 2020-01-28    15 confirmed
+    ## 245    Heilongjiang Mainland China 47.86200 127.7615 2020-01-28    12 confirmed
+    ## 246           Henan Mainland China 33.88202 113.6140 2020-01-28    40 confirmed
+    ## 247           Hubei Mainland China 30.97560 112.2707 2020-01-28  2131 confirmed
+    ## 248           Hunan Mainland China 27.61040 111.7088 2020-01-28    43 confirmed
+    ## 249  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-28     4 confirmed
+    ## 250         Jiangsu Mainland China 32.97110 119.4550 2020-01-28    23 confirmed
+    ## 251         Jiangxi Mainland China 27.61400 115.7221 2020-01-28    37 confirmed
+    ## 252           Jilin Mainland China 43.66610 126.1923 2020-01-28     2 confirmed
+    ## 253        Liaoning Mainland China 41.29560 122.6085 2020-01-28     7 confirmed
+    ## 255         Ningxia Mainland China 37.26920 106.1655 2020-01-28     4 confirmed
+    ## 256         Shaanxi Mainland China 35.19170 108.8701 2020-01-28    11 confirmed
+    ## 257        Shandong Mainland China 36.34270 118.1498 2020-01-28    20 confirmed
+    ## 258        Shanghai Mainland China 31.20200 121.4491 2020-01-28    13 confirmed
+    ## 259          Shanxi Mainland China 37.57770 112.2922 2020-01-28    14 confirmed
+    ## 260         Sichuan Mainland China 30.61710 102.7103 2020-01-28    21 confirmed
+    ## 262         Tianjin Mainland China 39.30540 117.3230 2020-01-28     1 confirmed
+    ## 263        Xinjiang Mainland China 41.11290  85.2401 2020-01-28     5 confirmed
+    ## 264          Yunnan Mainland China 24.97400 101.4870 2020-01-28    18 confirmed
+    ## 265        Zhejiang Mainland China 29.18320 120.0934 2020-01-28    45 confirmed
+    ## 266           Hubei Mainland China 30.97560 112.2707 2020-01-28    49     death
+    ## 268         Beijing Mainland China 40.18240 116.4142 2020-01-28     2 recovered
+    ## 269         Guangxi Mainland China 23.82980 108.7881 2020-01-28     2 recovered
+    ## 270           Hubei Mainland China 30.97560 112.2707 2020-01-28    35 recovered
+    ## 271         Jiangxi Mainland China 27.61400 115.7221 2020-01-28     1 recovered
+    ## 272        Shanghai Mainland China 31.20200 121.4491 2020-01-28     1 recovered
+    ## 273        Zhejiang Mainland China 29.18320 120.0934 2020-01-28     2 recovered
+    ## 278           Anhui Mainland China 31.82570 117.2264 2020-01-29    46 confirmed
+    ## 279         Beijing Mainland China 40.18240 116.4142 2020-01-29    20 confirmed
+    ## 280       Chongqing Mainland China 30.05720 107.8740 2020-01-29    15 confirmed
+    ## 281          Fujian Mainland China 26.07890 117.9874 2020-01-29     4 confirmed
+    ## 282           Gansu Mainland China 36.06110 103.8343 2020-01-29     5 confirmed
+    ## 283       Guangdong Mainland China 23.34170 113.4244 2020-01-29    70 confirmed
+    ## 284         Guangxi Mainland China 23.82980 108.7881 2020-01-29     7 confirmed
+    ## 285          Hainan Mainland China 19.19590 109.7453 2020-01-29     3 confirmed
+    ## 286           Hebei Mainland China 38.04280 114.5149 2020-01-29    15 confirmed
+    ## 287    Heilongjiang Mainland China 47.86200 127.7615 2020-01-29     5 confirmed
+    ## 288           Henan Mainland China 33.88202 113.6140 2020-01-29    38 confirmed
+    ## 290           Hunan Mainland China 27.61040 111.7088 2020-01-29    78 confirmed
+    ## 291  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-29     1 confirmed
+    ## 292         Jiangsu Mainland China 32.97110 119.4550 2020-01-29    29 confirmed
+    ## 293           Jilin Mainland China 43.66610 126.1923 2020-01-29     1 confirmed
+    ## 294        Liaoning Mainland China 41.29560 122.6085 2020-01-29     5 confirmed
+    ## 295         Ningxia Mainland China 37.26920 106.1655 2020-01-29     1 confirmed
+    ## 297         Shaanxi Mainland China 35.19170 108.8701 2020-01-29    10 confirmed
+    ## 298        Shandong Mainland China 36.34270 118.1498 2020-01-29    35 confirmed
+    ## 299        Shanghai Mainland China 31.20200 121.4491 2020-01-29    30 confirmed
+    ## 300         Sichuan Mainland China 30.61710 102.7103 2020-01-29    18 confirmed
+    ## 301         Tianjin Mainland China 39.30540 117.3230 2020-01-29     3 confirmed
+    ## 302        Xinjiang Mainland China 41.11290  85.2401 2020-01-29     3 confirmed
+    ## 303          Yunnan Mainland China 24.97400 101.4870 2020-01-29    11 confirmed
+    ## 304        Zhejiang Mainland China 29.18320 120.0934 2020-01-29   123 confirmed
+    ## 305           Henan Mainland China 33.88202 113.6140 2020-01-29     1     death
+    ## 306         Sichuan Mainland China 30.61710 102.7103 2020-01-29     1     death
+    ## 307           Anhui Mainland China 31.82570 117.2264 2020-01-29     2 recovered
+    ## 308       Chongqing Mainland China 30.05720 107.8740 2020-01-29     1 recovered
+    ## 309       Guangdong Mainland China 23.34170 113.4244 2020-01-29     1 recovered
+    ## 310         Guizhou Mainland China 26.81540 106.8748 2020-01-29     1 recovered
+    ## 311           Henan Mainland China 33.88202 113.6140 2020-01-29     1 recovered
+    ## 312           Hubei Mainland China 30.97560 112.2707 2020-01-29     8 recovered
+    ## 313        Liaoning Mainland China 41.29560 122.6085 2020-01-29     1 recovered
+    ## 314        Shandong Mainland China 36.34270 118.1498 2020-01-29     1 recovered
+    ## 315        Shanghai Mainland China 31.20200 121.4491 2020-01-29     1 recovered
+    ## 316          Shanxi Mainland China 37.57770 112.2922 2020-01-29     1 recovered
+    ## 317         Sichuan Mainland China 30.61710 102.7103 2020-01-29     1 recovered
+    ## 323           Anhui Mainland China 31.82570 117.2264 2020-01-30    48 confirmed
+    ## 324         Beijing Mainland China 40.18240 116.4142 2020-01-30     3 confirmed
+    ## 325       Chongqing Mainland China 30.05720 107.8740 2020-01-30    35 confirmed
+    ## 326          Fujian Mainland China 26.07890 117.9874 2020-01-30    17 confirmed
+    ## 327           Gansu Mainland China 36.06110 103.8343 2020-01-30     2 confirmed
+    ## 328       Guangdong Mainland China 23.34170 113.4244 2020-01-30    77 confirmed
+    ## 329         Guangxi Mainland China 23.82980 108.7881 2020-01-30    20 confirmed
+    ## 330         Guizhou Mainland China 26.81540 106.8748 2020-01-30     3 confirmed
+    ## 331          Hainan Mainland China 19.19590 109.7453 2020-01-30     3 confirmed
+    ## 332           Hebei Mainland China 38.04280 114.5149 2020-01-30    17 confirmed
+    ## 333    Heilongjiang Mainland China 47.86200 127.7615 2020-01-30     6 confirmed
+    ## 334           Henan Mainland China 33.88202 113.6140 2020-01-30    72 confirmed
+    ## 335           Hubei Mainland China 30.97560 112.2707 2020-01-30  1349 confirmed
+    ## 336           Hunan Mainland China 27.61040 111.7088 2020-01-30    56 confirmed
+    ## 337  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-30     3 confirmed
+    ## 338         Jiangsu Mainland China 32.97110 119.4550 2020-01-30    30 confirmed
+    ## 339         Jiangxi Mainland China 27.61400 115.7221 2020-01-30    53 confirmed
+    ## 340           Jilin Mainland China 43.66610 126.1923 2020-01-30     5 confirmed
+    ## 341        Liaoning Mainland China 41.29560 122.6085 2020-01-30     2 confirmed
+    ## 342         Ningxia Mainland China 37.26920 106.1655 2020-01-30     5 confirmed
+    ## 343         Qinghai Mainland China 35.74520  95.9956 2020-01-30     2 confirmed
+    ## 345         Shaanxi Mainland China 35.19170 108.8701 2020-01-30     7 confirmed
+    ## 346        Shandong Mainland China 36.34270 118.1498 2020-01-30    28 confirmed
+    ## 347        Shanghai Mainland China 31.20200 121.4491 2020-01-30    16 confirmed
+    ## 348          Shanxi Mainland China 37.57770 112.2922 2020-01-30     8 confirmed
+    ## 349         Sichuan Mainland China 30.61710 102.7103 2020-01-30    34 confirmed
+    ## 351         Tianjin Mainland China 39.30540 117.3230 2020-01-30     4 confirmed
+    ## 352           Tibet Mainland China 31.69270  88.0924 2020-01-30     1 confirmed
+    ## 354        Xinjiang Mainland China 41.11290  85.2401 2020-01-30     1 confirmed
+    ## 355          Yunnan Mainland China 24.97400 101.4870 2020-01-30    15 confirmed
+    ## 356        Zhejiang Mainland China 29.18320 120.0934 2020-01-30   132 confirmed
+    ## 357    Heilongjiang Mainland China 47.86200 127.7615 2020-01-30     1     death
+    ## 358           Hubei Mainland China 30.97560 112.2707 2020-01-30    37     death
+    ## 359       Guangdong Mainland China 23.34170 113.4244 2020-01-30     5 recovered
+    ## 360          Hainan Mainland China 19.19590 109.7453 2020-01-30     1 recovered
+    ## 361           Henan Mainland China 33.88202 113.6140 2020-01-30     1 recovered
+    ## 362           Hubei Mainland China 30.97560 112.2707 2020-01-30     2 recovered
+    ## 363           Hunan Mainland China 27.61040 111.7088 2020-01-30     2 recovered
+    ## 364         Jiangxi Mainland China 27.61400 115.7221 2020-01-30     2 recovered
+    ## 365           Jilin Mainland China 43.66610 126.1923 2020-01-30     1 recovered
+    ## 367        Zhejiang Mainland China 29.18320 120.0934 2020-01-30     1 recovered
+    ## 377           Anhui Mainland China 31.82570 117.2264 2020-01-31    37 confirmed
+    ## 378         Beijing Mainland China 40.18240 116.4142 2020-01-31    25 confirmed
+    ## 379       Chongqing Mainland China 30.05720 107.8740 2020-01-31    29 confirmed
+    ## 381          Fujian Mainland China 26.07890 117.9874 2020-01-31    19 confirmed
+    ## 382           Gansu Mainland China 36.06110 103.8343 2020-01-31     3 confirmed
+    ## 383       Guangdong Mainland China 23.34170 113.4244 2020-01-31    82 confirmed
+    ## 384         Guangxi Mainland China 23.82980 108.7881 2020-01-31     9 confirmed
+    ## 385         Guizhou Mainland China 26.81540 106.8748 2020-01-31    17 confirmed
+    ## 386          Hainan Mainland China 19.19590 109.7453 2020-01-31     6 confirmed
+    ## 387           Hebei Mainland China 38.04280 114.5149 2020-01-31    17 confirmed
+    ## 388    Heilongjiang Mainland China 47.86200 127.7615 2020-01-31    15 confirmed
+    ## 389           Henan Mainland China 33.88202 113.6140 2020-01-31    74 confirmed
+    ## 391           Hubei Mainland China 30.97560 112.2707 2020-01-31   903 confirmed
+    ## 392           Hunan Mainland China 27.61040 111.7088 2020-01-31    55 confirmed
+    ## 393  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-31     1 confirmed
+    ## 394         Jiangsu Mainland China 32.97110 119.4550 2020-01-31    39 confirmed
+    ## 395         Jiangxi Mainland China 27.61400 115.7221 2020-01-31    78 confirmed
+    ## 396        Liaoning Mainland China 41.29560 122.6085 2020-01-31     7 confirmed
+    ## 398         Ningxia Mainland China 37.26920 106.1655 2020-01-31     4 confirmed
+    ## 401         Shaanxi Mainland China 35.19170 108.8701 2020-01-31    24 confirmed
+    ## 402        Shandong Mainland China 36.34270 118.1498 2020-01-31    26 confirmed
+    ## 403        Shanghai Mainland China 31.20200 121.4491 2020-01-31    23 confirmed
+    ## 404          Shanxi Mainland China 37.57770 112.2922 2020-01-31     4 confirmed
+    ## 405         Sichuan Mainland China 30.61710 102.7103 2020-01-31    35 confirmed
+    ## 407         Tianjin Mainland China 39.30540 117.3230 2020-01-31     1 confirmed
+    ## 410        Xinjiang Mainland China 41.11290  85.2401 2020-01-31     3 confirmed
+    ## 411          Yunnan Mainland China 24.97400 101.4870 2020-01-31    13 confirmed
+    ## 412        Zhejiang Mainland China 29.18320 120.0934 2020-01-31   110 confirmed
+    ## 413           Hubei Mainland China 30.97560 112.2707 2020-01-31    42     death
+    ## 414           Anhui Mainland China 31.82570 117.2264 2020-01-31     1 recovered
+    ## 415         Beijing Mainland China 40.18240 116.4142 2020-01-31     1 recovered
+    ## 416       Guangdong Mainland China 23.34170 113.4244 2020-01-31     1 recovered
+    ## 417         Guizhou Mainland China 26.81540 106.8748 2020-01-31     1 recovered
+    ## 418           Henan Mainland China 33.88202 113.6140 2020-01-31     1 recovered
+    ## 419           Hubei Mainland China 30.97560 112.2707 2020-01-31    51 recovered
+    ## 420  Inner Mongolia Mainland China 44.09350 113.9448 2020-01-31     1 recovered
+    ## 421         Jiangsu Mainland China 32.97110 119.4550 2020-01-31     4 recovered
+    ## 422         Jiangxi Mainland China 27.61400 115.7221 2020-01-31     2 recovered
+    ## 423        Shandong Mainland China 36.34270 118.1498 2020-01-31     1 recovered
+    ## 424        Shanghai Mainland China 31.20200 121.4491 2020-01-31     4 recovered
+    ## 425          Yunnan Mainland China 24.97400 101.4870 2020-01-31     1 recovered
+    ## 426        Zhejiang Mainland China 29.18320 120.0934 2020-01-31    10 recovered
+    ## 434           Anhui Mainland China 31.82570 117.2264 2020-02-01    60 confirmed
+    ## 435         Beijing Mainland China 40.18240 116.4142 2020-02-01    29 confirmed
+    ## 437       Chongqing Mainland China 30.05720 107.8740 2020-02-01    36 confirmed
+    ## 438          Fujian Mainland China 26.07890 117.9874 2020-02-01    24 confirmed
+    ## 439           Gansu Mainland China 36.06110 103.8343 2020-02-01    11 confirmed
+    ## 440       Guangdong Mainland China 23.34170 113.4244 2020-02-01    99 confirmed
+    ## 441         Guangxi Mainland China 23.82980 108.7881 2020-02-01    13 confirmed
+    ## 442          Hainan Mainland China 19.19590 109.7453 2020-02-01    10 confirmed
+    ## 443           Hebei Mainland China 38.04280 114.5149 2020-02-01    14 confirmed
+    ## 444    Heilongjiang Mainland China 47.86200 127.7615 2020-02-01    21 confirmed
+    ## 445           Henan Mainland China 33.88202 113.6140 2020-02-01    70 confirmed
+    ## 447           Hubei Mainland China 30.97560 112.2707 2020-02-01  1347 confirmed
+    ## 448           Hunan Mainland China 27.61040 111.7088 2020-02-01    57 confirmed
+    ## 449  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-01     3 confirmed
+    ## 450         Jiangsu Mainland China 32.97110 119.4550 2020-02-01    34 confirmed
+    ## 451         Jiangxi Mainland China 27.61400 115.7221 2020-02-01    46 confirmed
+    ## 452           Jilin Mainland China 43.66610 126.1923 2020-02-01     3 confirmed
+    ## 453        Liaoning Mainland China 41.29560 122.6085 2020-02-01    16 confirmed
+    ## 454         Ningxia Mainland China 37.26920 106.1655 2020-02-01     5 confirmed
+    ## 455         Qinghai Mainland China 35.74520  95.9956 2020-02-01     1 confirmed
+    ## 457         Shaanxi Mainland China 35.19170 108.8701 2020-02-01    14 confirmed
+    ## 458        Shandong Mainland China 36.34270 118.1498 2020-02-01    22 confirmed
+    ## 459        Shanghai Mainland China 31.20200 121.4491 2020-02-01    34 confirmed
+    ## 460          Shanxi Mainland China 37.57770 112.2922 2020-02-01     8 confirmed
+    ## 461         Sichuan Mainland China 30.61710 102.7103 2020-02-01    30 confirmed
+    ## 463         Tianjin Mainland China 39.30540 117.3230 2020-02-01     9 confirmed
+    ## 465        Xinjiang Mainland China 41.11290  85.2401 2020-02-01     1 confirmed
+    ## 466          Yunnan Mainland China 24.97400 101.4870 2020-02-01    10 confirmed
+    ## 467        Zhejiang Mainland China 29.18320 120.0934 2020-02-01    61 confirmed
+    ## 468       Chongqing Mainland China 30.05720 107.8740 2020-02-01     1     death
+    ## 469           Hubei Mainland China 30.97560 112.2707 2020-02-01    45     death
+    ## 471           Anhui Mainland China 31.82570 117.2264 2020-02-01     2 recovered
+    ## 472         Beijing Mainland China 40.18240 116.4142 2020-02-01     4 recovered
+    ## 473       Chongqing Mainland China 30.05720 107.8740 2020-02-01     2 recovered
+    ## 474       Guangdong Mainland China 23.34170 113.4244 2020-02-01     3 recovered
+    ## 475    Heilongjiang Mainland China 47.86200 127.7615 2020-02-01     2 recovered
+    ## 476           Hubei Mainland China 30.97560 112.2707 2020-02-01    27 recovered
+    ## 477           Hunan Mainland China 27.61040 111.7088 2020-02-01     6 recovered
+    ## 478         Jiangsu Mainland China 32.97110 119.4550 2020-02-01     1 recovered
+    ## 479         Jiangxi Mainland China 27.61400 115.7221 2020-02-01     2 recovered
+    ## 480        Shandong Mainland China 36.34270 118.1498 2020-02-01     1 recovered
+    ## 481        Shanghai Mainland China 31.20200 121.4491 2020-02-01     1 recovered
+    ## 482         Sichuan Mainland China 30.61710 102.7103 2020-02-01     2 recovered
+    ## 483          Yunnan Mainland China 24.97400 101.4870 2020-02-01     1 recovered
+    ## 484        Zhejiang Mainland China 29.18320 120.0934 2020-02-01     7 recovered
+    ## 491           Anhui Mainland China 31.82570 117.2264 2020-02-02    43 confirmed
+    ## 492         Beijing Mainland China 40.18240 116.4142 2020-02-02    23 confirmed
+    ## 493       Chongqing Mainland China 30.05720 107.8740 2020-02-02    53 confirmed
+    ## 494          Fujian Mainland China 26.07890 117.9874 2020-02-02    15 confirmed
+    ## 495           Gansu Mainland China 36.06110 103.8343 2020-02-02    11 confirmed
+    ## 496       Guangdong Mainland China 23.34170 113.4244 2020-02-02    97 confirmed
+    ## 497         Guangxi Mainland China 23.82980 108.7881 2020-02-02    11 confirmed
+    ## 498         Guizhou Mainland China 26.81540 106.8748 2020-02-02     9 confirmed
+    ## 499          Hainan Mainland China 19.19590 109.7453 2020-02-02     2 confirmed
+    ## 500           Hebei Mainland China 38.04280 114.5149 2020-02-02     8 confirmed
+    ## 501    Heilongjiang Mainland China 47.86200 127.7615 2020-02-02    15 confirmed
+    ## 502           Henan Mainland China 33.88202 113.6140 2020-02-02    71 confirmed
+    ## 504           Hubei Mainland China 30.97560 112.2707 2020-02-02  4024 confirmed
+    ## 505           Hunan Mainland China 27.61040 111.7088 2020-02-02    74 confirmed
+    ## 506  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-02     4 confirmed
+    ## 507         Jiangsu Mainland China 32.97110 119.4550 2020-02-02    34 confirmed
+    ## 508         Jiangxi Mainland China 27.61400 115.7221 2020-02-02    47 confirmed
+    ## 509           Jilin Mainland China 43.66610 126.1923 2020-02-02     6 confirmed
+    ## 510        Liaoning Mainland China 41.29560 122.6085 2020-02-02     6 confirmed
+    ## 512         Ningxia Mainland China 37.26920 106.1655 2020-02-02     2 confirmed
+    ## 513         Qinghai Mainland China 35.74520  95.9956 2020-02-02     2 confirmed
+    ## 515         Shaanxi Mainland China 35.19170 108.8701 2020-02-02    15 confirmed
+    ## 516        Shandong Mainland China 36.34270 118.1498 2020-02-02    24 confirmed
+    ## 517        Shanghai Mainland China 31.20200 121.4491 2020-02-02    13 confirmed
+    ## 518          Shanxi Mainland China 37.57770 112.2922 2020-02-02    19 confirmed
+    ## 519         Sichuan Mainland China 30.61710 102.7103 2020-02-02    24 confirmed
+    ## 521         Tianjin Mainland China 39.30540 117.3230 2020-02-02     7 confirmed
+    ## 522        Xinjiang Mainland China 41.11290  85.2401 2020-02-02     3 confirmed
+    ## 523          Yunnan Mainland China 24.97400 101.4870 2020-02-02    12 confirmed
+    ## 524        Zhejiang Mainland China 29.18320 120.0934 2020-02-02    62 confirmed
+    ## 526       Chongqing Mainland China 30.05720 107.8740 2020-02-02     1     death
+    ## 527           Hubei Mainland China 30.97560 112.2707 2020-02-02   101     death
+    ## 528           Anhui Mainland China 31.82570 117.2264 2020-02-02     2 recovered
+    ## 529       Chongqing Mainland China 30.05720 107.8740 2020-02-02     4 recovered
+    ## 530           Gansu Mainland China 36.06110 103.8343 2020-02-02     3 recovered
+    ## 531       Guangdong Mainland China 23.34170 113.4244 2020-02-02     1 recovered
+    ## 532          Hainan Mainland China 19.19590 109.7453 2020-02-02     3 recovered
+    ## 533           Hebei Mainland China 38.04280 114.5149 2020-02-02     3 recovered
+    ## 534           Henan Mainland China 33.88202 113.6140 2020-02-02     7 recovered
+    ## 535           Hubei Mainland China 30.97560 112.2707 2020-02-02   127 recovered
+    ## 536           Hunan Mainland China 27.61040 111.7088 2020-02-02     8 recovered
+    ## 537         Jiangsu Mainland China 32.97110 119.4550 2020-02-02     1 recovered
+    ## 538         Jiangxi Mainland China 27.61400 115.7221 2020-02-02     3 recovered
+    ## 539        Shandong Mainland China 36.34270 118.1498 2020-02-02     3 recovered
+    ## 540          Shanxi Mainland China 37.57770 112.2922 2020-02-02     2 recovered
+    ## 541         Sichuan Mainland China 30.61710 102.7103 2020-02-02     8 recovered
+    ## 542         Tianjin Mainland China 39.30540 117.3230 2020-02-02     1 recovered
+    ## 543          Yunnan Mainland China 24.97400 101.4870 2020-02-02     1 recovered
+    ## 544        Zhejiang Mainland China 29.18320 120.0934 2020-02-02    11 recovered
+    ## 548           Anhui Mainland China 31.82570 117.2264 2020-02-03    68 confirmed
+    ## 549         Beijing Mainland China 40.18240 116.4142 2020-02-03    21 confirmed
+    ## 550       Chongqing Mainland China 30.05720 107.8740 2020-02-03    37 confirmed
+    ## 551          Fujian Mainland China 26.07890 117.9874 2020-02-03    20 confirmed
+    ## 552           Gansu Mainland China 36.06110 103.8343 2020-02-03     4 confirmed
+    ## 553       Guangdong Mainland China 23.34170 113.4244 2020-02-03    93 confirmed
+    ## 554         Guangxi Mainland China 23.82980 108.7881 2020-02-03    16 confirmed
+    ## 555         Guizhou Mainland China 26.81540 106.8748 2020-02-03     8 confirmed
+    ## 556          Hainan Mainland China 19.19590 109.7453 2020-02-03     8 confirmed
+    ## 557           Hebei Mainland China 38.04280 114.5149 2020-02-03     9 confirmed
+    ## 558    Heilongjiang Mainland China 47.86200 127.7615 2020-02-03    26 confirmed
+    ## 559           Henan Mainland China 33.88202 113.6140 2020-02-03    73 confirmed
+    ## 560           Hubei Mainland China 30.97560 112.2707 2020-02-03  2345 confirmed
+    ## 561           Hunan Mainland China 27.61040 111.7088 2020-02-03    58 confirmed
+    ## 562  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-03     7 confirmed
+    ## 563         Jiangsu Mainland China 32.97110 119.4550 2020-02-03    35 confirmed
+    ## 564         Jiangxi Mainland China 27.61400 115.7221 2020-02-03    58 confirmed
+    ## 565           Jilin Mainland China 43.66610 126.1923 2020-02-03     8 confirmed
+    ## 566        Liaoning Mainland China 41.29560 122.6085 2020-02-03     4 confirmed
+    ## 567         Ningxia Mainland China 37.26920 106.1655 2020-02-03     3 confirmed
+    ## 568         Qinghai Mainland China 35.74520  95.9956 2020-02-03     2 confirmed
+    ## 571         Shaanxi Mainland China 35.19170 108.8701 2020-02-03    12 confirmed
+    ## 572        Shandong Mainland China 36.34270 118.1498 2020-02-03    29 confirmed
+    ## 573        Shanghai Mainland China 31.20200 121.4491 2020-02-03    21 confirmed
+    ## 574          Shanxi Mainland China 37.57770 112.2922 2020-02-03     8 confirmed
+    ## 575         Sichuan Mainland China 30.61710 102.7103 2020-02-03    23 confirmed
+    ## 576         Tianjin Mainland China 39.30540 117.3230 2020-02-03    12 confirmed
+    ## 577        Xinjiang Mainland China 41.11290  85.2401 2020-02-03     3 confirmed
+    ## 578          Yunnan Mainland China 24.97400 101.4870 2020-02-03    12 confirmed
+    ## 579        Zhejiang Mainland China 29.18320 120.0934 2020-02-03    63 confirmed
+    ## 580           Hubei Mainland China 30.97560 112.2707 2020-02-03    64     death
+    ## 581           Anhui Mainland China 31.82570 117.2264 2020-02-03     7 recovered
+    ## 582         Beijing Mainland China 40.18240 116.4142 2020-02-03     3 recovered
+    ## 583       Chongqing Mainland China 30.05720 107.8740 2020-02-03     2 recovered
+    ## 584          Fujian Mainland China 26.07890 117.9874 2020-02-03     1 recovered
+    ## 585       Guangdong Mainland China 23.34170 113.4244 2020-02-03     6 recovered
+    ## 586         Guangxi Mainland China 23.82980 108.7881 2020-02-03     5 recovered
+    ## 587           Henan Mainland China 33.88202 113.6140 2020-02-03     6 recovered
+    ## 588           Hubei Mainland China 30.97560 112.2707 2020-02-03    91 recovered
+    ## 589           Hunan Mainland China 27.61040 111.7088 2020-02-03     6 recovered
+    ## 590         Jiangsu Mainland China 32.97110 119.4550 2020-02-03     1 recovered
+    ## 591         Jiangxi Mainland China 27.61400 115.7221 2020-02-03     6 recovered
+    ## 592         Ningxia Mainland China 37.26920 106.1655 2020-02-03     1 recovered
+    ## 593        Shandong Mainland China 36.34270 118.1498 2020-02-03     1 recovered
+    ## 594          Shanxi Mainland China 37.57770 112.2922 2020-02-03    -1 recovered
+    ## 595         Sichuan Mainland China 30.61710 102.7103 2020-02-03     3 recovered
+    ## 596          Yunnan Mainland China 24.97400 101.4870 2020-02-03     2 recovered
+    ## 597        Zhejiang Mainland China 29.18320 120.0934 2020-02-03    11 recovered
+    ## 604           Anhui Mainland China 31.82570 117.2264 2020-02-04    72 confirmed
+    ## 605         Beijing Mainland China 40.18240 116.4142 2020-02-04    16 confirmed
+    ## 606       Chongqing Mainland China 30.05720 107.8740 2020-02-04    29 confirmed
+    ## 607          Fujian Mainland China 26.07890 117.9874 2020-02-04    15 confirmed
+    ## 608           Gansu Mainland China 36.06110 103.8343 2020-02-04     2 confirmed
+    ## 609       Guangdong Mainland China 23.34170 113.4244 2020-02-04    88 confirmed
+    ## 610         Guangxi Mainland China 23.82980 108.7881 2020-02-04    12 confirmed
+    ## 611         Guizhou Mainland China 26.81540 106.8748 2020-02-04    12 confirmed
+    ## 612          Hainan Mainland China 19.19590 109.7453 2020-02-04     8 confirmed
+    ## 613           Hebei Mainland China 38.04280 114.5149 2020-02-04    13 confirmed
+    ## 614    Heilongjiang Mainland China 47.86200 127.7615 2020-02-04    34 confirmed
+    ## 615           Henan Mainland China 33.88202 113.6140 2020-02-04   109 confirmed
+    ## 617           Hubei Mainland China 30.97560 112.2707 2020-02-04  3156 confirmed
+    ## 618           Hunan Mainland China 27.61040 111.7088 2020-02-04    72 confirmed
+    ## 619  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-04     1 confirmed
+    ## 620         Jiangsu Mainland China 32.97110 119.4550 2020-02-04    37 confirmed
+    ## 621         Jiangxi Mainland China 27.61400 115.7221 2020-02-04    85 confirmed
+    ## 622           Jilin Mainland China 43.66610 126.1923 2020-02-04    11 confirmed
+    ## 623        Liaoning Mainland China 41.29560 122.6085 2020-02-04     7 confirmed
+    ## 625         Ningxia Mainland China 37.26920 106.1655 2020-02-04     3 confirmed
+    ## 626         Qinghai Mainland China 35.74520  95.9956 2020-02-04     2 confirmed
+    ## 628         Shaanxi Mainland China 35.19170 108.8701 2020-02-04    14 confirmed
+    ## 629        Shandong Mainland China 36.34270 118.1498 2020-02-04    16 confirmed
+    ## 630        Shanghai Mainland China 31.20200 121.4491 2020-02-04    16 confirmed
+    ## 631          Shanxi Mainland China 37.57770 112.2922 2020-02-04     7 confirmed
+    ## 632         Sichuan Mainland China 30.61710 102.7103 2020-02-04    28 confirmed
+    ## 634         Tianjin Mainland China 39.30540 117.3230 2020-02-04     7 confirmed
+    ## 635        Xinjiang Mainland China 41.11290  85.2401 2020-02-04     5 confirmed
+    ## 636          Yunnan Mainland China 24.97400 101.4870 2020-02-04     5 confirmed
+    ## 637        Zhejiang Mainland China 29.18320 120.0934 2020-02-04   105 confirmed
+    ## 639           Hubei Mainland China 30.97560 112.2707 2020-02-04    65     death
+    ## 640           Anhui Mainland China 31.82570 117.2264 2020-02-04     6 recovered
+    ## 641         Beijing Mainland China 40.18240 116.4142 2020-02-04    11 recovered
+    ## 642          Fujian Mainland China 26.07890 117.9874 2020-02-04     2 recovered
+    ## 643           Gansu Mainland China 36.06110 103.8343 2020-02-04     1 recovered
+    ## 644       Guangdong Mainland China 23.34170 113.4244 2020-02-04     9 recovered
+    ## 645         Guangxi Mainland China 23.82980 108.7881 2020-02-04     3 recovered
+    ## 646          Hainan Mainland China 19.19590 109.7453 2020-02-04     1 recovered
+    ## 647           Hebei Mainland China 38.04280 114.5149 2020-02-04     1 recovered
+    ## 648    Heilongjiang Mainland China 47.86200 127.7615 2020-02-04     2 recovered
+    ## 649           Henan Mainland China 33.88202 113.6140 2020-02-04    11 recovered
+    ## 650           Hubei Mainland China 30.97560 112.2707 2020-02-04   136 recovered
+    ## 651           Hunan Mainland China 27.61040 111.7088 2020-02-04     9 recovered
+    ## 652         Jiangsu Mainland China 32.97110 119.4550 2020-02-04     4 recovered
+    ## 653         Jiangxi Mainland China 27.61400 115.7221 2020-02-04     2 recovered
+    ## 654        Liaoning Mainland China 41.29560 122.6085 2020-02-04     1 recovered
+    ## 655         Shaanxi Mainland China 35.19170 108.8701 2020-02-04     2 recovered
+    ## 656        Shandong Mainland China 36.34270 118.1498 2020-02-04     4 recovered
+    ## 657        Shanghai Mainland China 31.20200 121.4491 2020-02-04     2 recovered
+    ## 658          Shanxi Mainland China 37.57770 112.2922 2020-02-04     2 recovered
+    ## 659         Tianjin Mainland China 39.30540 117.3230 2020-02-04     1 recovered
+    ## 660        Zhejiang Mainland China 29.18320 120.0934 2020-02-04    19 recovered
+    ## 664           Anhui Mainland China 31.82570 117.2264 2020-02-05    50 confirmed
+    ## 665         Beijing Mainland China 40.18240 116.4142 2020-02-05    25 confirmed
+    ## 667       Chongqing Mainland China 30.05720 107.8740 2020-02-05    23 confirmed
+    ## 668          Fujian Mainland China 26.07890 117.9874 2020-02-05    11 confirmed
+    ## 669           Gansu Mainland China 36.06110 103.8343 2020-02-05     5 confirmed
+    ## 670       Guangdong Mainland China 23.34170 113.4244 2020-02-05    82 confirmed
+    ## 671         Guangxi Mainland China 23.82980 108.7881 2020-02-05    11 confirmed
+    ## 672         Guizhou Mainland China 26.81540 106.8748 2020-02-05     6 confirmed
+    ## 673          Hainan Mainland China 19.19590 109.7453 2020-02-05    19 confirmed
+    ## 674           Hebei Mainland China 38.04280 114.5149 2020-02-05     9 confirmed
+    ## 675    Heilongjiang Mainland China 47.86200 127.7615 2020-02-05    35 confirmed
+    ## 676           Henan Mainland China 33.88202 113.6140 2020-02-05    89 confirmed
+    ## 678           Hubei Mainland China 30.97560 112.2707 2020-02-05  2987 confirmed
+    ## 679           Hunan Mainland China 27.61040 111.7088 2020-02-05    68 confirmed
+    ## 680  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-05     7 confirmed
+    ## 681         Jiangsu Mainland China 32.97110 119.4550 2020-02-05    33 confirmed
+    ## 682         Jiangxi Mainland China 27.61400 115.7221 2020-02-05    72 confirmed
+    ## 683           Jilin Mainland China 43.66610 126.1923 2020-02-05    12 confirmed
+    ## 684        Liaoning Mainland China 41.29560 122.6085 2020-02-05     8 confirmed
+    ## 686         Qinghai Mainland China 35.74520  95.9956 2020-02-05     2 confirmed
+    ## 687         Shaanxi Mainland China 35.19170 108.8701 2020-02-05    23 confirmed
+    ## 688        Shandong Mainland China 36.34270 118.1498 2020-02-05    32 confirmed
+    ## 689        Shanghai Mainland China 31.20200 121.4491 2020-02-05    24 confirmed
+    ## 690         Sichuan Mainland China 30.61710 102.7103 2020-02-05    19 confirmed
+    ## 691         Tianjin Mainland China 39.30540 117.3230 2020-02-05     2 confirmed
+    ## 692        Xinjiang Mainland China 41.11290  85.2401 2020-02-05     3 confirmed
+    ## 693          Yunnan Mainland China 24.97400 101.4870 2020-02-05     6 confirmed
+    ## 694        Zhejiang Mainland China 29.18320 120.0934 2020-02-05    66 confirmed
+    ## 695         Guizhou Mainland China 26.81540 106.8748 2020-02-05     1     death
+    ## 696           Hubei Mainland China 30.97560 112.2707 2020-02-05    70     death
+    ## 697         Tianjin Mainland China 39.30540 117.3230 2020-02-05     1     death
+    ## 698           Anhui Mainland China 31.82570 117.2264 2020-02-05     3 recovered
+    ## 699         Beijing Mainland China 40.18240 116.4142 2020-02-05     1 recovered
+    ## 700       Chongqing Mainland China 30.05720 107.8740 2020-02-05     6 recovered
+    ## 701          Fujian Mainland China 26.07890 117.9874 2020-02-05     8 recovered
+    ## 702           Gansu Mainland China 36.06110 103.8343 2020-02-05     2 recovered
+    ## 703       Guangdong Mainland China 23.34170 113.4244 2020-02-05    19 recovered
+    ## 704         Guangxi Mainland China 23.82980 108.7881 2020-02-05     3 recovered
+    ## 705         Guizhou Mainland China 26.81540 106.8748 2020-02-05     7 recovered
+    ## 706           Hebei Mainland China 38.04280 114.5149 2020-02-05     2 recovered
+    ## 707    Heilongjiang Mainland China 47.86200 127.7615 2020-02-05     3 recovered
+    ## 708           Henan Mainland China 33.88202 113.6140 2020-02-05    20 recovered
+    ## 709           Hubei Mainland China 30.97560 112.2707 2020-02-05   111 recovered
+    ## 710           Hunan Mainland China 27.61040 111.7088 2020-02-05    23 recovered
+    ## 711  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-05     2 recovered
+    ## 712         Jiangsu Mainland China 32.97110 119.4550 2020-02-05    11 recovered
+    ## 713         Jiangxi Mainland China 27.61400 115.7221 2020-02-05     7 recovered
+    ## 714           Jilin Mainland China 43.66610 126.1923 2020-02-05     1 recovered
+    ## 715        Liaoning Mainland China 41.29560 122.6085 2020-02-05     2 recovered
+    ## 716         Qinghai Mainland China 35.74520  95.9956 2020-02-05     3 recovered
+    ## 717         Shaanxi Mainland China 35.19170 108.8701 2020-02-05     4 recovered
+    ## 718        Shandong Mainland China 36.34270 118.1498 2020-02-05     4 recovered
+    ## 719        Shanghai Mainland China 31.20200 121.4491 2020-02-05     3 recovered
+    ## 720          Shanxi Mainland China 37.57770 112.2922 2020-02-05     1 recovered
+    ## 721         Sichuan Mainland China 30.61710 102.7103 2020-02-05    10 recovered
+    ## 722        Zhejiang Mainland China 29.18320 120.0934 2020-02-05    16 recovered
+    ## 726           Anhui Mainland China 31.82570 117.2264 2020-02-06    61 confirmed
+    ## 727         Beijing Mainland China 40.18240 116.4142 2020-02-06    21 confirmed
+    ## 728       Chongqing Mainland China 30.05720 107.8740 2020-02-06    22 confirmed
+    ## 729          Fujian Mainland China 26.07890 117.9874 2020-02-06    10 confirmed
+    ## 730       Guangdong Mainland China 23.34170 113.4244 2020-02-06    75 confirmed
+    ## 731         Guangxi Mainland China 23.82980 108.7881 2020-02-06    18 confirmed
+    ## 732         Guizhou Mainland China 26.81540 106.8748 2020-02-06     7 confirmed
+    ## 733          Hainan Mainland China 19.19590 109.7453 2020-02-06     7 confirmed
+    ## 734           Hebei Mainland China 38.04280 114.5149 2020-02-06    22 confirmed
+    ## 735    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06    37 confirmed
+    ## 736           Henan Mainland China 33.88202 113.6140 2020-02-06    87 confirmed
+    ## 738           Hubei Mainland China 30.97560 112.2707 2020-02-06  2447 confirmed
+    ## 739           Hunan Mainland China 27.61040 111.7088 2020-02-06    50 confirmed
+    ## 740  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-06     4 confirmed
+    ## 741         Jiangsu Mainland China 32.97110 119.4550 2020-02-06    32 confirmed
+    ## 742         Jiangxi Mainland China 27.61400 115.7221 2020-02-06    52 confirmed
+    ## 743           Jilin Mainland China 43.66610 126.1923 2020-02-06     5 confirmed
+    ## 744        Liaoning Mainland China 41.29560 122.6085 2020-02-06     5 confirmed
+    ## 745         Ningxia Mainland China 37.26920 106.1655 2020-02-06     6 confirmed
+    ## 746         Qinghai Mainland China 35.74520  95.9956 2020-02-06     1 confirmed
+    ## 748         Shaanxi Mainland China 35.19170 108.8701 2020-02-06     8 confirmed
+    ## 749        Shandong Mainland China 36.34270 118.1498 2020-02-06    40 confirmed
+    ## 750        Shanghai Mainland China 31.20200 121.4491 2020-02-06    14 confirmed
+    ## 751          Shanxi Mainland China 37.57770 112.2922 2020-02-06    15 confirmed
+    ## 752         Sichuan Mainland China 30.61710 102.7103 2020-02-06    20 confirmed
+    ## 754         Tianjin Mainland China 39.30540 117.3230 2020-02-06    10 confirmed
+    ## 755        Xinjiang Mainland China 41.11290  85.2401 2020-02-06     4 confirmed
+    ## 756          Yunnan Mainland China 24.97400 101.4870 2020-02-06     5 confirmed
+    ## 757        Zhejiang Mainland China 29.18320 120.0934 2020-02-06    59 confirmed
+    ## 758    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06     1     death
+    ## 759           Hubei Mainland China 30.97560 112.2707 2020-02-06    69     death
+    ## 760           Anhui Mainland China 31.82570 117.2264 2020-02-06    11 recovered
+    ## 761         Beijing Mainland China 40.18240 116.4142 2020-02-06     7 recovered
+    ## 762       Chongqing Mainland China 30.05720 107.8740 2020-02-06     9 recovered
+    ## 763          Fujian Mainland China 26.07890 117.9874 2020-02-06     3 recovered
+    ## 764       Guangdong Mainland China 23.34170 113.4244 2020-02-06    20 recovered
+    ## 765         Guangxi Mainland China 23.82980 108.7881 2020-02-06     1 recovered
+    ## 766         Guizhou Mainland China 26.81540 106.8748 2020-02-06    -3 recovered
+    ## 767          Hainan Mainland China 19.19590 109.7453 2020-02-06     3 recovered
+    ## 768           Hebei Mainland China 38.04280 114.5149 2020-02-06     7 recovered
+    ## 769    Heilongjiang Mainland China 47.86200 127.7615 2020-02-06     1 recovered
+    ## 770           Henan Mainland China 33.88202 113.6140 2020-02-06     9 recovered
+    ## 771           Hubei Mainland China 30.97560 112.2707 2020-02-06   184 recovered
+    ## 772           Hunan Mainland China 27.61040 111.7088 2020-02-06    27 recovered
+    ## 773  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-06     1 recovered
+    ## 774         Jiangsu Mainland China 32.97110 119.4550 2020-02-06    11 recovered
+    ## 775         Jiangxi Mainland China 27.61400 115.7221 2020-02-06    10 recovered
+    ## 776           Jilin Mainland China 43.66610 126.1923 2020-02-06     2 recovered
+    ## 777        Liaoning Mainland China 41.29560 122.6085 2020-02-06     1 recovered
+    ## 779         Shaanxi Mainland China 35.19170 108.8701 2020-02-06     3 recovered
+    ## 780        Shandong Mainland China 36.34270 118.1498 2020-02-06    12 recovered
+    ## 781        Shanghai Mainland China 31.20200 121.4491 2020-02-06    10 recovered
+    ## 782          Shanxi Mainland China 37.57770 112.2922 2020-02-06     7 recovered
+    ## 783         Sichuan Mainland China 30.61710 102.7103 2020-02-06     7 recovered
+    ## 785          Yunnan Mainland China 24.97400 101.4870 2020-02-06     2 recovered
+    ## 786        Zhejiang Mainland China 29.18320 120.0934 2020-02-06    16 recovered
+    ## 794           Anhui Mainland China 31.82570 117.2264 2020-02-07    74 confirmed
+    ## 795         Beijing Mainland China 40.18240 116.4142 2020-02-07    23 confirmed
+    ## 797       Chongqing Mainland China 30.05720 107.8740 2020-02-07    15 confirmed
+    ## 799          Fujian Mainland China 26.07890 117.9874 2020-02-07     9 confirmed
+    ## 800           Gansu Mainland China 36.06110 103.8343 2020-02-07     5 confirmed
+    ## 801       Guangdong Mainland China 23.34170 113.4244 2020-02-07    64 confirmed
+    ## 802         Guangxi Mainland China 23.82980 108.7881 2020-02-07     4 confirmed
+    ## 803         Guizhou Mainland China 26.81540 106.8748 2020-02-07    10 confirmed
+    ## 804          Hainan Mainland China 19.19590 109.7453 2020-02-07    11 confirmed
+    ## 805           Hebei Mainland China 38.04280 114.5149 2020-02-07    15 confirmed
+    ## 806    Heilongjiang Mainland China 47.86200 127.7615 2020-02-07    50 confirmed
+    ## 807           Henan Mainland China 33.88202 113.6140 2020-02-07    63 confirmed
+    ## 809           Hubei Mainland China 30.97560 112.2707 2020-02-07  2841 confirmed
+    ## 810           Hunan Mainland China 27.61040 111.7088 2020-02-07    61 confirmed
+    ## 811  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-07     4 confirmed
+    ## 812         Jiangsu Mainland China 32.97110 119.4550 2020-02-07    35 confirmed
+    ## 813         Jiangxi Mainland China 27.61400 115.7221 2020-02-07    61 confirmed
+    ## 814           Jilin Mainland China 43.66610 126.1923 2020-02-07     6 confirmed
+    ## 815        Liaoning Mainland China 41.29560 122.6085 2020-02-07     5 confirmed
+    ## 816         Ningxia Mainland China 37.26920 106.1655 2020-02-07     3 confirmed
+    ## 818         Shaanxi Mainland China 35.19170 108.8701 2020-02-07    11 confirmed
+    ## 819        Shandong Mainland China 36.34270 118.1498 2020-02-07    39 confirmed
+    ## 820        Shanghai Mainland China 31.20200 121.4491 2020-02-07    20 confirmed
+    ## 821          Shanxi Mainland China 37.57770 112.2922 2020-02-07     8 confirmed
+    ## 822         Sichuan Mainland China 30.61710 102.7103 2020-02-07    23 confirmed
+    ## 823         Tianjin Mainland China 39.30540 117.3230 2020-02-07     2 confirmed
+    ## 824        Xinjiang Mainland China 41.11290  85.2401 2020-02-07     3 confirmed
+    ## 825          Yunnan Mainland China 24.97400 101.4870 2020-02-07     5 confirmed
+    ## 826        Zhejiang Mainland China 29.18320 120.0934 2020-02-07    52 confirmed
+    ## 827       Guangdong Mainland China 23.34170 113.4244 2020-02-07     1     death
+    ## 828          Hainan Mainland China 19.19590 109.7453 2020-02-07     1     death
+    ## 829           Henan Mainland China 33.88202 113.6140 2020-02-07     1     death
+    ## 830           Hubei Mainland China 30.97560 112.2707 2020-02-07    81     death
+    ## 831           Jilin Mainland China 43.66610 126.1923 2020-02-07     1     death
+    ## 834           Anhui Mainland China 31.82570 117.2264 2020-02-07    13 recovered
+    ## 835         Beijing Mainland China 40.18240 116.4142 2020-02-07     2 recovered
+    ## 836       Chongqing Mainland China 30.05720 107.8740 2020-02-07     7 recovered
+    ## 837          Fujian Mainland China 26.07890 117.9874 2020-02-07     6 recovered
+    ## 838           Gansu Mainland China 36.06110 103.8343 2020-02-07     3 recovered
+    ## 839       Guangdong Mainland China 23.34170 113.4244 2020-02-07    19 recovered
+    ## 840         Guangxi Mainland China 23.82980 108.7881 2020-02-07     3 recovered
+    ## 841          Hainan Mainland China 19.19590 109.7453 2020-02-07     2 recovered
+    ## 842           Hebei Mainland China 38.04280 114.5149 2020-02-07     9 recovered
+    ## 843    Heilongjiang Mainland China 47.86200 127.7615 2020-02-07     4 recovered
+    ## 844           Henan Mainland China 33.88202 113.6140 2020-02-07    30 recovered
+    ## 845           Hubei Mainland China 30.97560 112.2707 2020-02-07   298 recovered
+    ## 846           Hunan Mainland China 27.61040 111.7088 2020-02-07    31 recovered
+    ## 847  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-07     1 recovered
+    ## 848         Jiangsu Mainland China 32.97110 119.4550 2020-02-07     9 recovered
+    ## 849         Jiangxi Mainland China 27.61400 115.7221 2020-02-07     8 recovered
+    ## 850        Liaoning Mainland China 41.29560 122.6085 2020-02-07     2 recovered
+    ## 851         Ningxia Mainland China 37.26920 106.1655 2020-02-07     4 recovered
+    ## 852         Shaanxi Mainland China 35.19170 108.8701 2020-02-07     8 recovered
+    ## 853        Shandong Mainland China 36.34270 118.1498 2020-02-07    10 recovered
+    ## 854        Shanghai Mainland China 31.20200 121.4491 2020-02-07     5 recovered
+    ## 855          Shanxi Mainland China 37.57770 112.2922 2020-02-07     3 recovered
+    ## 856         Sichuan Mainland China 30.61710 102.7103 2020-02-07    11 recovered
+    ## 857          Yunnan Mainland China 24.97400 101.4870 2020-02-07     5 recovered
+    ## 858        Zhejiang Mainland China 29.18320 120.0934 2020-02-07    29 recovered
+    ## 865           Anhui Mainland China 31.82570 117.2264 2020-02-08    68 confirmed
+    ## 866         Beijing Mainland China 40.18240 116.4142 2020-02-08    18 confirmed
+    ## 867       Chongqing Mainland China 30.05720 107.8740 2020-02-08     2 confirmed
+    ## 868          Fujian Mainland China 26.07890 117.9874 2020-02-08    15 confirmed
+    ## 869           Gansu Mainland China 36.06110 103.8343 2020-02-08    12 confirmed
+    ## 870       Guangdong Mainland China 23.34170 113.4244 2020-02-08    61 confirmed
+    ## 871         Guangxi Mainland China 23.82980 108.7881 2020-02-08    11 confirmed
+    ## 872         Guizhou Mainland China 26.81540 106.8748 2020-02-08     8 confirmed
+    ## 873          Hainan Mainland China 19.19590 109.7453 2020-02-08     7 confirmed
+    ## 874           Hebei Mainland China 38.04280 114.5149 2020-02-08    23 confirmed
+    ## 875    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08    18 confirmed
+    ## 876           Henan Mainland China 33.88202 113.6140 2020-02-08    67 confirmed
+    ## 878           Hubei Mainland China 30.97560 112.2707 2020-02-08  2147 confirmed
+    ## 879           Hunan Mainland China 27.61040 111.7088 2020-02-08    31 confirmed
+    ## 880  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-08     2 confirmed
+    ## 881         Jiangsu Mainland China 32.97110 119.4550 2020-02-08    31 confirmed
+    ## 882         Jiangxi Mainland China 27.61400 115.7221 2020-02-08    37 confirmed
+    ## 883           Jilin Mainland China 43.66610 126.1923 2020-02-08     4 confirmed
+    ## 884        Liaoning Mainland China 41.29560 122.6085 2020-02-08     6 confirmed
+    ## 885         Ningxia Mainland China 37.26920 106.1655 2020-02-08     2 confirmed
+    ## 886         Shaanxi Mainland China 35.19170 108.8701 2020-02-08    11 confirmed
+    ## 887        Shandong Mainland China 36.34270 118.1498 2020-02-08    30 confirmed
+    ## 888        Shanghai Mainland China 31.20200 121.4491 2020-02-08     9 confirmed
+    ## 889          Shanxi Mainland China 37.57770 112.2922 2020-02-08    11 confirmed
+    ## 890         Sichuan Mainland China 30.61710 102.7103 2020-02-08    20 confirmed
+    ## 892         Tianjin Mainland China 39.30540 117.3230 2020-02-08     7 confirmed
+    ## 893        Xinjiang Mainland China 41.11290  85.2401 2020-02-08     3 confirmed
+    ## 894        Zhejiang Mainland China 29.18320 120.0934 2020-02-08    42 confirmed
+    ## 895         Beijing Mainland China 40.18240 116.4142 2020-02-08     1     death
+    ## 896           Gansu Mainland China 36.06110 103.8343 2020-02-08     1     death
+    ## 897    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08     2     death
+    ## 898           Henan Mainland China 33.88202 113.6140 2020-02-08     1     death
+    ## 899           Hubei Mainland China 30.97560 112.2707 2020-02-08    81     death
+    ## 900           Hunan Mainland China 27.61040 111.7088 2020-02-08     1     death
+    ## 904           Anhui Mainland China 31.82570 117.2264 2020-02-08    12 recovered
+    ## 905         Beijing Mainland China 40.18240 116.4142 2020-02-08     1 recovered
+    ## 906       Chongqing Mainland China 30.05720 107.8740 2020-02-08     8 recovered
+    ## 907          Fujian Mainland China 26.07890 117.9874 2020-02-08     4 recovered
+    ## 908           Gansu Mainland China 36.06110 103.8343 2020-02-08     3 recovered
+    ## 909       Guangdong Mainland China 23.34170 113.4244 2020-02-08    24 recovered
+    ## 910         Guizhou Mainland China 26.81540 106.8748 2020-02-08     1 recovered
+    ## 911          Hainan Mainland China 19.19590 109.7453 2020-02-08     4 recovered
+    ## 912           Hebei Mainland China 38.04280 114.5149 2020-02-08     8 recovered
+    ## 913    Heilongjiang Mainland China 47.86200 127.7615 2020-02-08     1 recovered
+    ## 914           Henan Mainland China 33.88202 113.6140 2020-02-08    30 recovered
+    ## 915           Hubei Mainland China 30.97560 112.2707 2020-02-08   324 recovered
+    ## 916           Hunan Mainland China 27.61040 111.7088 2020-02-08    44 recovered
+    ## 917         Jiangsu Mainland China 32.97110 119.4550 2020-02-08     8 recovered
+    ## 918         Jiangxi Mainland China 27.61400 115.7221 2020-02-08    10 recovered
+    ## 919        Liaoning Mainland China 41.29560 122.6085 2020-02-08     1 recovered
+    ## 920         Ningxia Mainland China 37.26920 106.1655 2020-02-08    10 recovered
+    ## 921         Shaanxi Mainland China 35.19170 108.8701 2020-02-08     3 recovered
+    ## 922        Shandong Mainland China 36.34270 118.1498 2020-02-08     7 recovered
+    ## 923        Shanghai Mainland China 31.20200 121.4491 2020-02-08    11 recovered
+    ## 924          Shanxi Mainland China 37.57770 112.2922 2020-02-08     6 recovered
+    ## 925         Sichuan Mainland China 30.61710 102.7103 2020-02-08    18 recovered
+    ## 926         Tianjin Mainland China 39.30540 117.3230 2020-02-08     2 recovered
+    ## 927          Yunnan Mainland China 24.97400 101.4870 2020-02-08     5 recovered
+    ## 928        Zhejiang Mainland China 29.18320 120.0934 2020-02-08    52 recovered
+    ## 934           Anhui Mainland China 31.82570 117.2264 2020-02-09    46 confirmed
+    ## 935         Beijing Mainland China 40.18240 116.4142 2020-02-09    11 confirmed
+    ## 936       Chongqing Mainland China 30.05720 107.8740 2020-02-09    40 confirmed
+    ## 938          Fujian Mainland China 26.07890 117.9874 2020-02-09    11 confirmed
+    ## 939           Gansu Mainland China 36.06110 103.8343 2020-02-09     4 confirmed
+    ## 940       Guangdong Mainland China 23.34170 113.4244 2020-02-09    36 confirmed
+    ## 941         Guangxi Mainland China 23.82980 108.7881 2020-02-09    12 confirmed
+    ## 942         Guizhou Mainland China 26.81540 106.8748 2020-02-09    10 confirmed
+    ## 943          Hainan Mainland China 19.19590 109.7453 2020-02-09     7 confirmed
+    ## 944           Hebei Mainland China 38.04280 114.5149 2020-02-09    11 confirmed
+    ## 945    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09    12 confirmed
+    ## 946           Henan Mainland China 33.88202 113.6140 2020-02-09    52 confirmed
+    ## 948           Hubei Mainland China 30.97560 112.2707 2020-02-09  2531 confirmed
+    ## 949           Hunan Mainland China 27.61040 111.7088 2020-02-09    35 confirmed
+    ## 950  Inner Mongolia Mainland China 44.09350 113.9448 2020-02-09     2 confirmed
+    ## 951         Jiangsu Mainland China 32.97110 119.4550 2020-02-09    29 confirmed
+    ## 952         Jiangxi Mainland China 27.61400 115.7221 2020-02-09    42 confirmed
+    ## 953           Jilin Mainland China 43.66610 126.1923 2020-02-09     9 confirmed
+    ## 954        Liaoning Mainland China 41.29560 122.6085 2020-02-09     2 confirmed
+    ## 955         Shaanxi Mainland China 35.19170 108.8701 2020-02-09    13 confirmed
+    ## 956        Shandong Mainland China 36.34270 118.1498 2020-02-09    28 confirmed
+    ## 957        Shanghai Mainland China 31.20200 121.4491 2020-02-09     7 confirmed
+    ## 958          Shanxi Mainland China 37.57770 112.2922 2020-02-09     4 confirmed
+    ## 959         Sichuan Mainland China 30.61710 102.7103 2020-02-09    22 confirmed
+    ## 961         Tianjin Mainland China 39.30540 117.3230 2020-02-09     3 confirmed
+    ## 962        Xinjiang Mainland China 41.11290  85.2401 2020-02-09     3 confirmed
+    ## 963          Yunnan Mainland China 24.97400 101.4870 2020-02-09     3 confirmed
+    ## 964        Zhejiang Mainland China 29.18320 120.0934 2020-02-09    27 confirmed
+    ## 965           Anhui Mainland China 31.82570 117.2264 2020-02-09     1     death
+    ## 966           Gansu Mainland China 36.06110 103.8343 2020-02-09     1     death
+    ## 967         Guangxi Mainland China 23.82980 108.7881 2020-02-09     1     death
+    ## 968          Hainan Mainland China 19.19590 109.7453 2020-02-09     1     death
+    ## 969           Hebei Mainland China 38.04280 114.5149 2020-02-09     1     death
+    ## 970    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09     1     death
+    ## 971           Henan Mainland China 33.88202 113.6140 2020-02-09     2     death
+    ## 972           Hubei Mainland China 30.97560 112.2707 2020-02-09    91     death
+    ## 973        Shandong Mainland China 36.34270 118.1498 2020-02-09     1     death
+    ## 975           Anhui Mainland China 31.82570 117.2264 2020-02-09    13 recovered
+    ## 976         Beijing Mainland China 40.18240 116.4142 2020-02-09     3 recovered
+    ## 977       Chongqing Mainland China 30.05720 107.8740 2020-02-09    12 recovered
+    ## 979          Fujian Mainland China 26.07890 117.9874 2020-02-09    11 recovered
+    ## 980           Gansu Mainland China 36.06110 103.8343 2020-02-09     4 recovered
+    ## 981       Guangdong Mainland China 23.34170 113.4244 2020-02-09    29 recovered
+    ## 982         Guangxi Mainland China 23.82980 108.7881 2020-02-09     1 recovered
+    ## 983          Hainan Mainland China 19.19590 109.7453 2020-02-09     5 recovered
+    ## 984           Hebei Mainland China 38.04280 114.5149 2020-02-09     4 recovered
+    ## 985    Heilongjiang Mainland China 47.86200 127.7615 2020-02-09     1 recovered
+    ## 986           Henan Mainland China 33.88202 113.6140 2020-02-09    37 recovered
+    ## 987           Hubei Mainland China 30.97560 112.2707 2020-02-09   356 recovered
+    ## 988           Hunan Mainland China 27.61040 111.7088 2020-02-09    30 recovered
+    ## 989         Jiangsu Mainland China 32.97110 119.4550 2020-02-09    20 recovered
+    ## 990         Jiangxi Mainland China 27.61400 115.7221 2020-02-09    18 recovered
+    ## 991           Jilin Mainland China 43.66610 126.1923 2020-02-09     8 recovered
+    ## 993        Liaoning Mainland China 41.29560 122.6085 2020-02-09     4 recovered
+    ## 994         Ningxia Mainland China 37.26920 106.1655 2020-02-09    -2 recovered
+    ## 995         Shaanxi Mainland China 35.19170 108.8701 2020-02-09     5 recovered
+    ## 996        Shandong Mainland China 36.34270 118.1498 2020-02-09    19 recovered
+    ## 997        Shanghai Mainland China 31.20200 121.4491 2020-02-09     3 recovered
+    ## 998          Shanxi Mainland China 37.57770 112.2922 2020-02-09     4 recovered
+    ## 999         Sichuan Mainland China 30.61710 102.7103 2020-02-09    11 recovered
+    ## 1000         Yunnan Mainland China 24.97400 101.4870 2020-02-09     1 recovered
+    ## 1001       Zhejiang Mainland China 29.18320 120.0934 2020-02-09    26 recovered
+    ## 1008          Anhui Mainland China 31.82570 117.2264 2020-02-10    51 confirmed
+    ## 1009        Beijing Mainland China 40.18240 116.4142 2020-02-10    11 confirmed
+    ## 1010      Chongqing Mainland China 30.05720 107.8740 2020-02-10    18 confirmed
+    ## 1012         Fujian Mainland China 26.07890 117.9874 2020-02-10    11 confirmed
+    ## 1013      Guangdong Mainland China 23.34170 113.4244 2020-02-10    28 confirmed
+    ## 1014        Guangxi Mainland China 23.82980 108.7881 2020-02-10    15 confirmed
+    ## 1015        Guizhou Mainland China 26.81540 106.8748 2020-02-10    10 confirmed
+    ## 1016         Hainan Mainland China 19.19590 109.7453 2020-02-10     7 confirmed
+    ## 1017          Hebei Mainland China 38.04280 114.5149 2020-02-10    12 confirmed
+    ## 1018   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10    24 confirmed
+    ## 1019          Henan Mainland China 33.88202 113.6140 2020-02-10    40 confirmed
+    ## 1021          Hubei Mainland China 30.97560 112.2707 2020-02-10  2097 confirmed
+    ## 1022          Hunan Mainland China 27.61040 111.7088 2020-02-10    41 confirmed
+    ## 1023 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-10     4 confirmed
+    ## 1024        Jiangsu Mainland China 32.97110 119.4550 2020-02-10    24 confirmed
+    ## 1025        Jiangxi Mainland China 27.61400 115.7221 2020-02-10    31 confirmed
+    ## 1026          Jilin Mainland China 43.66610 126.1923 2020-02-10     2 confirmed
+    ## 1027       Liaoning Mainland China 41.29560 122.6085 2020-02-10     1 confirmed
+    ## 1028        Ningxia Mainland China 37.26920 106.1655 2020-02-10     4 confirmed
+    ## 1029        Shaanxi Mainland China 35.19170 108.8701 2020-02-10     5 confirmed
+    ## 1030       Shandong Mainland China 36.34270 118.1498 2020-02-10    22 confirmed
+    ## 1031       Shanghai Mainland China 31.20200 121.4491 2020-02-10     6 confirmed
+    ## 1032        Sichuan Mainland China 30.61710 102.7103 2020-02-10    19 confirmed
+    ## 1033        Tianjin Mainland China 39.30540 117.3230 2020-02-10     4 confirmed
+    ## 1034       Xinjiang Mainland China 41.11290  85.2401 2020-02-10     4 confirmed
+    ## 1035         Yunnan Mainland China 24.97400 101.4870 2020-02-10     8 confirmed
+    ## 1036       Zhejiang Mainland China 29.18320 120.0934 2020-02-10    17 confirmed
+    ## 1037          Anhui Mainland China 31.82570 117.2264 2020-02-10     2     death
+    ## 1038   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10     1     death
+    ## 1039          Hubei Mainland China 30.97560 112.2707 2020-02-10   103     death
+    ## 1040        Jiangxi Mainland China 27.61400 115.7221 2020-02-10     1     death
+    ## 1042          Anhui Mainland China 31.82570 117.2264 2020-02-10    16 recovered
+    ## 1043        Beijing Mainland China 40.18240 116.4142 2020-02-10     7 recovered
+    ## 1044      Chongqing Mainland China 30.05720 107.8740 2020-02-10    15 recovered
+    ## 1045         Fujian Mainland China 26.07890 117.9874 2020-02-10     4 recovered
+    ## 1046          Gansu Mainland China 36.06110 103.8343 2020-02-10     1 recovered
+    ## 1047      Guangdong Mainland China 23.34170 113.4244 2020-02-10    26 recovered
+    ## 1048        Guangxi Mainland China 23.82980 108.7881 2020-02-10     6 recovered
+    ## 1049        Guizhou Mainland China 26.81540 106.8748 2020-02-10     3 recovered
+    ## 1050          Hebei Mainland China 38.04280 114.5149 2020-02-10     7 recovered
+    ## 1051   Heilongjiang Mainland China 47.86200 127.7615 2020-02-10    16 recovered
+    ## 1052          Henan Mainland China 33.88202 113.6140 2020-02-10    38 recovered
+    ## 1053          Hubei Mainland China 30.97560 112.2707 2020-02-10   427 recovered
+    ## 1054          Hunan Mainland China 27.61040 111.7088 2020-02-10    22 recovered
+    ## 1055        Jiangsu Mainland China 32.97110 119.4550 2020-02-10    10 recovered
+    ## 1056        Jiangxi Mainland China 27.61400 115.7221 2020-02-10    32 recovered
+    ## 1057          Jilin Mainland China 43.66610 126.1923 2020-02-10     1 recovered
+    ## 1058       Liaoning Mainland China 41.29560 122.6085 2020-02-10     1 recovered
+    ## 1059        Shaanxi Mainland China 35.19170 108.8701 2020-02-10     5 recovered
+    ## 1060       Shandong Mainland China 36.34270 118.1498 2020-02-10     3 recovered
+    ## 1061       Shanghai Mainland China 31.20200 121.4491 2020-02-10     4 recovered
+    ## 1062        Sichuan Mainland China 30.61710 102.7103 2020-02-10     9 recovered
+    ## 1063        Tianjin Mainland China 39.30540 117.3230 2020-02-10     4 recovered
+    ## 1064         Yunnan Mainland China 24.97400 101.4870 2020-02-10     1 recovered
+    ## 1065       Zhejiang Mainland China 29.18320 120.0934 2020-02-10    41 recovered
+    ## 1071          Anhui Mainland China 31.82570 117.2264 2020-02-11    30 confirmed
+    ## 1072        Beijing Mainland China 40.18240 116.4142 2020-02-11     5 confirmed
+    ## 1073      Chongqing Mainland China 30.05720 107.8740 2020-02-11    19 confirmed
+    ## 1074         Fujian Mainland China 26.07890 117.9874 2020-02-11     6 confirmed
+    ## 1075          Gansu Mainland China 36.06110 103.8343 2020-02-11     3 confirmed
+    ## 1076      Guangdong Mainland China 23.34170 113.4244 2020-02-11    18 confirmed
+    ## 1077        Guangxi Mainland China 23.82980 108.7881 2020-02-11     5 confirmed
+    ## 1078        Guizhou Mainland China 26.81540 106.8748 2020-02-11    18 confirmed
+    ## 1079         Hainan Mainland China 19.19590 109.7453 2020-02-11     6 confirmed
+    ## 1080          Hebei Mainland China 38.04280 114.5149 2020-02-11    21 confirmed
+    ## 1081   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11    29 confirmed
+    ## 1082          Henan Mainland China 33.88202 113.6140 2020-02-11    32 confirmed
+    ## 1084          Hubei Mainland China 30.97560 112.2707 2020-02-11  1638 confirmed
+    ## 1085          Hunan Mainland China 27.61040 111.7088 2020-02-11    33 confirmed
+    ## 1086        Jiangsu Mainland China 32.97110 119.4550 2020-02-11    23 confirmed
+    ## 1087        Jiangxi Mainland China 27.61400 115.7221 2020-02-11    33 confirmed
+    ## 1088          Jilin Mainland China 43.66610 126.1923 2020-02-11     1 confirmed
+    ## 1089       Liaoning Mainland China 41.29560 122.6085 2020-02-11     3 confirmed
+    ## 1090        Ningxia Mainland China 37.26920 106.1655 2020-02-11     4 confirmed
+    ## 1092        Shaanxi Mainland China 35.19170 108.8701 2020-02-11     6 confirmed
+    ## 1093       Shandong Mainland China 36.34270 118.1498 2020-02-11    21 confirmed
+    ## 1094       Shanghai Mainland China 31.20200 121.4491 2020-02-11     4 confirmed
+    ## 1095         Shanxi Mainland China 37.57770 112.2922 2020-02-11     5 confirmed
+    ## 1096        Sichuan Mainland China 30.61710 102.7103 2020-02-11    12 confirmed
+    ## 1097        Tianjin Mainland China 39.30540 117.3230 2020-02-11    11 confirmed
+    ## 1098       Xinjiang Mainland China 41.11290  85.2401 2020-02-11     6 confirmed
+    ## 1099         Yunnan Mainland China 24.97400 101.4870 2020-02-11     4 confirmed
+    ## 1100       Zhejiang Mainland China 29.18320 120.0934 2020-02-11    25 confirmed
+    ## 1101          Anhui Mainland China 31.82570 117.2264 2020-02-11     1     death
+    ## 1102        Beijing Mainland China 40.18240 116.4142 2020-02-11     1     death
+    ## 1103      Chongqing Mainland China 30.05720 107.8740 2020-02-11     1     death
+    ## 1104   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11     1     death
+    ## 1105          Henan Mainland China 33.88202 113.6140 2020-02-11     1     death
+    ## 1106          Hubei Mainland China 30.97560 112.2707 2020-02-11    94     death
+    ## 1107        Tianjin Mainland China 39.30540 117.3230 2020-02-11     1     death
+    ## 1112          Anhui Mainland China 31.82570 117.2264 2020-02-11    17 recovered
+    ## 1113        Beijing Mainland China 40.18240 116.4142 2020-02-11     4 recovered
+    ## 1114      Chongqing Mainland China 30.05720 107.8740 2020-02-11    13 recovered
+    ## 1115         Fujian Mainland China 26.07890 117.9874 2020-02-11     6 recovered
+    ## 1116          Gansu Mainland China 36.06110 103.8343 2020-02-11     7 recovered
+    ## 1117      Guangdong Mainland China 23.34170 113.4244 2020-02-11    45 recovered
+    ## 1118        Guangxi Mainland China 23.82980 108.7881 2020-02-11     9 recovered
+    ## 1119        Guizhou Mainland China 26.81540 106.8748 2020-02-11     7 recovered
+    ## 1120         Hainan Mainland China 19.19590 109.7453 2020-02-11     1 recovered
+    ## 1121          Hebei Mainland China 38.04280 114.5149 2020-02-11     7 recovered
+    ## 1122   Heilongjiang Mainland China 47.86200 127.7615 2020-02-11    -2 recovered
+    ## 1123          Henan Mainland China 33.88202 113.6140 2020-02-11    27 recovered
+    ## 1124          Hubei Mainland China 30.97560 112.2707 2020-02-11   417 recovered
+    ## 1125          Hunan Mainland China 27.61040 111.7088 2020-02-11    39 recovered
+    ## 1126        Jiangsu Mainland China 32.97110 119.4550 2020-02-11    12 recovered
+    ## 1127        Jiangxi Mainland China 27.61400 115.7221 2020-02-11    23 recovered
+    ## 1128          Jilin Mainland China 43.66610 126.1923 2020-02-11     5 recovered
+    ## 1129       Liaoning Mainland China 41.29560 122.6085 2020-02-11     6 recovered
+    ## 1130        Ningxia Mainland China 37.26920 106.1655 2020-02-11     9 recovered
+    ## 1131        Qinghai Mainland China 35.74520  95.9956 2020-02-11     2 recovered
+    ## 1132        Shaanxi Mainland China 35.19170 108.8701 2020-02-11     2 recovered
+    ## 1133       Shandong Mainland China 36.34270 118.1498 2020-02-11    14 recovered
+    ## 1134       Shanghai Mainland China 31.20200 121.4491 2020-02-11     4 recovered
+    ## 1135         Shanxi Mainland China 37.57770 112.2922 2020-02-11     5 recovered
+    ## 1136        Sichuan Mainland China 30.61710 102.7103 2020-02-11     5 recovered
+    ## 1137        Tianjin Mainland China 39.30540 117.3230 2020-02-11     2 recovered
+    ## 1138       Xinjiang Mainland China 41.11290  85.2401 2020-02-11     3 recovered
+    ## 1139         Yunnan Mainland China 24.97400 101.4870 2020-02-11     1 recovered
+    ## 1140       Zhejiang Mainland China 29.18320 120.0934 2020-02-11    28 recovered
+    ## 1144          Anhui Mainland China 31.82570 117.2264 2020-02-12    29 confirmed
+    ## 1145        Beijing Mainland China 40.18240 116.4142 2020-02-12    10 confirmed
+    ## 1146      Chongqing Mainland China 30.05720 107.8740 2020-02-12    13 confirmed
+    ## 1148         Fujian Mainland China 26.07890 117.9874 2020-02-12     5 confirmed
+    ## 1149          Gansu Mainland China 36.06110 103.8343 2020-02-12     1 confirmed
+    ## 1150      Guangdong Mainland China 23.34170 113.4244 2020-02-12    42 confirmed
+    ## 1151        Guangxi Mainland China 23.82980 108.7881 2020-02-12     7 confirmed
+    ## 1152        Guizhou Mainland China 26.81540 106.8748 2020-02-12     6 confirmed
+    ## 1153         Hainan Mainland China 19.19590 109.7453 2020-02-12    13 confirmed
+    ## 1154          Hebei Mainland China 38.04280 114.5149 2020-02-12    12 confirmed
+    ## 1155   Heilongjiang Mainland China 47.86200 127.7615 2020-02-12    18 confirmed
+    ## 1156          Henan Mainland China 33.88202 113.6140 2020-02-12    30 confirmed
+    ## 1158          Hunan Mainland China 27.61040 111.7088 2020-02-12    34 confirmed
+    ## 1159 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-12     2 confirmed
+    ## 1160        Jiangsu Mainland China 32.97110 119.4550 2020-02-12    28 confirmed
+    ## 1161        Jiangxi Mainland China 27.61400 115.7221 2020-02-12    40 confirmed
+    ## 1162          Jilin Mainland China 43.66610 126.1923 2020-02-12     2 confirmed
+    ## 1163       Liaoning Mainland China 41.29560 122.6085 2020-02-12     5 confirmed
+    ## 1164        Ningxia Mainland China 37.26920 106.1655 2020-02-12     5 confirmed
+    ## 1165        Shaanxi Mainland China 35.19170 108.8701 2020-02-12     6 confirmed
+    ## 1166       Shandong Mainland China 36.34270 118.1498 2020-02-12    10 confirmed
+    ## 1167       Shanghai Mainland China 31.20200 121.4491 2020-02-12     8 confirmed
+    ## 1168         Shanxi Mainland China 37.57770 112.2922 2020-02-12     2 confirmed
+    ## 1169        Sichuan Mainland China 30.61710 102.7103 2020-02-12    19 confirmed
+    ## 1170        Tianjin Mainland China 39.30540 117.3230 2020-02-12     6 confirmed
+    ## 1171       Xinjiang Mainland China 41.11290  85.2401 2020-02-12     4 confirmed
+    ## 1172         Yunnan Mainland China 24.97400 101.4870 2020-02-12     1 confirmed
+    ## 1173       Zhejiang Mainland China 29.18320 120.0934 2020-02-12    14 confirmed
+    ## 1174         Hainan Mainland China 19.19590 109.7453 2020-02-12     1     death
+    ## 1175          Henan Mainland China 33.88202 113.6140 2020-02-12     1     death
+    ## 1176          Hunan Mainland China 27.61040 111.7088 2020-02-12     1     death
+    ## 1177       Liaoning Mainland China 41.29560 122.6085 2020-02-12     1     death
+    ## 1178       Shandong Mainland China 36.34270 118.1498 2020-02-12     1     death
+    ## 1189          Anhui Mainland China 31.82570 117.2264 2020-02-12    22 recovered
+    ## 1190        Beijing Mainland China 40.18240 116.4142 2020-02-12     8 recovered
+    ## 1191      Chongqing Mainland China 30.05720 107.8740 2020-02-12    23 recovered
+    ## 1192         Fujian Mainland China 26.07890 117.9874 2020-02-12     8 recovered
+    ## 1193          Gansu Mainland China 36.06110 103.8343 2020-02-12     7 recovered
+    ## 1194      Guangdong Mainland China 23.34170 113.4244 2020-02-12    63 recovered
+    ## 1195        Guangxi Mainland China 23.82980 108.7881 2020-02-12    -1 recovered
+    ## 1196        Guizhou Mainland China 26.81540 106.8748 2020-02-12     1 recovered
+    ## 1197         Hainan Mainland China 19.19590 109.7453 2020-02-12     7 recovered
+    ## 1198          Hebei Mainland China 38.04280 114.5149 2020-02-12     6 recovered
+    ## 1199   Heilongjiang Mainland China 47.86200 127.7615 2020-02-12     3 recovered
+    ## 1200          Henan Mainland China 33.88202 113.6140 2020-02-12    28 recovered
+    ## 1202          Hubei Mainland China 30.97560 112.2707 2020-02-12    47 recovered
+    ## 1203          Hunan Mainland China 27.61040 111.7088 2020-02-12    57 recovered
+    ## 1204 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-12     1 recovered
+    ## 1205        Jiangsu Mainland China 32.97110 119.4550 2020-02-12    32 recovered
+    ## 1206        Jiangxi Mainland China 27.61400 115.7221 2020-02-12    24 recovered
+    ## 1207          Jilin Mainland China 43.66610 126.1923 2020-02-12     4 recovered
+    ## 1208       Liaoning Mainland China 41.29560 122.6085 2020-02-12     1 recovered
+    ## 1211        Ningxia Mainland China 37.26920 106.1655 2020-02-12     2 recovered
+    ## 1212        Qinghai Mainland China 35.74520  95.9956 2020-02-12     4 recovered
+    ## 1213        Shaanxi Mainland China 35.19170 108.8701 2020-02-12    11 recovered
+    ## 1214       Shandong Mainland China 36.34270 118.1498 2020-02-12    12 recovered
+    ## 1215       Shanghai Mainland China 31.20200 121.4491 2020-02-12     5 recovered
+    ## 1216         Shanxi Mainland China 37.57770 112.2922 2020-02-12     3 recovered
+    ## 1217        Sichuan Mainland China 30.61710 102.7103 2020-02-12     7 recovered
+    ## 1218        Tianjin Mainland China 39.30540 117.3230 2020-02-12     1 recovered
+    ## 1219          Tibet Mainland China 31.69270  88.0924 2020-02-12     1 recovered
+    ## 1220         Yunnan Mainland China 24.97400 101.4870 2020-02-12     6 recovered
+    ## 1221       Zhejiang Mainland China 29.18320 120.0934 2020-02-12    51 recovered
+    ## 1225          Anhui Mainland China 31.82570 117.2264 2020-02-13    21 confirmed
+    ## 1226        Beijing Mainland China 40.18240 116.4142 2020-02-13    14 confirmed
+    ## 1227      Chongqing Mainland China 30.05720 107.8740 2020-02-13    11 confirmed
+    ## 1228         Fujian Mainland China 26.07890 117.9874 2020-02-13     7 confirmed
+    ## 1229          Gansu Mainland China 36.06110 103.8343 2020-02-13     3 confirmed
+    ## 1230      Guangdong Mainland China 23.34170 113.4244 2020-02-13    22 confirmed
+    ## 1231        Guizhou Mainland China 26.81540 106.8748 2020-02-13     2 confirmed
+    ## 1232          Hebei Mainland China 38.04280 114.5149 2020-02-13    14 confirmed
+    ## 1233   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13    17 confirmed
+    ## 1234          Henan Mainland China 33.88202 113.6140 2020-02-13    34 confirmed
+    ## 1236          Hubei Mainland China 30.97560 112.2707 2020-02-13 14840 confirmed
+    ## 1237          Hunan Mainland China 27.61040 111.7088 2020-02-13    22 confirmed
+    ## 1238 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-13     1 confirmed
+    ## 1239        Jiangsu Mainland China 32.97110 119.4550 2020-02-13    27 confirmed
+    ## 1240        Jiangxi Mainland China 27.61400 115.7221 2020-02-13    28 confirmed
+    ## 1241          Jilin Mainland China 43.66610 126.1923 2020-02-13     1 confirmed
+    ## 1242       Liaoning Mainland China 41.29560 122.6085 2020-02-13     1 confirmed
+    ## 1243        Ningxia Mainland China 37.26920 106.1655 2020-02-13     6 confirmed
+    ## 1246        Shaanxi Mainland China 35.19170 108.8701 2020-02-13     4 confirmed
+    ## 1247       Shandong Mainland China 36.34270 118.1498 2020-02-13    12 confirmed
+    ## 1248       Shanghai Mainland China 31.20200 121.4491 2020-02-13     4 confirmed
+    ## 1249        Sichuan Mainland China 30.61710 102.7103 2020-02-13    15 confirmed
+    ## 1250        Tianjin Mainland China 39.30540 117.3230 2020-02-13     7 confirmed
+    ## 1251       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     4 confirmed
+    ## 1252         Yunnan Mainland China 24.97400 101.4870 2020-02-13     2 confirmed
+    ## 1253       Zhejiang Mainland China 29.18320 120.0934 2020-02-13    14 confirmed
+    ## 1255          Anhui Mainland China 31.82570 117.2264 2020-02-13     1     death
+    ## 1256      Chongqing Mainland China 30.05720 107.8740 2020-02-13     1     death
+    ## 1257      Guangdong Mainland China 23.34170 113.4244 2020-02-13     1     death
+    ## 1258        Guangxi Mainland China 23.82980 108.7881 2020-02-13     1     death
+    ## 1259          Hebei Mainland China 38.04280 114.5149 2020-02-13     1     death
+    ## 1260   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13     1     death
+    ## 1261          Henan Mainland China 33.88202 113.6140 2020-02-13     2     death
+    ## 1262          Hubei Mainland China 30.97560 112.2707 2020-02-13   242     death
+    ## 1263        Tianjin Mainland China 39.30540 117.3230 2020-02-13     1     death
+    ## 1264       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     1     death
+    ## 1268          Anhui Mainland China 31.82570 117.2264 2020-02-13    30 recovered
+    ## 1269        Beijing Mainland China 40.18240 116.4142 2020-02-13    13 recovered
+    ## 1270      Chongqing Mainland China 30.05720 107.8740 2020-02-13    26 recovered
+    ## 1271         Fujian Mainland China 26.07890 117.9874 2020-02-13     4 recovered
+    ## 1272          Gansu Mainland China 36.06110 103.8343 2020-02-13     8 recovered
+    ## 1273      Guangdong Mainland China 23.34170 113.4244 2020-02-13    39 recovered
+    ## 1274        Guangxi Mainland China 23.82980 108.7881 2020-02-13     1 recovered
+    ## 1275        Guizhou Mainland China 26.81540 106.8748 2020-02-13     9 recovered
+    ## 1276         Hainan Mainland China 19.19590 109.7453 2020-02-13     3 recovered
+    ## 1277          Hebei Mainland China 38.04280 114.5149 2020-02-13    14 recovered
+    ## 1278   Heilongjiang Mainland China 47.86200 127.7615 2020-02-13     2 recovered
+    ## 1279          Henan Mainland China 33.88202 113.6140 2020-02-13    50 recovered
+    ## 1280          Hubei Mainland China 30.97560 112.2707 2020-02-13   773 recovered
+    ## 1281          Hunan Mainland China 27.61040 111.7088 2020-02-13    35 recovered
+    ## 1282        Jiangsu Mainland China 32.97110 119.4550 2020-02-13    14 recovered
+    ## 1283        Jiangxi Mainland China 27.61400 115.7221 2020-02-13    18 recovered
+    ## 1284          Jilin Mainland China 43.66610 126.1923 2020-02-13     2 recovered
+    ## 1285       Liaoning Mainland China 41.29560 122.6085 2020-02-13     2 recovered
+    ## 1288        Qinghai Mainland China 35.74520  95.9956 2020-02-13     2 recovered
+    ## 1289        Shaanxi Mainland China 35.19170 108.8701 2020-02-13     3 recovered
+    ## 1290       Shandong Mainland China 36.34270 118.1498 2020-02-13    13 recovered
+    ## 1291       Shanghai Mainland China 31.20200 121.4491 2020-02-13     5 recovered
+    ## 1292         Shanxi Mainland China 37.57770 112.2922 2020-02-13     3 recovered
+    ## 1293        Sichuan Mainland China 30.61710 102.7103 2020-02-13    12 recovered
+    ## 1294        Tianjin Mainland China 39.30540 117.3230 2020-02-13    10 recovered
+    ## 1296       Xinjiang Mainland China 41.11290  85.2401 2020-02-13     3 recovered
+    ## 1297         Yunnan Mainland China 24.97400 101.4870 2020-02-13     1 recovered
+    ## 1298       Zhejiang Mainland China 29.18320 120.0934 2020-02-13    39 recovered
+    ## 1302          Anhui Mainland China 31.82570 117.2264 2020-02-14    24 confirmed
+    ## 1303        Beijing Mainland China 40.18240 116.4142 2020-02-14     6 confirmed
+    ## 1304      Chongqing Mainland China 30.05720 107.8740 2020-02-14     8 confirmed
+    ## 1306         Fujian Mainland China 26.07890 117.9874 2020-02-14     2 confirmed
+    ## 1307      Guangdong Mainland China 23.34170 113.4244 2020-02-14    20 confirmed
+    ## 1308        Guangxi Mainland China 23.82980 108.7881 2020-02-14     4 confirmed
+    ## 1309        Guizhou Mainland China 26.81540 106.8748 2020-02-14     5 confirmed
+    ## 1310         Hainan Mainland China 19.19590 109.7453 2020-02-14     2 confirmed
+    ## 1311          Hebei Mainland China 38.04280 114.5149 2020-02-14    18 confirmed
+    ## 1312   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14    24 confirmed
+    ## 1313          Henan Mainland China 33.88202 113.6140 2020-02-14    15 confirmed
+    ## 1315          Hubei Mainland China 30.97560 112.2707 2020-02-14  6200 confirmed
+    ## 1316          Hunan Mainland China 27.61040 111.7088 2020-02-14    20 confirmed
+    ## 1317 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-14     4 confirmed
+    ## 1318        Jiangsu Mainland China 32.97110 119.4550 2020-02-14    23 confirmed
+    ## 1319        Jiangxi Mainland China 27.61400 115.7221 2020-02-14    28 confirmed
+    ## 1320          Jilin Mainland China 43.66610 126.1923 2020-02-14     2 confirmed
+    ## 1321       Liaoning Mainland China 41.29560 122.6085 2020-02-14     2 confirmed
+    ## 1322        Ningxia Mainland China 37.26920 106.1655 2020-02-14     3 confirmed
+    ## 1323        Shaanxi Mainland China 35.19170 108.8701 2020-02-14     1 confirmed
+    ## 1324       Shandong Mainland China 36.34270 118.1498 2020-02-14    14 confirmed
+    ## 1325       Shanghai Mainland China 31.20200 121.4491 2020-02-14     3 confirmed
+    ## 1326         Shanxi Mainland China 37.57770 112.2922 2020-02-14     1 confirmed
+    ## 1327        Sichuan Mainland China 30.61710 102.7103 2020-02-14    12 confirmed
+    ## 1328        Tianjin Mainland China 39.30540 117.3230 2020-02-14     1 confirmed
+    ## 1329       Xinjiang Mainland China 41.11290  85.2401 2020-02-14     2 confirmed
+    ## 1330         Yunnan Mainland China 24.97400 101.4870 2020-02-14     6 confirmed
+    ## 1331       Zhejiang Mainland China 29.18320 120.0934 2020-02-14    10 confirmed
+    ## 1332          Anhui Mainland China 31.82570 117.2264 2020-02-14     1     death
+    ## 1333      Chongqing Mainland China 30.05720 107.8740 2020-02-14     1     death
+    ## 1334   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14     2     death
+    ## 1335          Henan Mainland China 33.88202 113.6140 2020-02-14     1     death
+    ## 1336          Hubei Mainland China 30.97560 112.2707 2020-02-14   147     death
+    ## 1338          Anhui Mainland China 31.82570 117.2264 2020-02-14    36 recovered
+    ## 1339        Beijing Mainland China 40.18240 116.4142 2020-02-14    11 recovered
+    ## 1340      Chongqing Mainland China 30.05720 107.8740 2020-02-14    24 recovered
+    ## 1341         Fujian Mainland China 26.07890 117.9874 2020-02-14     6 recovered
+    ## 1342      Guangdong Mainland China 23.34170 113.4244 2020-02-14    48 recovered
+    ## 1343        Guangxi Mainland China 23.82980 108.7881 2020-02-14     3 recovered
+    ## 1344        Guizhou Mainland China 26.81540 106.8748 2020-02-14     1 recovered
+    ## 1345         Hainan Mainland China 19.19590 109.7453 2020-02-14    13 recovered
+    ## 1346          Hebei Mainland China 38.04280 114.5149 2020-02-14    19 recovered
+    ## 1347   Heilongjiang Mainland China 47.86200 127.7615 2020-02-14    14 recovered
+    ## 1348          Henan Mainland China 33.88202 113.6140 2020-02-14    61 recovered
+    ## 1349          Hubei Mainland China 30.97560 112.2707 2020-02-14  1315 recovered
+    ## 1350          Hunan Mainland China 27.61040 111.7088 2020-02-14    25 recovered
+    ## 1351        Jiangsu Mainland China 32.97110 119.4550 2020-02-14    18 recovered
+    ## 1352        Jiangxi Mainland China 27.61400 115.7221 2020-02-14    17 recovered
+    ## 1353          Jilin Mainland China 43.66610 126.1923 2020-02-14     1 recovered
+    ## 1354       Liaoning Mainland China 41.29560 122.6085 2020-02-14     7 recovered
+    ## 1355        Shaanxi Mainland China 35.19170 108.8701 2020-02-14     8 recovered
+    ## 1356       Shandong Mainland China 36.34270 118.1498 2020-02-14    31 recovered
+    ## 1357       Shanghai Mainland China 31.20200 121.4491 2020-02-14    28 recovered
+    ## 1358         Shanxi Mainland China 37.57770 112.2922 2020-02-14     2 recovered
+    ## 1359        Sichuan Mainland China 30.61710 102.7103 2020-02-14    10 recovered
+    ## 1361        Tianjin Mainland China 39.30540 117.3230 2020-02-14    10 recovered
+    ## 1362         Yunnan Mainland China 24.97400 101.4870 2020-02-14     9 recovered
+    ## 1363       Zhejiang Mainland China 29.18320 120.0934 2020-02-14    43 recovered
+    ## 1368          Anhui Mainland China 31.82570 117.2264 2020-02-15    16 confirmed
+    ## 1369        Beijing Mainland China 40.18240 116.4142 2020-02-15     3 confirmed
+    ## 1370      Chongqing Mainland China 30.05720 107.8740 2020-02-15     7 confirmed
+    ## 1372         Fujian Mainland China 26.07890 117.9874 2020-02-15     4 confirmed
+    ## 1373      Guangdong Mainland China 23.34170 113.4244 2020-02-15    33 confirmed
+    ## 1374        Guangxi Mainland China 23.82980 108.7881 2020-02-15     9 confirmed
+    ## 1375        Guizhou Mainland China 26.81540 106.8748 2020-02-15     3 confirmed
+    ## 1376         Hainan Mainland China 19.19590 109.7453 2020-02-15     3 confirmed
+    ## 1377          Hebei Mainland China 38.04280 114.5149 2020-02-15     8 confirmed
+    ## 1378   Heilongjiang Mainland China 47.86200 127.7615 2020-02-15     6 confirmed
+    ## 1379          Henan Mainland China 33.88202 113.6140 2020-02-15    28 confirmed
+    ## 1380          Hubei Mainland China 30.97560 112.2707 2020-02-15  1843 confirmed
+    ## 1381          Hunan Mainland China 27.61040 111.7088 2020-02-15    13 confirmed
+    ## 1382 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-15     3 confirmed
+    ## 1383        Jiangsu Mainland China 32.97110 119.4550 2020-02-15    11 confirmed
+    ## 1384        Jiangxi Mainland China 27.61400 115.7221 2020-02-15    13 confirmed
+    ## 1385          Jilin Mainland China 43.66610 126.1923 2020-02-15     2 confirmed
+    ## 1386        Ningxia Mainland China 37.26920 106.1655 2020-02-15     3 confirmed
+    ## 1387        Shaanxi Mainland China 35.19170 108.8701 2020-02-15     2 confirmed
+    ## 1388       Shandong Mainland China 36.34270 118.1498 2020-02-15     9 confirmed
+    ## 1389       Shanghai Mainland China 31.20200 121.4491 2020-02-15     8 confirmed
+    ## 1390         Shanxi Mainland China 37.57770 112.2922 2020-02-15     1 confirmed
+    ## 1391        Sichuan Mainland China 30.61710 102.7103 2020-02-15     7 confirmed
+    ## 1392        Tianjin Mainland China 39.30540 117.3230 2020-02-15     2 confirmed
+    ## 1393       Xinjiang Mainland China 41.11290  85.2401 2020-02-15     5 confirmed
+    ## 1394         Yunnan Mainland China 24.97400 101.4870 2020-02-15     6 confirmed
+    ## 1395       Zhejiang Mainland China 29.18320 120.0934 2020-02-15     7 confirmed
+    ## 1397        Beijing Mainland China 40.18240 116.4142 2020-02-15     1     death
+    ## 1398          Henan Mainland China 33.88202 113.6140 2020-02-15     2     death
+    ## 1399          Hubei Mainland China 30.97560 112.2707 2020-02-15   139     death
+    ## 1407          Anhui Mainland China 31.82570 117.2264 2020-02-15    28 recovered
+    ## 1408        Beijing Mainland China 40.18240 116.4142 2020-02-15    18 recovered
+    ## 1409      Chongqing Mainland China 30.05720 107.8740 2020-02-15    32 recovered
+    ## 1410         Fujian Mainland China 26.07890 117.9874 2020-02-15     8 recovered
+    ## 1411          Gansu Mainland China 36.06110 103.8343 2020-02-15    10 recovered
+    ## 1412      Guangdong Mainland China 23.34170 113.4244 2020-02-15    48 recovered
+    ## 1413        Guangxi Mainland China 23.82980 108.7881 2020-02-15     8 recovered
+    ## 1414        Guizhou Mainland China 26.81540 106.8748 2020-02-15    13 recovered
+    ## 1415         Hainan Mainland China 19.19590 109.7453 2020-02-15    -4 recovered
+    ## 1416          Hebei Mainland China 38.04280 114.5149 2020-02-15    14 recovered
+    ## 1417   Heilongjiang Mainland China 47.86200 127.7615 2020-02-15    21 recovered
+    ## 1418          Henan Mainland China 33.88202 113.6140 2020-02-15    34 recovered
+    ## 1419          Hubei Mainland China 30.97560 112.2707 2020-02-15   849 recovered
+    ## 1420          Hunan Mainland China 27.61040 111.7088 2020-02-15    61 recovered
+    ## 1421 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-15     1 recovered
+    ## 1422        Jiangsu Mainland China 32.97110 119.4550 2020-02-15    29 recovered
+    ## 1423        Jiangxi Mainland China 27.61400 115.7221 2020-02-15    23 recovered
+    ## 1424          Jilin Mainland China 43.66610 126.1923 2020-02-15     1 recovered
+    ## 1425       Liaoning Mainland China 41.29560 122.6085 2020-02-15     2 recovered
+    ## 1426        Ningxia Mainland China 37.26920 106.1655 2020-02-15     9 recovered
+    ## 1427        Qinghai Mainland China 35.74520  95.9956 2020-02-15     2 recovered
+    ## 1428        Shaanxi Mainland China 35.19170 108.8701 2020-02-15     6 recovered
+    ## 1429       Shandong Mainland China 36.34270 118.1498 2020-02-15    20 recovered
+    ## 1430       Shanghai Mainland China 31.20200 121.4491 2020-02-15    34 recovered
+    ## 1431         Shanxi Mainland China 37.57770 112.2922 2020-02-15     8 recovered
+    ## 1432        Sichuan Mainland China 30.61710 102.7103 2020-02-15     5 recovered
+    ## 1433        Tianjin Mainland China 39.30540 117.3230 2020-02-15     6 recovered
+    ## 1434       Xinjiang Mainland China 41.11290  85.2401 2020-02-15     4 recovered
+    ## 1435         Yunnan Mainland China 24.97400 101.4870 2020-02-15     6 recovered
+    ## 1436       Zhejiang Mainland China 29.18320 120.0934 2020-02-15    25 recovered
+    ## 1442          Anhui Mainland China 31.82570 117.2264 2020-02-16    12 confirmed
+    ## 1443        Beijing Mainland China 40.18240 116.4142 2020-02-16     5 confirmed
+    ## 1444      Chongqing Mainland China 30.05720 107.8740 2020-02-16     7 confirmed
+    ## 1446         Fujian Mainland China 26.07890 117.9874 2020-02-16     2 confirmed
+    ## 1447      Guangdong Mainland China 23.34170 113.4244 2020-02-16    22 confirmed
+    ## 1448        Guangxi Mainland China 23.82980 108.7881 2020-02-16     2 confirmed
+    ## 1449        Guizhou Mainland China 26.81540 106.8748 2020-02-16     1 confirmed
+    ## 1450          Hebei Mainland China 38.04280 114.5149 2020-02-16     9 confirmed
+    ## 1451   Heilongjiang Mainland China 47.86200 127.7615 2020-02-16    20 confirmed
+    ## 1452          Henan Mainland China 33.88202 113.6140 2020-02-16    19 confirmed
+    ## 1454          Hubei Mainland China 30.97560 112.2707 2020-02-16  1933 confirmed
+    ## 1455          Hunan Mainland China 27.61040 111.7088 2020-02-16     3 confirmed
+    ## 1456 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-16     2 confirmed
+    ## 1457        Jiangsu Mainland China 32.97110 119.4550 2020-02-16    13 confirmed
+    ## 1458        Jiangxi Mainland China 27.61400 115.7221 2020-02-16    12 confirmed
+    ## 1459          Jilin Mainland China 43.66610 126.1923 2020-02-16     1 confirmed
+    ## 1460       Liaoning Mainland China 41.29560 122.6085 2020-02-16     2 confirmed
+    ## 1461        Shaanxi Mainland China 35.19170 108.8701 2020-02-16     4 confirmed
+    ## 1462       Shandong Mainland China 36.34270 118.1498 2020-02-16     5 confirmed
+    ## 1463       Shanghai Mainland China 31.20200 121.4491 2020-02-16     2 confirmed
+    ## 1464         Shanxi Mainland China 37.57770 112.2922 2020-02-16     1 confirmed
+    ## 1465        Sichuan Mainland China 30.61710 102.7103 2020-02-16    11 confirmed
+    ## 1467        Tianjin Mainland China 39.30540 117.3230 2020-02-16     2 confirmed
+    ## 1468       Xinjiang Mainland China 41.11290  85.2401 2020-02-16     1 confirmed
+    ## 1469         Yunnan Mainland China 24.97400 101.4870 2020-02-16     3 confirmed
+    ## 1470       Zhejiang Mainland China 29.18320 120.0934 2020-02-16     5 confirmed
+    ## 1471          Hubei Mainland China 30.97560 112.2707 2020-02-16   100     death
+    ## 1472          Hunan Mainland China 27.61040 111.7088 2020-02-16     1     death
+    ## 1473        Sichuan Mainland China 30.61710 102.7103 2020-02-16     2     death
+    ## 1479          Anhui Mainland China 31.82570 117.2264 2020-02-16    34 recovered
+    ## 1480        Beijing Mainland China 40.18240 116.4142 2020-02-16    10 recovered
+    ## 1481      Chongqing Mainland China 30.05720 107.8740 2020-02-16    23 recovered
+    ## 1482         Fujian Mainland China 26.07890 117.9874 2020-02-16    11 recovered
+    ## 1483          Gansu Mainland China 36.06110 103.8343 2020-02-16     5 recovered
+    ## 1484      Guangdong Mainland China 23.34170 113.4244 2020-02-16    55 recovered
+    ## 1485        Guangxi Mainland China 23.82980 108.7881 2020-02-16     5 recovered
+    ## 1486        Guizhou Mainland China 26.81540 106.8748 2020-02-16     5 recovered
+    ## 1487         Hainan Mainland China 19.19590 109.7453 2020-02-16    13 recovered
+    ## 1488          Hebei Mainland China 38.04280 114.5149 2020-02-16     4 recovered
+    ## 1489   Heilongjiang Mainland China 47.86200 127.7615 2020-02-16    11 recovered
+    ## 1490          Henan Mainland China 33.88202 113.6140 2020-02-16    49 recovered
+    ## 1492          Hubei Mainland China 30.97560 112.2707 2020-02-16  1016 recovered
+    ## 1493          Hunan Mainland China 27.61040 111.7088 2020-02-16    39 recovered
+    ## 1494 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-16     1 recovered
+    ## 1495        Jiangsu Mainland China 32.97110 119.4550 2020-02-16    32 recovered
+    ## 1496        Jiangxi Mainland China 27.61400 115.7221 2020-02-16    30 recovered
+    ## 1497          Jilin Mainland China 43.66610 126.1923 2020-02-16     4 recovered
+    ## 1498       Liaoning Mainland China 41.29560 122.6085 2020-02-16     9 recovered
+    ## 1500        Shaanxi Mainland China 35.19170 108.8701 2020-02-16    11 recovered
+    ## 1501       Shandong Mainland China 36.34270 118.1498 2020-02-16    17 recovered
+    ## 1502       Shanghai Mainland China 31.20200 121.4491 2020-02-16    16 recovered
+    ## 1503         Shanxi Mainland China 37.57770 112.2922 2020-02-16     4 recovered
+    ## 1504        Sichuan Mainland China 30.61710 102.7103 2020-02-16    12 recovered
+    ## 1505        Tianjin Mainland China 39.30540 117.3230 2020-02-16     8 recovered
+    ## 1506       Xinjiang Mainland China 41.11290  85.2401 2020-02-16     2 recovered
+    ## 1507       Zhejiang Mainland China 29.18320 120.0934 2020-02-16    28 recovered
+    ## 1512          Anhui Mainland China 31.82570 117.2264 2020-02-17    11 confirmed
+    ## 1513        Beijing Mainland China 40.18240 116.4142 2020-02-17     1 confirmed
+    ## 1515      Chongqing Mainland China 30.05720 107.8740 2020-02-17     2 confirmed
+    ## 1517         Fujian Mainland China 26.07890 117.9874 2020-02-17     3 confirmed
+    ## 1518          Gansu Mainland China 36.06110 103.8343 2020-02-17     1 confirmed
+    ## 1519      Guangdong Mainland China 23.34170 113.4244 2020-02-17     6 confirmed
+    ## 1520        Guangxi Mainland China 23.82980 108.7881 2020-02-17     1 confirmed
+    ## 1521        Guizhou Mainland China 26.81540 106.8748 2020-02-17     2 confirmed
+    ## 1522         Hainan Mainland China 19.19590 109.7453 2020-02-17     1 confirmed
+    ## 1523          Hebei Mainland China 38.04280 114.5149 2020-02-17     1 confirmed
+    ## 1524   Heilongjiang Mainland China 47.86200 127.7615 2020-02-17    12 confirmed
+    ## 1525          Henan Mainland China 33.88202 113.6140 2020-02-17    15 confirmed
+    ## 1527          Hubei Mainland China 30.97560 112.2707 2020-02-17  1807 confirmed
+    ## 1528          Hunan Mainland China 27.61040 111.7088 2020-02-17     2 confirmed
+    ## 1529 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-17     2 confirmed
+    ## 1530        Jiangsu Mainland China 32.97110 119.4550 2020-02-17     9 confirmed
+    ## 1531        Jiangxi Mainland China 27.61400 115.7221 2020-02-17     5 confirmed
+    ## 1532        Shaanxi Mainland China 35.19170 108.8701 2020-02-17     4 confirmed
+    ## 1533       Shandong Mainland China 36.34270 118.1498 2020-02-17     4 confirmed
+    ## 1534       Shanghai Mainland China 31.20200 121.4491 2020-02-17     5 confirmed
+    ## 1535         Shanxi Mainland China 37.57770 112.2922 2020-02-17     1 confirmed
+    ## 1536        Sichuan Mainland China 30.61710 102.7103 2020-02-17    14 confirmed
+    ## 1538        Tianjin Mainland China 39.30540 117.3230 2020-02-17     1 confirmed
+    ## 1539       Xinjiang Mainland China 41.11290  85.2401 2020-02-17     4 confirmed
+    ## 1540       Zhejiang Mainland China 29.18320 120.0934 2020-02-17     4 confirmed
+    ## 1541      Guangdong Mainland China 23.34170 113.4244 2020-02-17     2     death
+    ## 1542          Henan Mainland China 33.88202 113.6140 2020-02-17     3     death
+    ## 1543          Hubei Mainland China 30.97560 112.2707 2020-02-17    93     death
+    ## 1548          Anhui Mainland China 31.82570 117.2264 2020-02-17    25 recovered
+    ## 1549        Beijing Mainland China 40.18240 116.4142 2020-02-17     6 recovered
+    ## 1550      Chongqing Mainland China 30.05720 107.8740 2020-02-17    18 recovered
+    ## 1551         Fujian Mainland China 26.07890 117.9874 2020-02-17     8 recovered
+    ## 1552          Gansu Mainland China 36.06110 103.8343 2020-02-17     4 recovered
+    ## 1553      Guangdong Mainland China 23.34170 113.4244 2020-02-17    59 recovered
+    ## 1554        Guangxi Mainland China 23.82980 108.7881 2020-02-17     4 recovered
+    ## 1555        Guizhou Mainland China 26.81540 106.8748 2020-02-17    11 recovered
+    ## 1556         Hainan Mainland China 19.19590 109.7453 2020-02-17     7 recovered
+    ## 1557          Hebei Mainland China 38.04280 114.5149 2020-02-17    17 recovered
+    ## 1558   Heilongjiang Mainland China 47.86200 127.7615 2020-02-17     6 recovered
+    ## 1559          Henan Mainland China 33.88202 113.6140 2020-02-17    69 recovered
+    ## 1560          Hubei Mainland China 30.97560 112.2707 2020-02-17  1223 recovered
+    ## 1561          Hunan Mainland China 27.61040 111.7088 2020-02-17    34 recovered
+    ## 1562        Jiangsu Mainland China 32.97110 119.4550 2020-02-17    40 recovered
+    ## 1563        Jiangxi Mainland China 27.61400 115.7221 2020-02-17    35 recovered
+    ## 1564          Jilin Mainland China 43.66610 126.1923 2020-02-17     4 recovered
+    ## 1565       Liaoning Mainland China 41.29560 122.6085 2020-02-17     3 recovered
+    ## 1566        Ningxia Mainland China 37.26920 106.1655 2020-02-17     2 recovered
+    ## 1567        Shaanxi Mainland China 35.19170 108.8701 2020-02-17     8 recovered
+    ## 1568       Shandong Mainland China 36.34270 118.1498 2020-02-17    18 recovered
+    ## 1569       Shanghai Mainland China 31.20200 121.4491 2020-02-17    21 recovered
+    ## 1570         Shanxi Mainland China 37.57770 112.2922 2020-02-17     3 recovered
+    ## 1571        Sichuan Mainland China 30.61710 102.7103 2020-02-17    25 recovered
+    ## 1573        Tianjin Mainland China 39.30540 117.3230 2020-02-17     1 recovered
+    ## 1574         Yunnan Mainland China 24.97400 101.4870 2020-02-17     5 recovered
+    ## 1575       Zhejiang Mainland China 29.18320 120.0934 2020-02-17    51 recovered
+    ## 1579          Anhui Mainland China 31.82570 117.2264 2020-02-18     9 confirmed
+    ## 1580        Beijing Mainland China 40.18240 116.4142 2020-02-18     6 confirmed
+    ## 1581      Chongqing Mainland China 30.05720 107.8740 2020-02-18     2 confirmed
+    ## 1583         Fujian Mainland China 26.07890 117.9874 2020-02-18     2 confirmed
+    ## 1584      Guangdong Mainland China 23.34170 113.4244 2020-02-18     6 confirmed
+    ## 1585        Guangxi Mainland China 23.82980 108.7881 2020-02-18     4 confirmed
+    ## 1586          Hebei Mainland China 38.04280 114.5149 2020-02-18     5 confirmed
+    ## 1587   Heilongjiang Mainland China 47.86200 127.7615 2020-02-18     7 confirmed
+    ## 1588          Henan Mainland China 33.88202 113.6140 2020-02-18    11 confirmed
+    ## 1590          Hubei Mainland China 30.97560 112.2707 2020-02-18  1693 confirmed
+    ## 1591          Hunan Mainland China 27.61040 111.7088 2020-02-18     1 confirmed
+    ## 1592 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-18     1 confirmed
+    ## 1593        Jiangsu Mainland China 32.97110 119.4550 2020-02-18     3 confirmed
+    ## 1594        Jiangxi Mainland China 27.61400 115.7221 2020-02-18     3 confirmed
+    ## 1595       Shandong Mainland China 36.34270 118.1498 2020-02-18     2 confirmed
+    ## 1596         Shanxi Mainland China 37.57770 112.2922 2020-02-18     1 confirmed
+    ## 1597        Sichuan Mainland China 30.61710 102.7103 2020-02-18    13 confirmed
+    ## 1598        Tianjin Mainland China 39.30540 117.3230 2020-02-18     3 confirmed
+    ## 1599       Xinjiang Mainland China 41.11290  85.2401 2020-02-18     1 confirmed
+    ## 1600         Yunnan Mainland China 24.97400 101.4870 2020-02-18     1 confirmed
+    ## 1601       Zhejiang Mainland China 29.18320 120.0934 2020-02-18     1 confirmed
+    ## 1602        Guizhou Mainland China 26.81540 106.8748 2020-02-18     1     death
+    ## 1603          Hebei Mainland China 38.04280 114.5149 2020-02-18     1     death
+    ## 1604          Henan Mainland China 33.88202 113.6140 2020-02-18     3     death
+    ## 1605          Hubei Mainland China 30.97560 112.2707 2020-02-18   132     death
+    ## 1606          Hunan Mainland China 27.61040 111.7088 2020-02-18     1     death
+    ## 1607       Shandong Mainland China 36.34270 118.1498 2020-02-18     1     death
+    ## 1613          Anhui Mainland China 31.82570 117.2264 2020-02-18    81 recovered
+    ## 1614        Beijing Mainland China 40.18240 116.4142 2020-02-18     8 recovered
+    ## 1615      Chongqing Mainland China 30.05720 107.8740 2020-02-18    29 recovered
+    ## 1616         Fujian Mainland China 26.07890 117.9874 2020-02-18     3 recovered
+    ## 1617          Gansu Mainland China 36.06110 103.8343 2020-02-18     4 recovered
+    ## 1618      Guangdong Mainland China 23.34170 113.4244 2020-02-18    41 recovered
+    ## 1619        Guangxi Mainland China 23.82980 108.7881 2020-02-18    16 recovered
+    ## 1620        Guizhou Mainland China 26.81540 106.8748 2020-02-18     9 recovered
+    ## 1621         Hainan Mainland China 19.19590 109.7453 2020-02-18    20 recovered
+    ## 1622          Hebei Mainland China 38.04280 114.5149 2020-02-18    14 recovered
+    ## 1623   Heilongjiang Mainland China 47.86200 127.7615 2020-02-18    26 recovered
+    ## 1624          Henan Mainland China 33.88202 113.6140 2020-02-18    13 recovered
+    ## 1625          Hubei Mainland China 30.97560 112.2707 2020-02-18  1266 recovered
+    ## 1626          Hunan Mainland China 27.61040 111.7088 2020-02-18    29 recovered
+    ## 1627        Jiangsu Mainland China 32.97110 119.4550 2020-02-18    22 recovered
+    ## 1628        Jiangxi Mainland China 27.61400 115.7221 2020-02-18    35 recovered
+    ## 1629          Jilin Mainland China 43.66610 126.1923 2020-02-18     2 recovered
+    ## 1630       Liaoning Mainland China 41.29560 122.6085 2020-02-18    10 recovered
+    ## 1631        Ningxia Mainland China 37.26920 106.1655 2020-02-18     7 recovered
+    ## 1632        Qinghai Mainland China 35.74520  95.9956 2020-02-18     2 recovered
+    ## 1633        Shaanxi Mainland China 35.19170 108.8701 2020-02-18    10 recovered
+    ## 1634       Shandong Mainland China 36.34270 118.1498 2020-02-18    20 recovered
+    ## 1635       Shanghai Mainland China 31.20200 121.4491 2020-02-18    16 recovered
+    ## 1636         Shanxi Mainland China 37.57770 112.2922 2020-02-18     8 recovered
+    ## 1637        Sichuan Mainland China 30.61710 102.7103 2020-02-18    13 recovered
+    ## 1638        Tianjin Mainland China 39.30540 117.3230 2020-02-18     2 recovered
+    ## 1639         Yunnan Mainland China 24.97400 101.4870 2020-02-18    10 recovered
+    ## 1640       Zhejiang Mainland China 29.18320 120.0934 2020-02-18    28 recovered
+    ## 1644          Anhui Mainland China 31.82570 117.2264 2020-02-19     4 confirmed
+    ## 1645        Beijing Mainland China 40.18240 116.4142 2020-02-19     6 confirmed
+    ## 1646      Chongqing Mainland China 30.05720 107.8740 2020-02-19     5 confirmed
+    ## 1648         Fujian Mainland China 26.07890 117.9874 2020-02-19     1 confirmed
+    ## 1649      Guangdong Mainland China 23.34170 113.4244 2020-02-19     3 confirmed
+    ## 1650        Guangxi Mainland China 23.82980 108.7881 2020-02-19     2 confirmed
+    ## 1651         Hainan Mainland China 19.19590 109.7453 2020-02-19     5 confirmed
+    ## 1652   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     6 confirmed
+    ## 1653          Henan Mainland China 33.88202 113.6140 2020-02-19     5 confirmed
+    ## 1655          Hubei Mainland China 30.97560 112.2707 2020-02-19   349 confirmed
+    ## 1656          Hunan Mainland China 27.61040 111.7088 2020-02-19     1 confirmed
+    ## 1657 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-19     2 confirmed
+    ## 1658        Jiangsu Mainland China 32.97110 119.4550 2020-02-19     2 confirmed
+    ## 1659        Jiangxi Mainland China 27.61400 115.7221 2020-02-19     1 confirmed
+    ## 1660          Jilin Mainland China 43.66610 126.1923 2020-02-19     1 confirmed
+    ## 1661        Ningxia Mainland China 37.26920 106.1655 2020-02-19     1 confirmed
+    ## 1662        Shaanxi Mainland China 35.19170 108.8701 2020-02-19     2 confirmed
+    ## 1663       Shandong Mainland China 36.34270 118.1498 2020-02-19     1 confirmed
+    ## 1664        Sichuan Mainland China 30.61710 102.7103 2020-02-19     6 confirmed
+    ## 1666        Tianjin Mainland China 39.30540 117.3230 2020-02-19     2 confirmed
+    ## 1667       Zhejiang Mainland China 29.18320 120.0934 2020-02-19     2 confirmed
+    ## 1669      Guangdong Mainland China 23.34170 113.4244 2020-02-19     1     death
+    ## 1670   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     1     death
+    ## 1672          Hubei Mainland China 30.97560 112.2707 2020-02-19   108     death
+    ## 1673       Shanghai Mainland China 31.20200 121.4491 2020-02-19     1     death
+    ## 1674         Yunnan Mainland China 24.97400 101.4870 2020-02-19     1     death
+    ## 1678          Anhui Mainland China 31.82570 117.2264 2020-02-19    52 recovered
+    ## 1679        Beijing Mainland China 40.18240 116.4142 2020-02-19    23 recovered
+    ## 1680      Chongqing Mainland China 30.05720 107.8740 2020-02-19    20 recovered
+    ## 1682         Fujian Mainland China 26.07890 117.9874 2020-02-19    19 recovered
+    ## 1683          Gansu Mainland China 36.06110 103.8343 2020-02-19     3 recovered
+    ## 1684      Guangdong Mainland China 23.34170 113.4244 2020-02-19    41 recovered
+    ## 1685        Guangxi Mainland China 23.82980 108.7881 2020-02-19    17 recovered
+    ## 1686        Guizhou Mainland China 26.81540 106.8748 2020-02-19     4 recovered
+    ## 1687         Hainan Mainland China 19.19590 109.7453 2020-02-19     5 recovered
+    ## 1688          Hebei Mainland China 38.04280 114.5149 2020-02-19    16 recovered
+    ## 1689   Heilongjiang Mainland China 47.86200 127.7615 2020-02-19     9 recovered
+    ## 1690          Henan Mainland China 33.88202 113.6140 2020-02-19    51 recovered
+    ## 1692          Hubei Mainland China 30.97560 112.2707 2020-02-19  1209 recovered
+    ## 1693          Hunan Mainland China 27.61040 111.7088 2020-02-19    34 recovered
+    ## 1694 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-19     2 recovered
+    ## 1695        Jiangsu Mainland China 32.97110 119.4550 2020-02-19    38 recovered
+    ## 1696        Jiangxi Mainland China 27.61400 115.7221 2020-02-19    52 recovered
+    ## 1697          Jilin Mainland China 43.66610 126.1923 2020-02-19     1 recovered
+    ## 1698       Liaoning Mainland China 41.29560 122.6085 2020-02-19     2 recovered
+    ## 1699        Qinghai Mainland China 35.74520  95.9956 2020-02-19     1 recovered
+    ## 1700        Shaanxi Mainland China 35.19170 108.8701 2020-02-19    13 recovered
+    ## 1701       Shandong Mainland China 36.34270 118.1498 2020-02-19    20 recovered
+    ## 1702       Shanghai Mainland China 31.20200 121.4491 2020-02-19     9 recovered
+    ## 1703         Shanxi Mainland China 37.57770 112.2922 2020-02-19     7 recovered
+    ## 1704        Sichuan Mainland China 30.61710 102.7103 2020-02-19    19 recovered
+    ## 1705        Tianjin Mainland China 39.30540 117.3230 2020-02-19     6 recovered
+    ## 1706       Xinjiang Mainland China 41.11290  85.2401 2020-02-19     8 recovered
+    ## 1707         Yunnan Mainland China 24.97400 101.4870 2020-02-19     3 recovered
+    ## 1708       Zhejiang Mainland China 29.18320 120.0934 2020-02-19    69 recovered
+    ## 1712          Anhui Mainland China 31.82570 117.2264 2020-02-20     1 confirmed
+    ## 1713        Beijing Mainland China 40.18240 116.4142 2020-02-20     2 confirmed
+    ## 1714      Chongqing Mainland China 30.05720 107.8740 2020-02-20     7 confirmed
+    ## 1716      Guangdong Mainland China 23.34170 113.4244 2020-02-20     1 confirmed
+    ## 1717        Guangxi Mainland China 23.82980 108.7881 2020-02-20     1 confirmed
+    ## 1718          Hebei Mainland China 38.04280 114.5149 2020-02-20     1 confirmed
+    ## 1719   Heilongjiang Mainland China 47.86200 127.7615 2020-02-20     6 confirmed
+    ## 1720          Henan Mainland China 33.88202 113.6140 2020-02-20     3 confirmed
+    ## 1722          Hubei Mainland China 30.97560 112.2707 2020-02-20   411 confirmed
+    ## 1723          Hunan Mainland China 27.61040 111.7088 2020-02-20     2 confirmed
+    ## 1724          Jilin Mainland China 43.66610 126.1923 2020-02-20     1 confirmed
+    ## 1725        Shaanxi Mainland China 35.19170 108.8701 2020-02-20     3 confirmed
+    ## 1726       Shandong Mainland China 36.34270 118.1498 2020-02-20     2 confirmed
+    ## 1727       Shanghai Mainland China 31.20200 121.4491 2020-02-20     1 confirmed
+    ## 1728         Shanxi Mainland China 37.57770 112.2922 2020-02-20     1 confirmed
+    ## 1729        Sichuan Mainland China 30.61710 102.7103 2020-02-20     6 confirmed
+    ## 1731        Tianjin Mainland China 39.30540 117.3230 2020-02-20     1 confirmed
+    ## 1732         Yunnan Mainland China 24.97400 101.4870 2020-02-20     2 confirmed
+    ## 1733       Zhejiang Mainland China 29.18320 120.0934 2020-02-20     1 confirmed
+    ## 1735      Chongqing Mainland China 30.05720 107.8740 2020-02-20     1     death
+    ## 1737         Fujian Mainland China 26.07890 117.9874 2020-02-20     1     death
+    ## 1738          Hebei Mainland China 38.04280 114.5149 2020-02-20     1     death
+    ## 1739          Hubei Mainland China 30.97560 112.2707 2020-02-20   115     death
+    ## 1740        Shaanxi Mainland China 35.19170 108.8701 2020-02-20     1     death
+    ## 1741       Shandong Mainland China 36.34270 118.1498 2020-02-20     1     death
+    ## 1742         Yunnan Mainland China 24.97400 101.4870 2020-02-20     1     death
+    ## 1743       Zhejiang Mainland China 29.18320 120.0934 2020-02-20     1     death
+    ## 1745          Anhui Mainland China 31.82570 117.2264 2020-02-20    61 recovered
+    ## 1746        Beijing Mainland China 40.18240 116.4142 2020-02-20     8 recovered
+    ## 1747      Chongqing Mainland China 30.05720 107.8740 2020-02-20    25 recovered
+    ## 1748         Fujian Mainland China 26.07890 117.9874 2020-02-20    14 recovered
+    ## 1749          Gansu Mainland China 36.06110 103.8343 2020-02-20     6 recovered
+    ## 1750      Guangdong Mainland China 23.34170 113.4244 2020-02-20    36 recovered
+    ## 1751        Guangxi Mainland China 23.82980 108.7881 2020-02-20     4 recovered
+    ## 1752        Guizhou Mainland China 26.81540 106.8748 2020-02-20     2 recovered
+    ## 1753         Hainan Mainland China 19.19590 109.7453 2020-02-20     2 recovered
+    ## 1754          Hebei Mainland China 38.04280 114.5149 2020-02-20    17 recovered
+    ## 1755   Heilongjiang Mainland China 47.86200 127.7615 2020-02-20    16 recovered
+    ## 1756          Henan Mainland China 33.88202 113.6140 2020-02-20    64 recovered
+    ## 1758          Hubei Mainland China 30.97560 112.2707 2020-02-20  1451 recovered
+    ## 1759          Hunan Mainland China 27.61040 111.7088 2020-02-20    73 recovered
+    ## 1760 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-20     6 recovered
+    ## 1761        Jiangsu Mainland China 32.97110 119.4550 2020-02-20    38 recovered
+    ## 1762        Jiangxi Mainland China 27.61400 115.7221 2020-02-20    71 recovered
+    ## 1763          Jilin Mainland China 43.66610 126.1923 2020-02-20     6 recovered
+    ## 1764       Liaoning Mainland China 41.29560 122.6085 2020-02-20     4 recovered
+    ## 1766        Ningxia Mainland China 37.26920 106.1655 2020-02-20     2 recovered
+    ## 1767        Shaanxi Mainland China 35.19170 108.8701 2020-02-20    16 recovered
+    ## 1768       Shandong Mainland China 36.34270 118.1498 2020-02-20    23 recovered
+    ## 1769       Shanghai Mainland China 31.20200 121.4491 2020-02-20    13 recovered
+    ## 1770         Shanxi Mainland China 37.57770 112.2922 2020-02-20     8 recovered
+    ## 1771        Sichuan Mainland China 30.61710 102.7103 2020-02-20    29 recovered
+    ## 1772        Tianjin Mainland China 39.30540 117.3230 2020-02-20     5 recovered
+    ## 1773       Xinjiang Mainland China 41.11290  85.2401 2020-02-20     2 recovered
+    ## 1774         Yunnan Mainland China 24.97400 101.4870 2020-02-20    19 recovered
+    ## 1775       Zhejiang Mainland China 29.18320 120.0934 2020-02-20    29 recovered
+    ## 1783          Anhui Mainland China 31.82570 117.2264 2020-02-21     1 confirmed
+    ## 1784        Beijing Mainland China 40.18240 116.4142 2020-02-21     1 confirmed
+    ## 1786      Chongqing Mainland China 30.05720 107.8740 2020-02-21     5 confirmed
+    ## 1788      Guangdong Mainland China 23.34170 113.4244 2020-02-21     1 confirmed
+    ## 1789        Guangxi Mainland China 23.82980 108.7881 2020-02-21     1 confirmed
+    ## 1790          Hebei Mainland China 38.04280 114.5149 2020-02-21     1 confirmed
+    ## 1791   Heilongjiang Mainland China 47.86200 127.7615 2020-02-21     3 confirmed
+    ## 1792          Henan Mainland China 33.88202 113.6140 2020-02-21     2 confirmed
+    ## 1793          Hubei Mainland China 30.97560 112.2707 2020-02-21   220 confirmed
+    ## 1795          Hunan Mainland China 27.61040 111.7088 2020-02-21     1 confirmed
+    ## 1799       Shandong Mainland China 36.34270 118.1498 2020-02-21   203 confirmed
+    ## 1800        Sichuan Mainland China 30.61710 102.7103 2020-02-21     5 confirmed
+    ## 1802        Tianjin Mainland China 39.30540 117.3230 2020-02-21     1 confirmed
+    ## 1804       Zhejiang Mainland China 29.18320 120.0934 2020-02-21    28 confirmed
+    ## 1813          Anhui Mainland China 31.82570 117.2264 2020-02-21    65 recovered
+    ## 1814        Beijing Mainland China 40.18240 116.4142 2020-02-21    16 recovered
+    ## 1815      Chongqing Mainland China 30.05720 107.8740 2020-02-21    17 recovered
+    ## 1816         Fujian Mainland China 26.07890 117.9874 2020-02-21    23 recovered
+    ## 1817          Gansu Mainland China 36.06110 103.8343 2020-02-21     5 recovered
+    ## 1818      Guangdong Mainland China 23.34170 113.4244 2020-02-21    48 recovered
+    ## 1819        Guangxi Mainland China 23.82980 108.7881 2020-02-21     7 recovered
+    ## 1820        Guizhou Mainland China 26.81540 106.8748 2020-02-21     5 recovered
+    ## 1821         Hainan Mainland China 19.19590 109.7453 2020-02-21     9 recovered
+    ## 1822          Hebei Mainland China 38.04280 114.5149 2020-02-21    15 recovered
+    ## 1823   Heilongjiang Mainland China 47.86200 127.7615 2020-02-21    39 recovered
+    ## 1824          Henan Mainland China 33.88202 113.6140 2020-02-21    99 recovered
+    ## 1826          Hubei Mainland China 30.97560 112.2707 2020-02-21    93 recovered
+    ## 1827          Hunan Mainland China 27.61040 111.7088 2020-02-21    27 recovered
+    ## 1828 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-21     1 recovered
+    ## 1829        Jiangsu Mainland China 32.97110 119.4550 2020-02-21    17 recovered
+    ## 1830        Jiangxi Mainland China 27.61400 115.7221 2020-02-21    56 recovered
+    ## 1831          Jilin Mainland China 43.66610 126.1923 2020-02-21     2 recovered
+    ## 1832       Liaoning Mainland China 41.29560 122.6085 2020-02-21     2 recovered
+    ## 1833        Ningxia Mainland China 37.26920 106.1655 2020-02-21     4 recovered
+    ## 1834        Qinghai Mainland China 35.74520  95.9956 2020-02-21     2 recovered
+    ## 1838        Shaanxi Mainland China 35.19170 108.8701 2020-02-21    16 recovered
+    ## 1839       Shandong Mainland China 36.34270 118.1498 2020-02-21    27 recovered
+    ## 1840       Shanghai Mainland China 31.20200 121.4491 2020-02-21    12 recovered
+    ## 1841         Shanxi Mainland China 37.57770 112.2922 2020-02-21     2 recovered
+    ## 1842        Sichuan Mainland China 30.61710 102.7103 2020-02-21    14 recovered
+    ## 1843        Tianjin Mainland China 39.30540 117.3230 2020-02-21     3 recovered
+    ## 1845       Xinjiang Mainland China 41.11290  85.2401 2020-02-21     2 recovered
+    ## 1846         Yunnan Mainland China 24.97400 101.4870 2020-02-21    17 recovered
+    ## 1847       Zhejiang Mainland China 29.18320 120.0934 2020-02-21    46 recovered
+    ## 1853          Anhui Mainland China 31.82570 117.2264 2020-02-22     1 confirmed
+    ## 1854        Beijing Mainland China 40.18240 116.4142 2020-02-22     3 confirmed
+    ## 1855      Chongqing Mainland China 30.05720 107.8740 2020-02-22     1 confirmed
+    ## 1857      Guangdong Mainland China 23.34170 113.4244 2020-02-22     6 confirmed
+    ## 1858        Guangxi Mainland China 23.82980 108.7881 2020-02-22     3 confirmed
+    ## 1859          Hebei Mainland China 38.04280 114.5149 2020-02-22     1 confirmed
+    ## 1860          Henan Mainland China 33.88202 113.6140 2020-02-22     3 confirmed
+    ## 1862          Hubei Mainland China 30.97560 112.2707 2020-02-22  1422 confirmed
+    ## 1863          Hunan Mainland China 27.61040 111.7088 2020-02-22     2 confirmed
+    ## 1864       Shandong Mainland China 36.34270 118.1498 2020-02-22     1 confirmed
+    ## 1865       Shanghai Mainland China 31.20200 121.4491 2020-02-22     1 confirmed
+    ## 1866        Sichuan Mainland China 30.61710 102.7103 2020-02-22     1 confirmed
+    ## 1867        Tianjin Mainland China 39.30540 117.3230 2020-02-22     3 confirmed
+    ## 1868       Zhejiang Mainland China 29.18320 120.0934 2020-02-22     2 confirmed
+    ## 1871          Hebei Mainland China 38.04280 114.5149 2020-02-22     1     death
+    ## 1872          Hubei Mainland China 30.97560 112.2707 2020-02-22   202     death
+    ## 1873       Shanghai Mainland China 31.20200 121.4491 2020-02-22     1     death
+    ## 1874       Xinjiang Mainland China 41.11290  85.2401 2020-02-22     1     death
+    ## 1876          Anhui Mainland China 31.82570 117.2264 2020-02-22    58 recovered
+    ## 1877        Beijing Mainland China 40.18240 116.4142 2020-02-22     9 recovered
+    ## 1878      Chongqing Mainland China 30.05720 107.8740 2020-02-22    12 recovered
+    ## 1879         Fujian Mainland China 26.07890 117.9874 2020-02-22    13 recovered
+    ## 1880      Guangdong Mainland China 23.34170 113.4244 2020-02-22    38 recovered
+    ## 1881        Guangxi Mainland China 23.82980 108.7881 2020-02-22     7 recovered
+    ## 1882        Guizhou Mainland China 26.81540 106.8748 2020-02-22    13 recovered
+    ## 1883         Hainan Mainland China 19.19590 109.7453 2020-02-22     9 recovered
+    ## 1884          Hebei Mainland China 38.04280 114.5149 2020-02-22    19 recovered
+    ## 1885   Heilongjiang Mainland China 47.86200 127.7615 2020-02-22    29 recovered
+    ## 1886          Henan Mainland China 33.88202 113.6140 2020-02-22    94 recovered
+    ## 1888          Hubei Mainland China 30.97560 112.2707 2020-02-22  3418 recovered
+    ## 1889          Hunan Mainland China 27.61040 111.7088 2020-02-22    31 recovered
+    ## 1890 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-22     9 recovered
+    ## 1891        Jiangsu Mainland China 32.97110 119.4550 2020-02-22    28 recovered
+    ## 1892        Jiangxi Mainland China 27.61400 115.7221 2020-02-22    66 recovered
+    ## 1893          Jilin Mainland China 43.66610 126.1923 2020-02-22     7 recovered
+    ## 1894       Liaoning Mainland China 41.29560 122.6085 2020-02-22     5 recovered
+    ## 1895        Shaanxi Mainland China 35.19170 108.8701 2020-02-22    15 recovered
+    ## 1896       Shandong Mainland China 36.34270 118.1498 2020-02-22    21 recovered
+    ## 1897       Shanghai Mainland China 31.20200 121.4491 2020-02-22    16 recovered
+    ## 1898         Shanxi Mainland China 37.57770 112.2922 2020-02-22     3 recovered
+    ## 1899        Sichuan Mainland China 30.61710 102.7103 2020-02-22    19 recovered
+    ## 1900        Tianjin Mainland China 39.30540 117.3230 2020-02-22     3 recovered
+    ## 1901       Xinjiang Mainland China 41.11290  85.2401 2020-02-22     1 recovered
+    ## 1902         Yunnan Mainland China 24.97400 101.4870 2020-02-22    11 recovered
+    ## 1903       Zhejiang Mainland China 29.18320 120.0934 2020-02-22    40 recovered
+    ## 1909      Chongqing Mainland China 30.05720 107.8740 2020-02-23     2 confirmed
+    ## 1911      Guangdong Mainland China 23.34170 113.4244 2020-02-23     3 confirmed
+    ## 1912          Hebei Mainland China 38.04280 114.5149 2020-02-23     2 confirmed
+    ## 1913   Heilongjiang Mainland China 47.86200 127.7615 2020-02-23     1 confirmed
+    ## 1914          Henan Mainland China 33.88202 113.6140 2020-02-23     1 confirmed
+    ## 1916          Hunan Mainland China 27.61040 111.7088 2020-02-23     3 confirmed
+    ## 1917       Shandong Mainland China 36.34270 118.1498 2020-02-23     4 confirmed
+    ## 1923      Guangdong Mainland China 23.34170 113.4244 2020-02-23     1     death
+    ## 1924         Hainan Mainland China 19.19590 109.7453 2020-02-23     1     death
+    ## 1929          Anhui Mainland China 31.82570 117.2264 2020-02-23    40 recovered
+    ## 1930        Beijing Mainland China 40.18240 116.4142 2020-02-23    11 recovered
+    ## 1931      Chongqing Mainland China 30.05720 107.8740 2020-02-23     7 recovered
+    ## 1933         Fujian Mainland China 26.07890 117.9874 2020-02-23     8 recovered
+    ## 1934          Gansu Mainland China 36.06110 103.8343 2020-02-23     2 recovered
+    ## 1935      Guangdong Mainland China 23.34170 113.4244 2020-02-23    27 recovered
+    ## 1936        Guangxi Mainland China 23.82980 108.7881 2020-02-23     2 recovered
+    ## 1937        Guizhou Mainland China 26.81540 106.8748 2020-02-23    12 recovered
+    ## 1938         Hainan Mainland China 19.19590 109.7453 2020-02-23     2 recovered
+    ## 1939          Hebei Mainland China 38.04280 114.5149 2020-02-23    16 recovered
+    ## 1940   Heilongjiang Mainland China 47.86200 127.7615 2020-02-23    18 recovered
+    ## 1941          Henan Mainland China 33.88202 113.6140 2020-02-23    38 recovered
+    ## 1943          Hubei Mainland China 30.97560 112.2707 2020-02-23    44 recovered
+    ## 1944          Hunan Mainland China 27.61040 111.7088 2020-02-23    22 recovered
+    ## 1945 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-23     1 recovered
+    ## 1946        Jiangsu Mainland China 32.97110 119.4550 2020-02-23    17 recovered
+    ## 1947        Jiangxi Mainland China 27.61400 115.7221 2020-02-23    58 recovered
+    ## 1948          Jilin Mainland China 43.66610 126.1923 2020-02-23     2 recovered
+    ## 1949       Liaoning Mainland China 41.29560 122.6085 2020-02-23     7 recovered
+    ## 1950        Ningxia Mainland China 37.26920 106.1655 2020-02-23     8 recovered
+    ## 1951        Shaanxi Mainland China 35.19170 108.8701 2020-02-23    14 recovered
+    ## 1952       Shandong Mainland China 36.34270 118.1498 2020-02-23    19 recovered
+    ## 1953       Shanghai Mainland China 31.20200 121.4491 2020-02-23    22 recovered
+    ## 1954         Shanxi Mainland China 37.57770 112.2922 2020-02-23     7 recovered
+    ## 1955        Sichuan Mainland China 30.61710 102.7103 2020-02-23    11 recovered
+    ## 1956        Tianjin Mainland China 39.30540 117.3230 2020-02-23    16 recovered
+    ## 1957       Xinjiang Mainland China 41.11290  85.2401 2020-02-23     3 recovered
+    ## 1958         Yunnan Mainland China 24.97400 101.4870 2020-02-23     8 recovered
+    ## 1959       Zhejiang Mainland China 29.18320 120.0934 2020-02-23    41 recovered
+    ## 1970      Chongqing Mainland China 30.05720 107.8740 2020-02-24     1 confirmed
+    ## 1971      Guangdong Mainland China 23.34170 113.4244 2020-02-24     3 confirmed
+    ## 1972        Guangxi Mainland China 23.82980 108.7881 2020-02-24     2 confirmed
+    ## 1974          Hubei Mainland China 30.97560 112.2707 2020-02-24   203 confirmed
+    ## 1975          Jilin Mainland China 43.66610 126.1923 2020-02-24     2 confirmed
+    ## 1978       Shandong Mainland China 36.34270 118.1498 2020-02-24     1 confirmed
+    ## 1979         Shanxi Mainland China 37.57770 112.2922 2020-02-24     1 confirmed
+    ## 1980        Sichuan Mainland China 30.61710 102.7103 2020-02-24     1 confirmed
+    ## 1988          Hubei Mainland China 30.97560 112.2707 2020-02-24   149     death
+    ## 1989       Shandong Mainland China 36.34270 118.1498 2020-02-24     1     death
+    ## 1992          Anhui Mainland China 31.82570 117.2264 2020-02-24    26 recovered
+    ## 1993        Beijing Mainland China 40.18240 116.4142 2020-02-24     9 recovered
+    ## 1994      Chongqing Mainland China 30.05720 107.8740 2020-02-24    14 recovered
+    ## 1995         Fujian Mainland China 26.07890 117.9874 2020-02-24    13 recovered
+    ## 1996          Gansu Mainland China 36.06110 103.8343 2020-02-24     2 recovered
+    ## 1997      Guangdong Mainland China 23.34170 113.4244 2020-02-24    31 recovered
+    ## 1998        Guangxi Mainland China 23.82980 108.7881 2020-02-24     6 recovered
+    ## 1999         Hainan Mainland China 19.19590 109.7453 2020-02-24    10 recovered
+    ## 2000          Hebei Mainland China 38.04280 114.5149 2020-02-24    15 recovered
+    ## 2001   Heilongjiang Mainland China 47.86200 127.7615 2020-02-24     5 recovered
+    ## 2002          Henan Mainland China 33.88202 113.6140 2020-02-24    75 recovered
+    ## 2004          Hubei Mainland China 30.97560 112.2707 2020-02-24  1405 recovered
+    ## 2005          Hunan Mainland China 27.61040 111.7088 2020-02-24    17 recovered
+    ## 2006 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-24     7 recovered
+    ## 2007        Jiangsu Mainland China 32.97110 119.4550 2020-02-24    34 recovered
+    ## 2008        Jiangxi Mainland China 27.61400 115.7221 2020-02-24    32 recovered
+    ## 2009          Jilin Mainland China 43.66610 126.1923 2020-02-24     6 recovered
+    ## 2010       Liaoning Mainland China 41.29560 122.6085 2020-02-24     7 recovered
+    ## 2011        Ningxia Mainland China 37.26920 106.1655 2020-02-24     2 recovered
+    ## 2012        Shaanxi Mainland China 35.19170 108.8701 2020-02-24    10 recovered
+    ## 2013       Shandong Mainland China 36.34270 118.1498 2020-02-24    22 recovered
+    ## 2014       Shanghai Mainland China 31.20200 121.4491 2020-02-24    12 recovered
+    ## 2015         Shanxi Mainland China 37.57770 112.2922 2020-02-24     6 recovered
+    ## 2016        Sichuan Mainland China 30.61710 102.7103 2020-02-24    15 recovered
+    ## 2018        Tianjin Mainland China 39.30540 117.3230 2020-02-24     6 recovered
+    ## 2019       Xinjiang Mainland China 41.11290  85.2401 2020-02-24     2 recovered
+    ## 2020         Yunnan Mainland China 24.97400 101.4870 2020-02-24     9 recovered
+    ## 2021       Zhejiang Mainland China 29.18320 120.0934 2020-02-24    22 recovered
+    ## 2037        Beijing Mainland China 40.18240 116.4142 2020-02-25     1 confirmed
+    ## 2039         Fujian Mainland China 26.07890 117.9874 2020-02-25     1 confirmed
+    ## 2040      Guangdong Mainland China 23.34170 113.4244 2020-02-25     2 confirmed
+    ## 2041        Guangxi Mainland China 23.82980 108.7881 2020-02-25     1 confirmed
+    ## 2043          Hubei Mainland China 30.97560 112.2707 2020-02-25   499 confirmed
+    ## 2044       Shandong Mainland China 36.34270 118.1498 2020-02-25     1 confirmed
+    ## 2045       Shanghai Mainland China 31.20200 121.4491 2020-02-25     1 confirmed
+    ## 2046        Sichuan Mainland China 30.61710 102.7103 2020-02-25     2 confirmed
+    ## 2051      Guangdong Mainland China 23.34170 113.4244 2020-02-25     1     death
+    ## 2052          Hubei Mainland China 30.97560 112.2707 2020-02-25    68     death
+    ## 2053       Shandong Mainland China 36.34270 118.1498 2020-02-25     1     death
+    ## 2059          Anhui Mainland China 31.82570 117.2264 2020-02-25    49 recovered
+    ## 2060        Beijing Mainland China 40.18240 116.4142 2020-02-25    17 recovered
+    ## 2061      Chongqing Mainland China 30.05720 107.8740 2020-02-25    23 recovered
+    ## 2062         Fujian Mainland China 26.07890 117.9874 2020-02-25    16 recovered
+    ## 2063      Guangdong Mainland China 23.34170 113.4244 2020-02-25    36 recovered
+    ## 2064        Guangxi Mainland China 23.82980 108.7881 2020-02-25    22 recovered
+    ## 2065        Guizhou Mainland China 26.81540 106.8748 2020-02-25     2 recovered
+    ## 2066         Hainan Mainland China 19.19590 109.7453 2020-02-25     8 recovered
+    ## 2067          Hebei Mainland China 38.04280 114.5149 2020-02-25    14 recovered
+    ## 2068   Heilongjiang Mainland China 47.86200 127.7615 2020-02-25    16 recovered
+    ## 2069          Henan Mainland China 33.88202 113.6140 2020-02-25    59 recovered
+    ## 2070          Hubei Mainland China 30.97560 112.2707 2020-02-25  2223 recovered
+    ## 2071          Hunan Mainland China 27.61040 111.7088 2020-02-25    37 recovered
+    ## 2072 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-25     1 recovered
+    ## 2073        Jiangsu Mainland China 32.97110 119.4550 2020-02-25     6 recovered
+    ## 2074        Jiangxi Mainland China 27.61400 115.7221 2020-02-25    38 recovered
+    ## 2075          Jilin Mainland China 43.66610 126.1923 2020-02-25     3 recovered
+    ## 2076       Liaoning Mainland China 41.29560 122.6085 2020-02-25     3 recovered
+    ## 2078        Ningxia Mainland China 37.26920 106.1655 2020-02-25     3 recovered
+    ## 2079        Shaanxi Mainland China 35.19170 108.8701 2020-02-25    13 recovered
+    ## 2080       Shandong Mainland China 36.34270 118.1498 2020-02-25    12 recovered
+    ## 2081       Shanghai Mainland China 31.20200 121.4491 2020-02-25     7 recovered
+    ## 2082         Shanxi Mainland China 37.57770 112.2922 2020-02-25     4 recovered
+    ## 2083        Sichuan Mainland China 30.61710 102.7103 2020-02-25    13 recovered
+    ## 2085        Tianjin Mainland China 39.30540 117.3230 2020-02-25     4 recovered
+    ## 2086         Yunnan Mainland China 24.97400 101.4870 2020-02-25     5 recovered
+    ## 2087       Zhejiang Mainland China 29.18320 120.0934 2020-02-25    26 recovered
+    ## 2114          Hebei Mainland China 38.04280 114.5149 2020-02-26     1 confirmed
+    ## 2116          Hubei Mainland China 30.97560 112.2707 2020-02-26   401 confirmed
+    ## 2117       Shanghai Mainland China 31.20200 121.4491 2020-02-26     1 confirmed
+    ## 2118        Sichuan Mainland China 30.61710 102.7103 2020-02-26     2 confirmed
+    ## 2127          Hubei Mainland China 30.97560 112.2707 2020-02-26    52     death
+    ## 2132          Anhui Mainland China 31.82570 117.2264 2020-02-26    32 recovered
+    ## 2133        Beijing Mainland China 40.18240 116.4142 2020-02-26    20 recovered
+    ## 2134      Chongqing Mainland China 30.05720 107.8740 2020-02-26    12 recovered
+    ## 2136         Fujian Mainland China 26.07890 117.9874 2020-02-26    19 recovered
+    ## 2137          Gansu Mainland China 36.06110 103.8343 2020-02-26     1 recovered
+    ## 2138      Guangdong Mainland China 23.34170 113.4244 2020-02-26    29 recovered
+    ## 2139        Guangxi Mainland China 23.82980 108.7881 2020-02-26    13 recovered
+    ## 2140         Hainan Mainland China 19.19590 109.7453 2020-02-26     5 recovered
+    ## 2141          Hebei Mainland China 38.04280 114.5149 2020-02-26    13 recovered
+    ## 2142   Heilongjiang Mainland China 47.86200 127.7615 2020-02-26     6 recovered
+    ## 2143          Henan Mainland China 33.88202 113.6140 2020-02-26    31 recovered
+    ## 2145          Hubei Mainland China 30.97560 112.2707 2020-02-26  1998 recovered
+    ## 2146          Hunan Mainland China 27.61040 111.7088 2020-02-26    15 recovered
+    ## 2147 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-26     3 recovered
+    ## 2148        Jiangsu Mainland China 32.97110 119.4550 2020-02-26    20 recovered
+    ## 2149        Jiangxi Mainland China 27.61400 115.7221 2020-02-26    36 recovered
+    ## 2150          Jilin Mainland China 43.66610 126.1923 2020-02-26     2 recovered
+    ## 2151       Liaoning Mainland China 41.29560 122.6085 2020-02-26     5 recovered
+    ## 2152        Ningxia Mainland China 37.26920 106.1655 2020-02-26     4 recovered
+    ## 2153        Shaanxi Mainland China 35.19170 108.8701 2020-02-26     6 recovered
+    ## 2154       Shandong Mainland China 36.34270 118.1498 2020-02-26    22 recovered
+    ## 2155       Shanghai Mainland China 31.20200 121.4491 2020-02-26     4 recovered
+    ## 2156         Shanxi Mainland China 37.57770 112.2922 2020-02-26     6 recovered
+    ## 2157        Sichuan Mainland China 30.61710 102.7103 2020-02-26    18 recovered
+    ## 2158        Tianjin Mainland China 39.30540 117.3230 2020-02-26     5 recovered
+    ## 2159       Xinjiang Mainland China 41.11290  85.2401 2020-02-26     4 recovered
+    ## 2160         Yunnan Mainland China 24.97400 101.4870 2020-02-26    15 recovered
+    ## 2161       Zhejiang Mainland China 29.18320 120.0934 2020-02-26    59 recovered
+    ## 2182        Beijing Mainland China 40.18240 116.4142 2020-02-27    10 confirmed
+    ## 2184         Fujian Mainland China 26.07890 117.9874 2020-02-27     2 confirmed
+    ## 2185          Hebei Mainland China 38.04280 114.5149 2020-02-27     5 confirmed
+    ## 2186          Henan Mainland China 33.88202 113.6140 2020-02-27     1 confirmed
+    ## 2188          Hubei Mainland China 30.97560 112.2707 2020-02-27   409 confirmed
+    ## 2189          Hunan Mainland China 27.61040 111.7088 2020-02-27     1 confirmed
+    ## 2190        Ningxia Mainland China 37.26920 106.1655 2020-02-27     1 confirmed
+    ## 2192        Sichuan Mainland China 30.61710 102.7103 2020-02-27     3 confirmed
+    ## 2193        Tianjin Mainland China 39.30540 117.3230 2020-02-27     1 confirmed
+    ## 2199        Beijing Mainland China 40.18240 116.4142 2020-02-27     1     death
+    ## 2200   Heilongjiang Mainland China 47.86200 127.7615 2020-02-27     1     death
+    ## 2201          Henan Mainland China 33.88202 113.6140 2020-02-27     1     death
+    ## 2202          Hubei Mainland China 30.97560 112.2707 2020-02-27    26     death
+    ## 2206          Anhui Mainland China 31.82570 117.2264 2020-02-27    48 recovered
+    ## 2207        Beijing Mainland China 40.18240 116.4142 2020-02-27    13 recovered
+    ## 2209      Chongqing Mainland China 30.05720 107.8740 2020-02-27    17 recovered
+    ## 2210         Fujian Mainland China 26.07890 117.9874 2020-02-27    10 recovered
+    ## 2211      Guangdong Mainland China 23.34170 113.4244 2020-02-27    39 recovered
+    ## 2212        Guangxi Mainland China 23.82980 108.7881 2020-02-27    14 recovered
+    ## 2213        Guizhou Mainland China 26.81540 106.8748 2020-02-27     8 recovered
+    ## 2214         Hainan Mainland China 19.19590 109.7453 2020-02-27     2 recovered
+    ## 2215          Hebei Mainland China 38.04280 114.5149 2020-02-27    13 recovered
+    ## 2216   Heilongjiang Mainland China 47.86200 127.7615 2020-02-27    21 recovered
+    ## 2217          Henan Mainland China 33.88202 113.6140 2020-02-27    35 recovered
+    ## 2218          Hubei Mainland China 30.97560 112.2707 2020-02-27  2414 recovered
+    ## 2219          Hunan Mainland China 27.61040 111.7088 2020-02-27    21 recovered
+    ## 2220 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-27     5 recovered
+    ## 2221        Jiangsu Mainland China 32.97110 119.4550 2020-02-27    20 recovered
+    ## 2222        Jiangxi Mainland China 27.61400 115.7221 2020-02-27    35 recovered
+    ## 2223          Jilin Mainland China 43.66610 126.1923 2020-02-27     2 recovered
+    ## 2224       Liaoning Mainland China 41.29560 122.6085 2020-02-27     5 recovered
+    ## 2226        Ningxia Mainland China 37.26920 106.1655 2020-02-27     3 recovered
+    ## 2227        Shaanxi Mainland China 35.19170 108.8701 2020-02-27     3 recovered
+    ## 2228       Shandong Mainland China 36.34270 118.1498 2020-02-27    10 recovered
+    ## 2229       Shanghai Mainland China 31.20200 121.4491 2020-02-27     4 recovered
+    ## 2230         Shanxi Mainland China 37.57770 112.2922 2020-02-27     3 recovered
+    ## 2231        Sichuan Mainland China 30.61710 102.7103 2020-02-27    14 recovered
+    ## 2232        Tianjin Mainland China 39.30540 117.3230 2020-02-27     6 recovered
+    ## 2233       Xinjiang Mainland China 41.11290  85.2401 2020-02-27     9 recovered
+    ## 2234         Yunnan Mainland China 24.97400 101.4870 2020-02-27     6 recovered
+    ## 2235       Zhejiang Mainland China 29.18320 120.0934 2020-02-27    65 recovered
+    ## 2260          Anhui Mainland China 31.82570 117.2264 2020-02-28     1 confirmed
+    ## 2261      Guangdong Mainland China 23.34170 113.4244 2020-02-28     1 confirmed
+    ## 2262          Hebei Mainland China 38.04280 114.5149 2020-02-28     1 confirmed
+    ## 2264          Hubei Mainland China 30.97560 112.2707 2020-02-28   318 confirmed
+    ## 2265        Jiangxi Mainland China 27.61400 115.7221 2020-02-28     1 confirmed
+    ## 2266        Sichuan Mainland China 30.61710 102.7103 2020-02-28     4 confirmed
+    ## 2271        Beijing Mainland China 40.18240 116.4142 2020-02-28     2     death
+    ## 2273          Hubei Mainland China 30.97560 112.2707 2020-02-28    41     death
+    ## 2274       Xinjiang Mainland China 41.11290  85.2401 2020-02-28     1     death
+    ## 2280          Anhui Mainland China 31.82570 117.2264 2020-02-28    29 recovered
+    ## 2281        Beijing Mainland China 40.18240 116.4142 2020-02-28     9 recovered
+    ## 2283      Chongqing Mainland China 30.05720 107.8740 2020-02-28    21 recovered
+    ## 2284         Fujian Mainland China 26.07890 117.9874 2020-02-28     7 recovered
+    ## 2285          Gansu Mainland China 36.06110 103.8343 2020-02-28     1 recovered
+    ## 2286      Guangdong Mainland China 23.34170 113.4244 2020-02-28    45 recovered
+    ## 2287        Guangxi Mainland China 23.82980 108.7881 2020-02-28     7 recovered
+    ## 2288         Hainan Mainland China 19.19590 109.7453 2020-02-28     2 recovered
+    ## 2289          Hebei Mainland China 38.04280 114.5149 2020-02-28     3 recovered
+    ## 2290   Heilongjiang Mainland China 47.86200 127.7615 2020-02-28    13 recovered
+    ## 2291          Henan Mainland China 33.88202 113.6140 2020-02-28    44 recovered
+    ## 2293          Hubei Mainland China 30.97560 112.2707 2020-02-28  3020 recovered
+    ## 2294          Hunan Mainland China 27.61040 111.7088 2020-02-28    26 recovered
+    ## 2295 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-28     2 recovered
+    ## 2296        Jiangsu Mainland China 32.97110 119.4550 2020-02-28    17 recovered
+    ## 2297        Jiangxi Mainland China 27.61400 115.7221 2020-02-28    36 recovered
+    ## 2298          Jilin Mainland China 43.66610 126.1923 2020-02-28     6 recovered
+    ## 2299        Shaanxi Mainland China 35.19170 108.8701 2020-02-28     4 recovered
+    ## 2300       Shandong Mainland China 36.34270 118.1498 2020-02-28    18 recovered
+    ## 2301       Shanghai Mainland China 31.20200 121.4491 2020-02-28     3 recovered
+    ## 2302         Shanxi Mainland China 37.57770 112.2922 2020-02-28     5 recovered
+    ## 2303        Sichuan Mainland China 30.61710 102.7103 2020-02-28    17 recovered
+    ## 2305       Xinjiang Mainland China 41.11290  85.2401 2020-02-28     9 recovered
+    ## 2306         Yunnan Mainland China 24.97400 101.4870 2020-02-28     6 recovered
+    ## 2307       Zhejiang Mainland China 29.18320 120.0934 2020-02-28    43 recovered
+    ## 2340        Beijing Mainland China 40.18240 116.4142 2020-02-29     1 confirmed
+    ## 2343      Guangdong Mainland China 23.34170 113.4244 2020-02-29     1 confirmed
+    ## 2345          Hubei Mainland China 30.97560 112.2707 2020-02-29   423 confirmed
+    ## 2346          Hunan Mainland China 27.61040 111.7088 2020-02-29     1 confirmed
+    ## 2348        Ningxia Mainland China 37.26920 106.1655 2020-02-29     1 confirmed
+    ## 2362        Beijing Mainland China 40.18240 116.4142 2020-02-29     1     death
+    ## 2363          Henan Mainland China 33.88202 113.6140 2020-02-29     1     death
+    ## 2364          Hubei Mainland China 30.97560 112.2707 2020-02-29    45     death
+    ## 2372          Anhui Mainland China 31.82570 117.2264 2020-02-29    47 recovered
+    ## 2373        Beijing Mainland China 40.18240 116.4142 2020-02-29    14 recovered
+    ## 2374      Chongqing Mainland China 30.05720 107.8740 2020-02-29    16 recovered
+    ## 2375         Fujian Mainland China 26.07890 117.9874 2020-02-29     8 recovered
+    ## 2376      Guangdong Mainland China 23.34170 113.4244 2020-02-29    48 recovered
+    ## 2377        Guangxi Mainland China 23.82980 108.7881 2020-02-29     8 recovered
+    ## 2378         Hainan Mainland China 19.19590 109.7453 2020-02-29    15 recovered
+    ## 2379          Hebei Mainland China 38.04280 114.5149 2020-02-29     5 recovered
+    ## 2380   Heilongjiang Mainland China 47.86200 127.7615 2020-02-29    18 recovered
+    ## 2381          Henan Mainland China 33.88202 113.6140 2020-02-29    58 recovered
+    ## 2383          Hubei Mainland China 30.97560 112.2707 2020-02-29  2590 recovered
+    ## 2384          Hunan Mainland China 27.61040 111.7088 2020-02-29    16 recovered
+    ## 2385 Inner Mongolia Mainland China 44.09350 113.9448 2020-02-29     4 recovered
+    ## 2386        Jiangsu Mainland China 32.97110 119.4550 2020-02-29     8 recovered
+    ## 2387        Jiangxi Mainland China 27.61400 115.7221 2020-02-29    21 recovered
+    ## 2388          Jilin Mainland China 43.66610 126.1923 2020-02-29     2 recovered
+    ## 2389       Liaoning Mainland China 41.29560 122.6085 2020-02-29     3 recovered
+    ## 2390        Ningxia Mainland China 37.26920 106.1655 2020-02-29     1 recovered
+    ## 2391        Shaanxi Mainland China 35.19170 108.8701 2020-02-29     8 recovered
+    ## 2392       Shandong Mainland China 36.34270 118.1498 2020-02-29    16 recovered
+    ## 2393       Shanghai Mainland China 31.20200 121.4491 2020-02-29     8 recovered
+    ## 2394         Shanxi Mainland China 37.57770 112.2922 2020-02-29     2 recovered
+    ## 2395        Sichuan Mainland China 30.61710 102.7103 2020-02-29    13 recovered
+    ## 2397        Tianjin Mainland China 39.30540 117.3230 2020-02-29     7 recovered
+    ## 2398       Xinjiang Mainland China 41.11290  85.2401 2020-02-29    10 recovered
+    ## 2399         Yunnan Mainland China 24.97400 101.4870 2020-02-29     1 recovered
+    ## 2400       Zhejiang Mainland China 29.18320 120.0934 2020-02-29    41 recovered
+    ## 2435        Beijing Mainland China 40.18240 116.4142 2020-03-01     2 confirmed
+    ## 2438          Hubei Mainland China 30.97560 112.2707 2020-03-01   570 confirmed
+    ## 2440       Liaoning Mainland China 41.29560 122.6085 2020-03-01     1 confirmed
+    ## 2443       Shandong Mainland China 36.34270 118.1498 2020-03-01     2 confirmed
+    ## 2452          Henan Mainland China 33.88202 113.6140 2020-03-01     1     death
+    ## 2453          Hubei Mainland China 30.97560 112.2707 2020-03-01    34     death
+    ## 2458          Anhui Mainland China 31.82570 117.2264 2020-03-01     5 recovered
+    ## 2459        Beijing Mainland China 40.18240 116.4142 2020-03-01     5 recovered
+    ## 2460      Chongqing Mainland China 30.05720 107.8740 2020-03-01    12 recovered
+    ## 2461         Fujian Mainland China 26.07890 117.9874 2020-03-01     4 recovered
+    ## 2462          Gansu Mainland China 36.06110 103.8343 2020-03-01     2 recovered
+    ## 2463      Guangdong Mainland China 23.34170 113.4244 2020-03-01    33 recovered
+    ## 2464        Guangxi Mainland China 23.82980 108.7881 2020-03-01     5 recovered
+    ## 2465         Hainan Mainland China 19.19590 109.7453 2020-03-01     1 recovered
+    ## 2466          Hebei Mainland China 38.04280 114.5149 2020-03-01    12 recovered
+    ## 2467   Heilongjiang Mainland China 47.86200 127.7615 2020-03-01    41 recovered
+    ## 2468          Henan Mainland China 33.88202 113.6140 2020-03-01    28 recovered
+    ## 2470          Hubei Mainland China 30.97560 112.2707 2020-03-01  2543 recovered
+    ## 2471          Hunan Mainland China 27.61040 111.7088 2020-03-01    20 recovered
+    ## 2472 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-01     3 recovered
+    ## 2473        Jiangsu Mainland China 32.97110 119.4550 2020-03-01    13 recovered
+    ## 2474        Jiangxi Mainland China 27.61400 115.7221 2020-03-01    20 recovered
+    ## 2475          Jilin Mainland China 43.66610 126.1923 2020-03-01     3 recovered
+    ## 2476       Liaoning Mainland China 41.29560 122.6085 2020-03-01     7 recovered
+    ## 2477        Shaanxi Mainland China 35.19170 108.8701 2020-03-01     1 recovered
+    ## 2478       Shandong Mainland China 36.34270 118.1498 2020-03-01    22 recovered
+    ## 2479       Shanghai Mainland China 31.20200 121.4491 2020-03-01     3 recovered
+    ## 2480         Shanxi Mainland China 37.57770 112.2922 2020-03-01     2 recovered
+    ## 2481        Sichuan Mainland China 30.61710 102.7103 2020-03-01    14 recovered
+    ## 2482        Tianjin Mainland China 39.30540 117.3230 2020-03-01     2 recovered
+    ## 2483       Xinjiang Mainland China 41.11290  85.2401 2020-03-01     2 recovered
+    ## 2484         Yunnan Mainland China 24.97400 101.4870 2020-03-01     6 recovered
+    ## 2485       Zhejiang Mainland China 29.18320 120.0934 2020-03-01    30 recovered
+    ## 2518        Beijing Mainland China 40.18240 116.4142 2020-03-02     1 confirmed
+    ## 2521      Guangdong Mainland China 23.34170 113.4244 2020-03-02     1 confirmed
+    ## 2524          Hubei Mainland China 30.97560 112.2707 2020-03-02   196 confirmed
+    ## 2527        Ningxia Mainland China 37.26920 106.1655 2020-03-02     1 confirmed
+    ## 2542       Zhejiang Mainland China 29.18320 120.0934 2020-03-02     1 confirmed
+    ## 2547          Hubei Mainland China 30.97560 112.2707 2020-03-02    42     death
+    ## 2554          Anhui Mainland China 31.82570 117.2264 2020-03-02    44 recovered
+    ## 2555        Beijing Mainland China 40.18240 116.4142 2020-03-02     6 recovered
+    ## 2556      Chongqing Mainland China 30.05720 107.8740 2020-03-02    19 recovered
+    ## 2557         Fujian Mainland China 26.07890 117.9874 2020-03-02     8 recovered
+    ## 2558          Gansu Mainland China 36.06110 103.8343 2020-03-02     1 recovered
+    ## 2559      Guangdong Mainland China 23.34170 113.4244 2020-03-02    43 recovered
+    ## 2560        Guangxi Mainland China 23.82980 108.7881 2020-03-02    11 recovered
+    ## 2561        Guizhou Mainland China 26.81540 106.8748 2020-03-02     2 recovered
+    ## 2562         Hainan Mainland China 19.19590 109.7453 2020-03-02     2 recovered
+    ## 2563          Hebei Mainland China 38.04280 114.5149 2020-03-02     2 recovered
+    ## 2564   Heilongjiang Mainland China 47.86200 127.7615 2020-03-02    14 recovered
+    ## 2565          Henan Mainland China 33.88202 113.6140 2020-03-02     7 recovered
+    ## 2566          Hubei Mainland China 30.97560 112.2707 2020-03-02  2398 recovered
+    ## 2567          Hunan Mainland China 27.61040 111.7088 2020-03-02    21 recovered
+    ## 2568 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-02     2 recovered
+    ## 2569        Jiangsu Mainland China 32.97110 119.4550 2020-03-02     7 recovered
+    ## 2570        Jiangxi Mainland China 27.61400 115.7221 2020-03-02    19 recovered
+    ## 2571          Jilin Mainland China 43.66610 126.1923 2020-03-02     5 recovered
+    ## 2572        Shaanxi Mainland China 35.19170 108.8701 2020-03-02     8 recovered
+    ## 2573       Shandong Mainland China 36.34270 118.1498 2020-03-02    17 recovered
+    ## 2574       Shanghai Mainland China 31.20200 121.4491 2020-03-02     2 recovered
+    ## 2575         Shanxi Mainland China 37.57770 112.2922 2020-03-02     3 recovered
+    ## 2576        Sichuan Mainland China 30.61710 102.7103 2020-03-02    21 recovered
+    ## 2578       Xinjiang Mainland China 41.11290  85.2401 2020-03-02     2 recovered
+    ## 2579         Yunnan Mainland China 24.97400 101.4870 2020-03-02     5 recovered
+    ## 2580       Zhejiang Mainland China 29.18320 120.0934 2020-03-02    23 recovered
+    ## 2624          Hubei Mainland China 30.97560 112.2707 2020-03-03   114 confirmed
+    ## 2626       Liaoning Mainland China 41.29560 122.6085 2020-03-03     3 confirmed
+    ## 2632       Shanghai Mainland China 31.20200 121.4491 2020-03-03     1 confirmed
+    ## 2638       Zhejiang Mainland China 29.18320 120.0934 2020-03-03     7 confirmed
+    ## 2644          Hubei Mainland China 30.97560 112.2707 2020-03-03    32     death
+    ## 2645 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-03     1     death
+    ## 2653          Anhui Mainland China 31.82570 117.2264 2020-03-03    19 recovered
+    ## 2654        Beijing Mainland China 40.18240 116.4142 2020-03-03     6 recovered
+    ## 2655      Chongqing Mainland China 30.05720 107.8740 2020-03-03    21 recovered
+    ## 2656         Fujian Mainland China 26.07890 117.9874 2020-03-03     5 recovered
+    ## 2657          Gansu Mainland China 36.06110 103.8343 2020-03-03     1 recovered
+    ## 2658      Guangdong Mainland China 23.34170 113.4244 2020-03-03    42 recovered
+    ## 2659        Guangxi Mainland China 23.82980 108.7881 2020-03-03    10 recovered
+    ## 2660         Hainan Mainland China 19.19590 109.7453 2020-03-03     4 recovered
+    ## 2661          Hebei Mainland China 38.04280 114.5149 2020-03-03     4 recovered
+    ## 2662   Heilongjiang Mainland China 47.86200 127.7615 2020-03-03    10 recovered
+    ## 2663          Henan Mainland China 33.88202 113.6140 2020-03-03    26 recovered
+    ## 2665          Hubei Mainland China 30.97560 112.2707 2020-03-03  2274 recovered
+    ## 2666          Hunan Mainland China 27.61040 111.7088 2020-03-03    19 recovered
+    ## 2667 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-03     5 recovered
+    ## 2668        Jiangsu Mainland China 32.97110 119.4550 2020-03-03    19 recovered
+    ## 2669        Jiangxi Mainland China 27.61400 115.7221 2020-03-03    20 recovered
+    ## 2670       Liaoning Mainland China 41.29560 122.6085 2020-03-03     3 recovered
+    ## 2673       Shandong Mainland China 36.34270 118.1498 2020-03-03    51 recovered
+    ## 2674       Shanghai Mainland China 31.20200 121.4491 2020-03-03     2 recovered
+    ## 2675         Shanxi Mainland China 37.57770 112.2922 2020-03-03     5 recovered
+    ## 2676        Sichuan Mainland China 30.61710 102.7103 2020-03-03     8 recovered
+    ## 2677        Tianjin Mainland China 39.30540 117.3230 2020-03-03    13 recovered
+    ## 2678       Xinjiang Mainland China 41.11290  85.2401 2020-03-03     2 recovered
+    ## 2679         Yunnan Mainland China 24.97400 101.4870 2020-03-03     1 recovered
+    ## 2680       Zhejiang Mainland China 29.18320 120.0934 2020-03-03    24 recovered
+    ## 2724        Beijing Mainland China 40.18240 116.4142 2020-03-04     4 confirmed
+    ## 2728          Hubei Mainland China 30.97560 112.2707 2020-03-04   115 confirmed
+    ## 2732        Ningxia Mainland China 37.26920 106.1655 2020-03-04     1 confirmed
+    ## 2745          Hubei Mainland China 30.97560 112.2707 2020-03-04    36     death
+    ## 2755          Anhui Mainland China 31.82570 117.2264 2020-03-04    20 recovered
+    ## 2756        Beijing Mainland China 40.18240 116.4142 2020-03-04     9 recovered
+    ## 2757      Chongqing Mainland China 30.05720 107.8740 2020-03-04    12 recovered
+    ## 2758         Fujian Mainland China 26.07890 117.9874 2020-03-04    10 recovered
+    ## 2759          Gansu Mainland China 36.06110 103.8343 2020-03-04     1 recovered
+    ## 2760      Guangdong Mainland China 23.34170 113.4244 2020-03-04    32 recovered
+    ## 2761        Guangxi Mainland China 23.82980 108.7881 2020-03-04     8 recovered
+    ## 2762         Hainan Mainland China 19.19590 109.7453 2020-03-04     3 recovered
+    ## 2763          Hebei Mainland China 38.04280 114.5149 2020-03-04     1 recovered
+    ## 2764   Heilongjiang Mainland China 47.86200 127.7615 2020-03-04     7 recovered
+    ## 2765          Henan Mainland China 33.88202 113.6140 2020-03-04     3 recovered
+    ## 2766          Hubei Mainland China 30.97560 112.2707 2020-03-04  2349 recovered
+    ## 2767          Hunan Mainland China 27.61040 111.7088 2020-03-04    10 recovered
+    ## 2768 Inner Mongolia Mainland China 44.09350 113.9448 2020-03-04     4 recovered
+    ## 2769        Jiangsu Mainland China 32.97110 119.4550 2020-03-04    15 recovered
+    ## 2770        Jiangxi Mainland China 27.61400 115.7221 2020-03-04    14 recovered
+    ## 2771          Jilin Mainland China 43.66610 126.1923 2020-03-04     3 recovered
+    ## 2772        Shaanxi Mainland China 35.19170 108.8701 2020-03-04     7 recovered
+    ## 2773       Shandong Mainland China 36.34270 118.1498 2020-03-04     5 recovered
+    ## 2774       Shanghai Mainland China 31.20200 121.4491 2020-03-04     4 recovered
+    ## 2775        Sichuan Mainland China 30.61710 102.7103 2020-03-04    12 recovered
+    ## 2776       Xinjiang Mainland China 41.11290  85.2401 2020-03-04     1 recovered
+    ## 2777       Zhejiang Mainland China 29.18320 120.0934 2020-03-04    21 recovered
+
+> Q4. What is the death rate in “Mainland China”?
+
+``` r
+mainland_total_cases <- sum(mainland$cases)
+mainland_total_cases
+```
+
+    ## [1] 133207
+
+``` r
+mainland_inds <-  mainland$type == 'death'
+mainland_death_cases <- sum(mainland[mainland_inds,"cases"])
+mainland_death_cases
+```
+
+    ## [1] 2981
+
+``` r
+round(mainland_death_cases/mainland_total_cases,4)
+```
+
+    ## [1] 0.0224
+
+> Q5. What is the death rate in Italy, Iran and the US?
+
+``` r
+italy <-  virus[virus$Country.Region == "Italy",]
+italy 
+```
+
+    ##      Province.State Country.Region Lat Long       date cases      type
+    ## 369                          Italy  43   12 2020-01-31     2 confirmed
+    ## 788                          Italy  43   12 2020-02-07     1 confirmed
+    ## 1778                         Italy  43   12 2020-02-21    17 confirmed
+    ## 1806                         Italy  43   12 2020-02-21     1     death
+    ## 1849                         Italy  43   12 2020-02-22    42 confirmed
+    ## 1870                         Italy  43   12 2020-02-22     1     death
+    ## 1875                         Italy  43   12 2020-02-22     1 recovered
+    ## 1905                         Italy  43   12 2020-02-23    93 confirmed
+    ## 1920                         Italy  43   12 2020-02-23     1     death
+    ## 1925                         Italy  43   12 2020-02-23     1 recovered
+    ## 1964                         Italy  43   12 2020-02-24    74 confirmed
+    ## 1986                         Italy  43   12 2020-02-24     4     death
+    ## 1990                         Italy  43   12 2020-02-24    -1 recovered
+    ## 2029                         Italy  43   12 2020-02-25    93 confirmed
+    ## 2049                         Italy  43   12 2020-02-25     3     death
+    ## 2099                         Italy  43   12 2020-02-26   131 confirmed
+    ## 2123                         Italy  43   12 2020-02-26     2     death
+    ## 2130                         Italy  43   12 2020-02-26     2 recovered
+    ## 2171                         Italy  43   12 2020-02-27   202 confirmed
+    ## 2196                         Italy  43   12 2020-02-27     5     death
+    ## 2205                         Italy  43   12 2020-02-27    42 recovered
+    ## 2245                         Italy  43   12 2020-02-28   233 confirmed
+    ## 2270                         Italy  43   12 2020-02-28     4     death
+    ## 2277                         Italy  43   12 2020-02-28     1 recovered
+    ## 2320                         Italy  43   12 2020-02-29   240 confirmed
+    ## 2359                         Italy  43   12 2020-02-29     8     death
+    ## 2421                         Italy  43   12 2020-03-01   566 confirmed
+    ## 2448                         Italy  43   12 2020-03-01     5     death
+    ## 2456                         Italy  43   12 2020-03-01    37 recovered
+    ## 2498                         Italy  43   12 2020-03-02   342 confirmed
+    ## 2545                         Italy  43   12 2020-03-02    18     death
+    ## 2551                         Italy  43   12 2020-03-02    66 recovered
+    ## 2598                         Italy  43   12 2020-03-03   466 confirmed
+    ## 2641                         Italy  43   12 2020-03-03    27     death
+    ## 2647                         Italy  43   12 2020-03-03    11 recovered
+    ## 2703                         Italy  43   12 2020-03-04   587 confirmed
+    ## 2742                         Italy  43   12 2020-03-04    28     death
+    ## 2750                         Italy  43   12 2020-03-04   116 recovered
+
+``` r
+Iran <-  virus[virus$Country.Region == "Iran",]
+Iran 
+```
+
+    ##      Province.State Country.Region Lat Long       date cases      type
+    ## 1641                          Iran  32   53 2020-02-19     2 confirmed
+    ## 1668                          Iran  32   53 2020-02-19     2     death
+    ## 1709                          Iran  32   53 2020-02-20     3 confirmed
+    ## 1776                          Iran  32   53 2020-02-21    13 confirmed
+    ## 1805                          Iran  32   53 2020-02-21     2     death
+    ## 1848                          Iran  32   53 2020-02-22    10 confirmed
+    ## 1869                          Iran  32   53 2020-02-22     1     death
+    ## 1904                          Iran  32   53 2020-02-23    15 confirmed
+    ## 1919                          Iran  32   53 2020-02-23     3     death
+    ## 1962                          Iran  32   53 2020-02-24    18 confirmed
+    ## 1985                          Iran  32   53 2020-02-24     4     death
+    ## 2028                          Iran  32   53 2020-02-25    34 confirmed
+    ## 2048                          Iran  32   53 2020-02-25     4     death
+    ## 2096                          Iran  32   53 2020-02-26    44 confirmed
+    ## 2122                          Iran  32   53 2020-02-26     3     death
+    ## 2129                          Iran  32   53 2020-02-26    49 recovered
+    ## 2168                          Iran  32   53 2020-02-27   106 confirmed
+    ## 2195                          Iran  32   53 2020-02-27     7     death
+    ## 2243                          Iran  32   53 2020-02-28   143 confirmed
+    ## 2269                          Iran  32   53 2020-02-28     8     death
+    ## 2276                          Iran  32   53 2020-02-28    24 recovered
+    ## 2316                          Iran  32   53 2020-02-29   205 confirmed
+    ## 2358                          Iran  32   53 2020-02-29     9     death
+    ## 2367                          Iran  32   53 2020-02-29    50 recovered
+    ## 2418                          Iran  32   53 2020-03-01   385 confirmed
+    ## 2447                          Iran  32   53 2020-03-01    11     death
+    ## 2455                          Iran  32   53 2020-03-01    52 recovered
+    ## 2496                          Iran  32   53 2020-03-02   523 confirmed
+    ## 2544                          Iran  32   53 2020-03-02    12     death
+    ## 2550                          Iran  32   53 2020-03-02   116 recovered
+    ## 2594                          Iran  32   53 2020-03-03   835 confirmed
+    ## 2640                          Iran  32   53 2020-03-03    11     death
+    ## 2699                          Iran  32   53 2020-03-04   586 confirmed
+    ## 2740                          Iran  32   53 2020-03-04    15     death
+    ## 2749                          Iran  32   53 2020-03-04   261 recovered
+
+``` r
+US <-  virus[virus$Country.Region == "US",]
+US
+```
+
+    ##                                   Province.State Country.Region     Lat
+    ## 18                               King County, WA             US 47.6062
+    ## 70                               Cook County, IL             US 41.7377
+    ## 160                              Los Angeles, CA             US 34.0522
+    ## 164                            Orange County, CA             US 33.7879
+    ## 171                                    Tempe, AZ             US 33.4255
+    ## 380                              Cook County, IL             US 41.7377
+    ## 400                              Santa Clara, CA             US 37.3541
+    ## 436                                   Boston, MA             US 42.3601
+    ## 569                               San Benito, CA             US 36.5761
+    ## 570                              Santa Clara, CA             US 37.3541
+    ## 685                                  Madison, WI             US 43.0731
+    ## 978                              Cook County, IL             US 41.7377
+    ## 992                              King County, WA             US 47.6062
+    ## 1091                        San Diego County, CA             US 32.7157
+    ## 1244                             San Antonio, TX             US 29.4241
+    ## 1245                        San Diego County, CA             US 32.7157
+    ## 1794                         Humboldt County, CA             US 40.7450
+    ## 1796        Lackland, TX (From Diamond Princess)             US 29.3829
+    ## 1797           Omaha, NE (From Diamond Princess)             US 41.2545
+    ## 1798                       Sacramento County, CA             US 38.4747
+    ## 1803          Travis, CA (From Diamond Princess)             US 38.2721
+    ## 1836                        San Diego County, CA             US 32.7157
+    ## 1837                             Santa Clara, CA             US 37.3541
+    ## 1976        Lackland, TX (From Diamond Princess)             US 29.3829
+    ## 1977           Omaha, NE (From Diamond Princess)             US 41.2545
+    ## 1983          Travis, CA (From Diamond Princess)             US 38.2721
+    ## 1984 Unassigned Location (From Diamond Princess)             US 35.4437
+    ## 2084                                   Tempe, AZ             US 33.4255
+    ## 2120 Unassigned Location (From Diamond Princess)             US 35.4437
+    ## 2191                       Sacramento County, CA             US 38.4747
+    ## 2268 Unassigned Location (From Diamond Princess)             US 35.4437
+    ## 2282                                  Boston, MA             US 42.3601
+    ## 2347                             King County, WA             US 47.6062
+    ## 2350                             Santa Clara, CA             US 37.3541
+    ## 2351                        Snohomish County, WA             US 48.0330
+    ## 2356                       Washington County, OR             US 45.5470
+    ## 2365                             King County, WA             US 47.6062
+    ## 2436                             Cook County, IL             US 41.7377
+    ## 2439                             King County, WA             US 47.6062
+    ## 2442                              Providence, RI             US 41.8240
+    ## 2444                        Snohomish County, WA             US 48.0330
+    ## 2519                             Cook County, IL             US 41.7377
+    ## 2520                          Grafton County, NH             US 43.9088
+    ## 2522                            Hillsborough, FL             US 27.9904
+    ## 2525                             King County, WA             US 47.6062
+    ## 2526                           New York City, NY             US 40.7128
+    ## 2528                           Placer County, CA             US 39.0916
+    ## 2529                              Providence, RI             US 41.8240
+    ## 2530                               San Mateo, CA             US 37.5630
+    ## 2531                             Santa Clara, CA             US 37.3541
+    ## 2532                                Sarasota, FL             US 27.3364
+    ## 2533                        Snohomish County, WA             US 48.0330
+    ## 2534                           Sonoma County, CA             US 38.5780
+    ## 2538                                Umatilla, OR             US 45.7750
+    ## 2539 Unassigned Location (From Diamond Princess)             US 35.4437
+    ## 2541                       Washington County, OR             US 45.5470
+    ## 2548                             King County, WA             US 47.6062
+    ## 2549                        Snohomish County, WA             US 48.0330
+    ## 2617                          Norfolk County, MA             US 42.1767
+    ## 2618                                Berkeley, CA             US 37.8715
+    ## 2621                           Fulton County, GA             US 33.8034
+    ## 2622                          Grafton County, NH             US 43.9088
+    ## 2623                            Hillsborough, FL             US 27.9904
+    ## 2625                             King County, WA             US 47.6062
+    ## 2627                         Maricopa County, AZ             US 33.2918
+    ## 2630                               San Mateo, CA             US 37.5630
+    ## 2631                             Santa Clara, CA             US 37.3541
+    ## 2633                        Snohomish County, WA             US 48.0330
+    ## 2636                             Wake County, NC             US 35.8032
+    ## 2637                      Westchester County, NY             US 41.1220
+    ## 2646                             King County, WA             US 47.6062
+    ## 2672                                 Madison, WI             US 43.0731
+    ## 2726                     Contra Costa County, CA             US 37.8534
+    ## 2729                             King County, WA             US 47.6062
+    ## 2730                             Los Angeles, CA             US 34.0522
+    ## 2734                           Orange County, CA             US 33.7879
+    ## 2735                           Placer County, CA             US 39.0916
+    ## 2736                        Snohomish County, WA             US 48.0330
+    ## 2739                      Westchester County, NY             US 41.1220
+    ## 2746                             King County, WA             US 47.6062
+    ## 2748                           Placer County, CA             US 39.0916
+    ##           Long       date cases      type
+    ## 18   -122.3321 2020-01-22     1 confirmed
+    ## 70    -87.6976 2020-01-24     1 confirmed
+    ## 160  -118.2437 2020-01-26     1 confirmed
+    ## 164  -117.8531 2020-01-26     1 confirmed
+    ## 171  -111.9400 2020-01-26     1 confirmed
+    ## 380   -87.6976 2020-01-31     1 confirmed
+    ## 400  -121.9552 2020-01-31     1 confirmed
+    ## 436   -71.0589 2020-02-01     1 confirmed
+    ## 569  -120.9876 2020-02-03     2 confirmed
+    ## 570  -121.9552 2020-02-03     1 confirmed
+    ## 685   -89.4012 2020-02-05     1 confirmed
+    ## 978   -87.6976 2020-02-09     2 recovered
+    ## 992  -122.3321 2020-02-09     1 recovered
+    ## 1091 -117.1611 2020-02-11     1 confirmed
+    ## 1244  -98.4936 2020-02-13     1 confirmed
+    ## 1245 -117.1611 2020-02-13     1 confirmed
+    ## 1794 -123.8695 2020-02-21     1 confirmed
+    ## 1796  -98.6134 2020-02-21     2 confirmed
+    ## 1797  -95.9758 2020-02-21    11 confirmed
+    ## 1798 -121.3542 2020-02-21     1 confirmed
+    ## 1803 -121.9399 2020-02-21     5 confirmed
+    ## 1836 -117.1611 2020-02-21     1 recovered
+    ## 1837 -121.9552 2020-02-21     1 recovered
+    ## 1976  -98.6134 2020-02-24    -2 confirmed
+    ## 1977  -95.9758 2020-02-24   -11 confirmed
+    ## 1983 -121.9399 2020-02-24    -5 confirmed
+    ## 1984  139.6380 2020-02-24    36 confirmed
+    ## 2084 -111.9400 2020-02-25     1 recovered
+    ## 2120  139.6380 2020-02-26     6 confirmed
+    ## 2191 -121.3542 2020-02-27     1 confirmed
+    ## 2268  139.6380 2020-02-28     2 confirmed
+    ## 2282  -71.0589 2020-02-28     1 recovered
+    ## 2347 -122.3321 2020-02-29     5 confirmed
+    ## 2350 -121.9552 2020-02-29     1 confirmed
+    ## 2351 -121.8339 2020-02-29     1 confirmed
+    ## 2356 -123.1386 2020-02-29     1 confirmed
+    ## 2365 -122.3321 2020-02-29     1     death
+    ## 2436  -87.6976 2020-03-01     1 confirmed
+    ## 2439 -122.3321 2020-03-01     3 confirmed
+    ## 2442  -71.4128 2020-03-01     1 confirmed
+    ## 2444 -121.8339 2020-03-01     1 confirmed
+    ## 2519  -87.6976 2020-03-02     1 confirmed
+    ## 2520  -71.8260 2020-03-02     1 confirmed
+    ## 2522  -82.3018 2020-03-02     1 confirmed
+    ## 2525 -122.3321 2020-03-02     5 confirmed
+    ## 2526  -74.0060 2020-03-02     1 confirmed
+    ## 2528 -120.8039 2020-03-02     1 confirmed
+    ## 2529  -71.4128 2020-03-02     1 confirmed
+    ## 2530 -122.3255 2020-03-02     1 confirmed
+    ## 2531 -121.9552 2020-03-02     6 confirmed
+    ## 2532  -82.5307 2020-03-02     1 confirmed
+    ## 2533 -121.8339 2020-03-02     2 confirmed
+    ## 2534 -122.9888 2020-03-02     1 confirmed
+    ## 2538 -118.7606 2020-03-02     1 confirmed
+    ## 2539  139.6380 2020-03-02     1 confirmed
+    ## 2541 -123.1386 2020-03-02     1 confirmed
+    ## 2548 -122.3321 2020-03-02     4     death
+    ## 2549 -121.8339 2020-03-02     1     death
+    ## 2617  -71.1449 2020-03-03     1 confirmed
+    ## 2618 -122.2730 2020-03-03     1 confirmed
+    ## 2621  -84.3963 2020-03-03     2 confirmed
+    ## 2622  -71.8260 2020-03-03     1 confirmed
+    ## 2623  -82.3018 2020-03-03     1 confirmed
+    ## 2625 -122.3321 2020-03-03     7 confirmed
+    ## 2627 -112.4291 2020-03-03     1 confirmed
+    ## 2630 -122.3255 2020-03-03     1 confirmed
+    ## 2631 -121.9552 2020-03-03     2 confirmed
+    ## 2633 -121.8339 2020-03-03     2 confirmed
+    ## 2636  -78.5661 2020-03-03     1 confirmed
+    ## 2637  -73.7949 2020-03-03     1 confirmed
+    ## 2646 -122.3321 2020-03-03     1     death
+    ## 2672  -89.4012 2020-03-03     1 recovered
+    ## 2726 -121.9018 2020-03-04     1 confirmed
+    ## 2729 -122.3321 2020-03-04    10 confirmed
+    ## 2730 -118.2437 2020-03-04     6 confirmed
+    ## 2734 -117.8531 2020-03-04     2 confirmed
+    ## 2735 -120.8039 2020-03-04     1 confirmed
+    ## 2736 -121.8339 2020-03-04     2 confirmed
+    ## 2739  -73.7949 2020-03-04     9 confirmed
+    ## 2746 -122.3321 2020-03-04     3     death
+    ## 2748 -120.8039 2020-03-04     1     death
+
+``` r
+combined_total_cases <- sum(italy$cases,US$cases,Iran$cases)
+combined_total_cases
+```
+
+    ## [1] 7210
+
+``` r
+italy_inds <-  italy$type == 'death'
+US_inds <-  US$type == 'death'
+Iran_inds <-  Iran$type == 'death'
+combined_death_cases <- sum(italy[italy_inds,"cases"],US[US_inds,"cases"],Iran[Iran_inds,"cases"])
+combined_death_cases
+```
+
+    ## [1] 210
+
+``` r
+round(combined_death_cases/combined_total_cases,4)
+```
+
+    ## [1] 0.0291
