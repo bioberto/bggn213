@@ -3,8 +3,7 @@ title: "Class17"
 author: "Alberto Carreno"
 date: "3/4/2020"
 output:
-  pdf_document: default
-  html_document: default
+ github_document
 ---
 
 ```{r setup, include=FALSE}
