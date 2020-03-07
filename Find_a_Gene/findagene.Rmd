@@ -1,0 +1,81 @@
+---
+title: "find_a_gene"
+author: "Alberto Carreno"
+date: "2/24/2020"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(bio3d)
+```
+
+```{r}
+genelist <- read.fasta("20200306_FASTA")
+genelist
+```
+
+
+```{r}
+ide.mat <- seqidentity(genelist)
+ide.mat
+```
+
+```{r}
+
+plot.dmat(ide.mat, color.palette=mono.colors,
+          main="Sequence Identity", xlab="Structure No.",
+          ylab="Structure No.")
+```
+
+
+
+```{r}
+x <- as.matrix(ide.mat)
+```
+
+
+```{r}
+heatmap(x,symm = T)
+```
+
+```{r}
+heatmap(x, distfun = as.dist,symm=T)
+```
+
+
+```{r}
+rc <- rainbow(nrow(x), start = 0, end = .3)
+cc <- rainbow(ncol(x), start = 0, end = .3)
+hv <- heatmap(x, col = cm.colors(256), scale = "column",
+              RowSideColors = rc, ColSideColors = cc, margins = c(12,10),symm= T)
+```
+
+
+
+```{r}
+pdbgenelist <- blast.pdb(genelist)
+pdbgenelist
+```
+```{r}
+plot.blast(pdbgenelist)
+```
+
+
+```{r}
+pdb.annotate("3FMZ_A")
+pdb.annotate("4O9S_A")
+pdb.annotate("1JYD_A")
+
+```
+
+```{r}
+mayaguana <- read.fasta("mayaguana.txt")
+mayaguana_blast <- blast.pdb(mayaguana)
+mayaguana_blast
+```
+
+
